@@ -1,14 +1,15 @@
 var gamePrefs=
 {
-
+    CHARACTER_SPEED: 5
 }
 
 var config =
 {
     type: Phaser.AUTO,
-    width: 128,
-    height: 256,
-    scene:[gameState], //array con los niveles/pantallas/escenas (unity)
+    width: 1920,
+    height: 1040,
+    //scene:[menu,pang],
+    scene:[pang],
     render:
     {
         pixelArt:true
