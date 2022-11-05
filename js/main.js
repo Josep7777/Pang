@@ -1,6 +1,9 @@
 var gamePrefs=
 {
-    CHARACTER_SPEED: 5
+    CHARACTER_SPEED: 5,
+    GRAVITY: -9.8,
+    BALL_SPEED: 10,
+    BALL_DIRECTION: (1,1)
 }
 
 var config =
@@ -24,7 +27,7 @@ var config =
         default:'arcade',
         arcade:
         {
-            //gravity:{y:0},
+            gravity:{y:9.8},
             debug:true
         }
     }

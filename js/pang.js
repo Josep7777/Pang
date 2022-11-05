@@ -1,3 +1,4 @@
+
 class pang extends Phaser.Scene {
   constructor() {
     super({ key: "pang" });
@@ -7,17 +8,31 @@ class pang extends Phaser.Scene {
   preload() {
     this.load.setPath("assets/img/");
     this.load.image('harpoon','Harpoon0.png');
+    this.load.image('ball','ball0.png');
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
     });
   }
 
+
+
+  loadPools(){
+    this.ballpool = this.physics.add.group();
+   // this.bulletPool = this.physics.add.group();
+   // this.powerUp = this.physics.add.group();
+   
+}
+
+
   create() {
     this.loadAnimations();
-    //this.loadPools();
+    this.loadPools();
+    this.createBall( config.width-1800, config.height-900, 4 );
+    //this.killEnemy();
     this.harpoonNumber=0;
     this.player1 = this.physics.add.sprite(config.width/2, config.height-250, 'player1').setScale(3).setFrame(4);
+    //this.ball1 = this.physics.add.sprite(config.width/2, config.height-250, 'ball').setScale(3);
     //this.player1.play('idle');
     this.cursores = this.input.keyboard.createCursorKeys();
 
@@ -48,6 +63,9 @@ class pang extends Phaser.Scene {
             null,
             this
         );*/
+
+       // this.groupBall= this.add.group();
+        //this.addBall(500,0,5);
   }
 
   pickPowerUp(_nave, _powerUp) {
@@ -80,6 +98,13 @@ class pang extends Phaser.Scene {
     );
   }
 
+
+ // addBall(x,y,scale,gravity){
+  //  gravity=-9.8;
+  // this.groupBall.add(new Ball(this,x,y,'ball',1,scale,gravity));
+   // this.groupBall.add(new Ball(this,x,y,'ball',-1,scale,gravity));
+//}
+
   /*killEnemy(_bullet,_enemy)
     {
         _bullet.setActive(false);
@@ -103,37 +128,59 @@ class pang extends Phaser.Scene {
         }
     }*/
 
-  /*createEnemy()
+  createBall(positionX,positionY,scale)
     {
-        var _enemy = this.enemyPool.getFirst(false);  //Buscamos en el pool de enemigos si hay alguna reutilizable
-        var posX = Phaser.Math.Between(16,config.width-16);
-        var posY = -16;
-        if(!_enemy)
-        {//No hay
+      //console.log('Create Enemy');  
+        //var _Ball = this.enemyPool.getFirst(false);  //Buscamos en el pool de enemigos si hay alguna reutilizable
+         this._ball  = this.ballpool.getFirst(false);
+        var posX =positionX;
+      
+        var posY = positionY;
+        if(!_ball){
+        //No hay
             console.log('Create Enemy');            
-            _enemy = new enemyPrefab(this,posX,posY,'enemy');
-            this.enemyPool.add(_enemy);
-        }else
-        {//Si hay
-            console.log('Reset Enemy');
-            _enemy.active = true;
-            _enemy.body.reset(posX,posY);
-            _enemy.health=2;
+          var _ball = new ball(this,posX,posY,'ball').setScale(scale);
+         //var _ball = new Ball(this, Phaser.Math.Between(0+10,config.width-10), -1);
+          this.ballpool.add(_ball);
+         // _Ball.body.setVelocityY(-100);
+          // _Ball.body.setVelocityY(100);
+        //   this.enemyPool.add(_enemy);
+        }else{
+
+          console.log('vendo opel corsa2');
+          _ball.active=true;
+          _ball.body.reset( this, Phaser.Math.Between(0+10,config.width-10));
+          //_ball.health=2;
         }
+       // _ball.body.
+        _ball.body.setVelocityY(gamePrefs.GRAVITY * -10);
+        _ball.body.setVelocityX(gamePrefs.BALL_SPEED *10);
+        
+     //   if(_ball.body.posX<500){
+         // console.log('vendo opel corsa3');
+       
+      // }
+        //Si hay
+         //   console.log('Reset Enemy');
+         //   _enemy.active = true;
+         //   _enemy.body.reset(posX,posY);
+         //   _enemy.health=2;
+        
         //Sea un enemigo nuevo o uno reutilizable, le damos velocidad
-        _enemy.body.setVelocityY(gamePrefs.SPEED_ENEMY);
+      //  _Ball.body.setVelocityY(gamePrefs.GRAVITY * gamePefs.BALL_DIRECTION);
+       // _Ball.body.setVelocityX(gamePefs.BALL_SPEED * 1);
+      // _Ball.body.setVelocityY();
+       // var rnd = Phaser.Math.Between(2,6);
+       // _enemy.shootingTimer = this.time.addEvent
+       // ({
+       //     delay:rnd*1000,
+       //     callback:this.createEnemyBullet,
+       //     args:[_enemy],
+       //     callbackScope:this,
+       //     repeat:-1
+       // });
 
-        var rnd = Phaser.Math.Between(2,6);
-        _enemy.shootingTimer = this.time.addEvent
-        ({
-            delay:rnd*1000,
-            callback:this.createEnemyBullet,
-            args:[_enemy],
-            callbackScope:this,
-            repeat:-1
-        });
-
-    }*/
+    }
 
   createBullet() {
     if(this.harpoonNumber < 1) {
@@ -154,6 +201,24 @@ class pang extends Phaser.Scene {
     //Le doy velocidad
     _bullet.body.setVelocityY(gamePrefs.SPEED_BULLET);*/
   }
+  
+  killEnemy(ball2){
+    console.log('AAAAAAAAAAAAAA');
+    var posXAux= ball2.x;
+    var posYAux = ball2.y;
+    var scaleAux = scale/2;
+    ball2.setActive(false);
+    ball2.x = -1000;
+ 
+     
+     createBall(posXAux,posYAux,scaleAux);
+ 
+
+  
+
+  }
+
+
 
   createPowerUp(_posX, _posY, _tipo) {
     var _powerUp = this.powerUps.getFirst(false);
@@ -193,10 +258,15 @@ class pang extends Phaser.Scene {
   }
 
   update() {
+   
+      
+   
+
     if (this.cursores.left.isDown) {
         this.player1.setFlipX(false);
         this.player1.x -=gamePrefs.CHARACTER_SPEED;
         this.player1.play('move', true);
+      //  this.killEnemy(this._ball);
     } else if (this.cursores.right.isDown) {
         this.player1.setFlipX(true);
         this.player1.x +=gamePrefs.CHARACTER_SPEED;
