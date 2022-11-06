@@ -6,7 +6,7 @@ class menu extends Phaser.Scene{
 	preload()
 	{
 		this.load.setPath('assets/img/');
-        this.load.image('bg1','background_back.png');
+        this.load.image('bg1','Background.png');
         this.load.image('bg2','background_frontal.png');
         this.load.spritesheet('nave','naveAnim.png',{frameWidth:16,frameHeight:24});
         this.load.image('btn_play','btn.png');

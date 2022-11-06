@@ -7,8 +7,10 @@ class pang extends Phaser.Scene {
 
   preload() {
     this.load.setPath("assets/img/");
+    //this.load.image('background','Background.png');
     this.load.image('harpoon','Harpoon0.png');
     this.load.image('ball','ball0.png');
+    this.load.image('floor','Floor.png');
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -26,15 +28,33 @@ class pang extends Phaser.Scene {
 
 
   create() {
+    //this.background = this.add.sprite(0,0,'background');
     this.loadAnimations();
     this.loadPools();
     this.createBall( config.width-1800, config.height-900, 4 );
     //this.killEnemy();
     this.harpoonNumber=0;
     this.player1 = this.physics.add.sprite(config.width/2, config.height-250, 'player1').setScale(3).setFrame(4);
+
     //this.ball1 = this.physics.add.sprite(config.width/2, config.height-250, 'ball').setScale(3);
     //this.player1.play('idle');
     this.cursores = this.input.keyboard.createCursorKeys();
+    this.floor = this.physics.add.sprite(550,890,'floor');
+    this.floor.body.allowGravity = false;
+    this.floor.body.setImmovable(true);
+
+    this.physics.add.collider
+    (
+        this.floor,
+        this.player1
+    );
+    this.physics.add.collider
+    (
+        this.floor,
+        this.ballpool
+    );
+    //this.floor2 = this.add.sprite(1400,890,'floor');
+    //this.floor = this.physics.add.sprite(180,100,'floor');
 
     this.cursores.space.on
        (
