@@ -9,6 +9,7 @@ class pang extends Phaser.Scene {
     this.load.image("harpoon", "Harpoon0.png");
     this.load.image("ball", "ball1.png");
     this.load.image("floor", "Floor.png");
+    this.load.image("pu_double_wire", "PowerUpDoubleWire.png");
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -18,7 +19,7 @@ class pang extends Phaser.Scene {
   loadPools() {
     this.ballpool = this.physics.add.group();
     // this.bulletPool = this.physics.add.group();
-    // this.powerUp = this.physics.add.group();
+    this.powerUps = this.physics.add.group();
   }
 
   create() {
@@ -26,6 +27,7 @@ class pang extends Phaser.Scene {
 
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
+    this.isShooting = false;
 
     //Cargamos las pools
     this.loadPools();
@@ -33,14 +35,16 @@ class pang extends Phaser.Scene {
     //Creamos la pelota, le pasamos lax, la y, y la escala
     this.createBall(config.width - 1800, config.height - 900, 4);
     //this.ball1 = this.physics.add.sprite(config.width/2, config.height-250, 'ball').setScale(3);
-
+    this.powerUpWire = this.physics.add.sprite(config.width/2, config.height/2,'pu_double_wire').setScale(3);
     this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
-
+    this.harpoonNumberMax = 1;
     //Añadimos al jugador con fisicas
     this.player1 = this.physics.add
       .sprite(config.width / 2, config.height - 250, "player1")
       .setScale(3)
       .setFrame(4);
+    
+    this.player1Health = 3;
 
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
@@ -74,14 +78,25 @@ class pang extends Phaser.Scene {
         });
         */
 
-    /*this.physics.add.overlap
-        (
-            this.bulletPool,
-            this.enemyPool,
-            this.killEnemy,
-            null,
-            this
-        );*/
+    this.physics.add.overlap
+      (
+        this.ballpool,
+        this.player1,
+        this.damagePlayer1,
+        null,
+        this
+      );
+  }
+
+  damagePlayer1(_ball, _player){
+    this.player1Health--;
+    if(this.player1Health > 0) {
+      //HUD perder vida
+      //this.scene.restart();
+    } else {
+      //gameOver
+    }
+
   }
 
   pickPowerUp(_nave, _powerUp) {
@@ -163,18 +178,27 @@ class pang extends Phaser.Scene {
   }
 
   createBullet() {
-    if (this.harpoonNumber < 1) {
-      this.player1.play("shoot");
+    if (this.harpoonNumber < this.harpoonNumberMax) {
+      this.player1.play("shoot", false);
+      this.isShooting = true;
+
+      //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
+
+      this.player1.once('animationcomplete', () => {
+        console.log('animationcomplete');
+        this.isShooting = false;
+      })
+
       this.harpoonNumber++;
       var harpoon = this.physics.add.image(this.player1.x, this.player1.y, 'harpoon').setScale(3);
-      harpoon.scaleY=0;
+      harpoon.scaleY = 0;
 
       this.tweens.add({ //Crea una animacion para alargar el harpon
         targets: harpoon,
-        y:200,
+        y: 200,
         scaleY: 5,
         duration: 1000,
-        onComplete:function(tweens, targets){
+        onComplete: function (tweens, targets) {
           this.harpoonNumber--;
           harpoon.destroy();
         }.bind(this)
@@ -182,37 +206,37 @@ class pang extends Phaser.Scene {
 
       this.physics.add.overlap
         (
-            harpoon,
-            this.ballpool,
-            this.hitBall,
-            null,
-            this
+          harpoon,
+          this.ballpool,
+          this.hitBall,
+          null,
+          this
         );
     }
   }
 
-    hitBall(_harpoon, _ballCol){
-      if(_ballCol.scale > 1) {
-        this.createBall(_ballCol.x + 30 *_ballCol.scale * 2, _ballCol.y, _ballCol.scale-1)
-        this.createBall(_ballCol.x - 30 * _ballCol.scale * 2, _ballCol.y, _ballCol.scale-1)
-      };
+  hitBall(_harpoon, _ballCol) {
+    if (_ballCol.scale > 1) {
+      this.createBall(_ballCol.x + 30 * _ballCol.scale * 2, _ballCol.y, _ballCol.scale - 1)
+      this.createBall(_ballCol.x - 30 * _ballCol.scale * 2, _ballCol.y, _ballCol.scale - 1)
+    };
 
-      _harpoon.destroy();
-      _ballCol.destroy();
-    }
+    _harpoon.destroy();
+    _ballCol.destroy();
+  }
 
-    /*var _bullet = this.bulletPool.getFirst(false);
-    if (!_bullet) {
-      console.log("create bullet");
-      _bullet = new bulletPrefab(this, this.nave.x, this.nave.y);
-      this.bulletPool.add(_bullet);
-    } else {
-      console.log("reset bullet");
-      _bullet.active = true;
-      _bullet.body.reset(this.nave.x, this.nave.y);
-    }
-    //Le doy velocidad
-    _bullet.body.setVelocityY(gamePrefs.SPEED_BULLET);*/
+  /*var _bullet = this.bulletPool.getFirst(false);
+  if (!_bullet) {
+    console.log("create bullet");
+    _bullet = new bulletPrefab(this, this.nave.x, this.nave.y);
+    this.bulletPool.add(_bullet);
+  } else {
+    console.log("reset bullet");
+    _bullet.active = true;
+    _bullet.body.reset(this.nave.x, this.nave.y);
+  }
+  //Le doy velocidad
+  _bullet.body.setVelocityY(gamePrefs.SPEED_BULLET);*/
 
   killEnemy(ball2) {
     console.log("AAAAAAAAAAAAAA");
@@ -251,7 +275,7 @@ class pang extends Phaser.Scene {
       key: "shoot",
       frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
       frameRate: 5,
-      repeat: 1,
+      repeat: 0,
     });
 
     this.anims.create({
@@ -273,7 +297,7 @@ class pang extends Phaser.Scene {
       this.player1.play("move", true);
     } else {
       this.player1.body.setVelocityX(0);
-      this.player1.setFrame(4);
+      if (!this.isShooting) this.player1.setFrame(4);
     }
   }
 }
