@@ -33,9 +33,9 @@ class pang extends Phaser.Scene {
 
     //Cargamos las pools
     this.loadPools();
-
+    this.createWalls();
     //Creamos la pelota, le pasamos lax, la y, y la escala
-    this.createBall(config.width - 1800, config.height - 900, 4);
+    this.createBall(config.width - 1700, config.height -700, 4, 1);
     //this.ball1 = this.physics.add.sprite(config.width/2, config.height-250, 'ball').setScale(3);
     this.powerUpWire = this.physics.add.sprite(config.width/2, config.height/2,'pu_double_wire').setScale(3);
     this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
@@ -64,7 +64,7 @@ class pang extends Phaser.Scene {
     //Funcion que crea los textos estaticos
     this.loadText();
     //Crea los muros y paredes
-    this.createWalls();
+    
 
     //HUD de las vidas
     this.live1 = this.add.sprite(config.width - 1750, config.height - 50, "lifes").setScale(4);
@@ -74,9 +74,10 @@ class pang extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.player1);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-    this.physics.add.collider(this.floorD, this.ballpool);
-    this.physics.add.collider(this.wall,  this.ballpool);
-    this.physics.add.collider(this.wallR,  this.ballpool);
+    //this.physics.add.collider(this.floorD, this.ballpool); //?
+    
+    //this.physics.add.collider(this.wall,  this.ballpool);
+    //this.physics.add.collider(this.wallR,  this.ballpool);
 
     //this.floor2 = this.add.sprite(1400,890,'floor');
     //this.floor = this.physics.add.sprite(180,100,'floor');
@@ -178,7 +179,7 @@ class pang extends Phaser.Scene {
         }
     }*/
 
-  createBall(positionX, positionY, scale) {
+  createBall(positionX, positionY, scale, direct) {
     /*this._ball = this.ballpool.getFirst(false);
     if (!this._ball) {
       //No hay
@@ -195,13 +196,69 @@ class pang extends Phaser.Scene {
       _ball.body.reset(this, Phaser.Math.Between(0 + 10, config.width - 10));
     }*/
     //Creamos una nueva pelota y la añadimos al grupo
-    var _ball = new ball(this, positionX, positionY, "ball").setScale(scale);
+    var _ball = new ball(this, positionX, positionY, "ball",direct).setScale(scale);
     this.ballpool.add(_ball);
 
     //Modificamos su velocidad
-    _ball.body.setVelocityY(gamePrefs.GRAVITY * -10);
-    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * 10);
+    _ball.body.setVelocityY(gamePrefs.GRAVITY);
+    console.log(direct);
+    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * 10* direct);
+    
+    
+    
+    this.physics.add.overlap
+    (
+      this.ballpool,
+      this.floorD,
+      this.bounce,
+      null,
+      this
+    );
+    
+    this.physics.add.overlap
+    (
+      this.ballpool,
+      this.floorU,
+      this.bounce,
+      null,
+      this
+    );
+    this.physics.add.overlap
+    (
+      this.ballpool,
+      this.wall,
+      this.bounceP,
+      null,
+      this
+    );
+    this.physics.add.overlap
+    (
+      this.ballpool,
+      this.wallR,
+      this.bounceP,
+      null,
+      this
+    );
+
+
   }
+  bounce(_ball,_floorD){
+    console.log(_floorD.direct);
+   // _floorD.body.setVelocityY(0);
+    _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (-4-_floorD.scale))); //por alguna razon floor es la pelota
+    _floorD.body.setVelocityX(gamePrefs.BALL_SPEED * (10-_floorD.scale)*_floorD.direct);//*_floorD.direct
+  }
+
+  bounceP(_ball,_wall){
+    console.log('Lado');
+    _wall.direct = _wall.direct*-1;
+    _wall.body.setVelocityX(gamePrefs.BALL_SPEED * (10+_wall.scale)*_wall.direct); //NOVA
+    
+    //_wall.body.setVelocityY(gamePrefs.GRAVITY * (-10 +_wall.scale)); //por alguna razon floor es la pelota
+  //  _wall.body.setVelocityX(0);
+ 
+   }
+
 
   createBullet() {
     if (this.harpoonNumber < this.harpoonNumberMax) {
@@ -238,17 +295,21 @@ class pang extends Phaser.Scene {
           null,
           this
         );
+
+      
     }
   }
+
+  
+
 
   hitBall(_harpoon, _ballCol) {
     this.score += 10;
     
-    
 
     if (_ballCol.scale > 1) {
-      this.createBall(_ballCol.x + 30 * _ballCol.scale * 2, _ballCol.y, _ballCol.scale - 1)
-      this.createBall(_ballCol.x - 30 * _ballCol.scale * 2, _ballCol.y, _ballCol.scale - 1)
+      this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1,1)
+      this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1,-1)
     };
 
     _harpoon.destroy();
@@ -417,6 +478,10 @@ class pang extends Phaser.Scene {
     this.scene.pause();
   }
   update() {
+  
+   
+
+
     if (this.cursores.left.isDown) {
       this.player1.setFlipX(false);
       this.player1.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
