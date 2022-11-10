@@ -329,16 +329,7 @@ class pang extends Phaser.Scene {
   //Le doy velocidad
   _bullet.body.setVelocityY(gamePrefs.SPEED_BULLET);*/
 
-  killEnemy(ball2) {
-    console.log("AAAAAAAAAAAAAA");
-    var posXAux = ball2.x;
-    var posYAux = ball2.y;
-    var scaleAux = scale / 2;
-    ball2.setActive(false);
-    ball2.x = -1000;
-
-    createBall(posXAux, posYAux, scaleAux);
-  }
+  
 
   createPowerUp(_posX, _posY, _tipo) {
     var _powerUp = this.powerUps.getFirst(false);
