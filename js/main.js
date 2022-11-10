@@ -3,7 +3,10 @@ var gamePrefs=
     CHARACTER_SPEED: 250,
     GRAVITY: -9.8,
     BALL_SPEED: 10,
-    BALL_DIRECTION: (1,1)
+    BALL_DIRECTION: (1,1),
+    SCORE: 0,
+    STAGE: 0,
+    TIMER: 0
 }
 
 var config =
@@ -12,7 +15,7 @@ var config =
     width: 1920,
     height: 900,
     //scene:[menu,pang],
-    scene:[pang],
+    scene:[pang,winScene],
     render:
     {
         pixelArt:true
