@@ -1,6 +1,6 @@
 class bulletPrefab extends Phaser.GameObjects.Sprite
 {
-    constructor(_scene,_posX,_posY,_tag='bullet')
+    constructor(_scene,_posX,_posY,_tag)
     {
         super(_scene,_posX,_posY,_tag);
         /*
@@ -19,9 +19,6 @@ class bulletPrefab extends Phaser.GameObjects.Sprite
         if(this.y <=0 || this.y >=config.height)
             this.active=false;
    }
-
-
-
 }
 
 
