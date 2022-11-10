@@ -115,8 +115,12 @@ class pang extends Phaser.Scene {
       //HUD perder vida
       //this.scene.restart();
     } else {
+      /*
       //gameOver
       this.gameOverflag = true;
+      this.player1GameOver.setVisible(true);
+      this.gameOver();
+      */
     }
 
   }
@@ -338,6 +342,19 @@ class pang extends Phaser.Scene {
 				fontFamily: 'Public Pixel',
 				fill: '#FFFFFF',
 				stroke:'#FFFFFF',}).setOrigin(.5).setScale(4);
+
+        this.player1GameOver = this.add.text(270, 830,"GAME OVER!",{
+          fontFamily: 'Public Pixel',
+          fill: '#FFFFFF',
+          stroke:'#FFFFFF',}).setOrigin(.5).setScale(2);
+
+          this.gameOverText = this.add.text(config.width/2, config.height/2 - 100,"GAME OVER",{
+            fontFamily: 'Public Pixel',
+            fill: '#FFFFFF',
+            stroke:'#FFFFFF',}).setOrigin(.5).setScale(4);
+
+          this.player1GameOver.setVisible(false);
+          this.gameOverText.setVisible(false);
   }
   updateText(){
     //SCORE
@@ -396,7 +413,8 @@ class pang extends Phaser.Scene {
     this.scene.start('winScene');
   }
   gameOver(){
-    
+    this.gameOverText.setVisible(true);
+    this.scene.pause();
   }
   update() {
     if (this.cursores.left.isDown) {
