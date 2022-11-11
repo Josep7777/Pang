@@ -14,7 +14,7 @@ class winScene extends Phaser.Scene{
         this.score = gamePrefs.SCORE;
         this.timerBonus = gamePrefs.TIMER * 100;
         this.stageNumber = gamePrefs.STAGE;
-        console.log(this.score);
+        //console.log(this.score);
         this.add.sprite(config.width/2, config.height - 500, "winImage").setScale(1.5);
             //SCORE
     this.add.text
