@@ -41,17 +41,23 @@ class pang extends Phaser.Scene {
     /*this.powerUpWire = this.physics.add
       .sprite(config.width / 2, config.height / 2, "pu_double_wire")
       .setScale(3);*/
+    this.player1Health = gamePrefs.PLAYER1HEALTH;
     this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
     this.harpoonNumberMax = 1;
     this.score = 0;
+    this.newLifes = 3;
     this.scoreBoard;
+
+    //POSICION X/Y DEL FEEDBACK DEL POWER UP
+    this.powerUp1FeedbackPosX = 400;
+    this.powerUp1FeedbackPosY = 865;
     //Añadimos al jugador con fisicas
     this.player1 = this.physics.add
       .sprite(config.width / 2, config.height - 250, "player1")
       .setScale(3)
       .setFrame(4);
 
-    this.player1Health = 3;
+    
     //Datos del HUD
     this.levelName = "MT.FUJI";
     this.worldNumber = 1;
@@ -61,6 +67,7 @@ class pang extends Phaser.Scene {
     this.timeBoard;
 
     this.gameOverflag = false;
+    this.restartGameOver = false;
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
 
@@ -129,16 +136,17 @@ class pang extends Phaser.Scene {
 
   damagePlayer1(_ball, _player) {
     this.player1Health--;
+    
     if (this.player1Health > 0) {
       //HUD perder vida
-      //this.scene.restart();
+      gamePrefs.PLAYER1HEALTH = this.player1Health;
+      this.scene.restart();
     } else {
-      /*
       //gameOver
       this.gameOverflag = true;
       this.player1GameOver.setVisible(true);
       this.gameOver();
-      */
+      
     }
   }
 
@@ -162,6 +170,7 @@ class pang extends Phaser.Scene {
 
     if(_powerUp.tipo == 1){
       this.harpoonNumberMax=2;
+      this.feedbackPowerUp = this.add.sprite(this.powerUp1FeedbackPosX, this.powerUp1FeedbackPosY, "powerUp1").setScale(4);
     }
     _powerUp.destroy();
   }
@@ -208,7 +217,6 @@ class pang extends Phaser.Scene {
 
     //Modificamos su velocidad
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
-    console.log(direct);
     _ball.body.setVelocityX(gamePrefs.BALL_SPEED * 10 * direct);
 
     this.physics.add.overlap(
@@ -243,7 +251,6 @@ class pang extends Phaser.Scene {
   }
 
   bounce(_ball, _floorD) {
-    console.log(_floorD.direct);
     // _floorD.body.setVelocityY(0);
     _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (-4 - _floorD.scale))); //por alguna razon floor es la pelota
     _floorD.body.setVelocityX(
@@ -252,7 +259,6 @@ class pang extends Phaser.Scene {
   }
 
   bounceP(_ball, _wall) {
-    console.log("Lado");
     _wall.direct = _wall.direct * -1;
     _wall.body.setVelocityX(
       gamePrefs.BALL_SPEED * (10 + _wall.scale) * _wall.direct
@@ -271,12 +277,9 @@ class pang extends Phaser.Scene {
 
       this.player1.once("animationcomplete", () => {
         this.isShooting = false;
-        //console.log("animationcomplete");
       });
       
       this.harpoonNumber++;
-
-      console.log("Arpon:" + this.harpoonNumber);
 
       var harpoon = this.physics.add
         .image(this.player1.x, this.player1.y, "harpoon")
@@ -338,6 +341,10 @@ class pang extends Phaser.Scene {
     if(this.harpoonNumber>0) this.harpoonNumber--;
     _harpoon.destroy();
     _ballCol.destroy();
+
+    if(this.ballpool.getLength() == 0){
+     this.winScene(); 
+    }
   }
 
   createPowerUp(_posX, _posY,_tipo) {
@@ -498,6 +505,7 @@ class pang extends Phaser.Scene {
     if (this.player1Health == 2) {
       this.live3.destroy();
     } else if (this.player1Health == 1) {
+      this.live3.destroy();
       this.live2.destroy();
     } else if (this.player1Health == 0) {
       this.live1.destroy();
@@ -513,26 +521,31 @@ class pang extends Phaser.Scene {
 
   gameOver() {
     this.gameOverText.setVisible(true);
-    this.scene.pause();
+    //this.scene.pause('pang');
+    this.player1.destroy();
+    this.restartGameOver = true;
   }
 
   update() {
-    if (this.cursores.left.isDown) {
-      if (!this.isShooting) {
-        this.player1.setFlipX(false);
-        this.player1.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
-        this.player1.play("move", true);
+    if(this.gameOverflag == false){
+      if (this.cursores.left.isDown) {
+        if (!this.isShooting) {
+          this.player1.setFlipX(false);
+          this.player1.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
+          this.player1.play("move", true);
+        }
+      } else if (this.cursores.right.isDown) {
+        if (!this.isShooting) {
+          this.player1.setFlipX(true);
+          this.player1.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
+          this.player1.play("move", true);
+        }
+      } else {
+        this.player1.body.setVelocityX(0);
+        if (!this.isShooting) this.player1.setFrame(4);
       }
-    } else if (this.cursores.right.isDown) {
-      if (!this.isShooting) {
-        this.player1.setFlipX(true);
-        this.player1.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
-        this.player1.play("move", true);
-      }
-    } else {
-      this.player1.body.setVelocityX(0);
-      if (!this.isShooting) this.player1.setFrame(4);
     }
+
     //Textos que cambian segun avanza la partida
     //this.timer = this.timer - this.scene.time.now;
     this.updateText();
@@ -541,6 +554,14 @@ class pang extends Phaser.Scene {
 
     if (this.gameOverflag == true) {
       this.gameOver();
+    }
+    if(this.restartGameOver == true){
+      if (this.cursores.space.isDown) {
+        gamePrefs.PLAYER1HEALTH = this.newLifes;
+        this.scene.resume();
+        this.scene.restart();
+        console.log("entra");
+      }
     }
   }
 }

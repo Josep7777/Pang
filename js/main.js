@@ -4,6 +4,7 @@ var gamePrefs=
     GRAVITY: -35,
     BALL_SPEED: 10,
     BALL_DIRECTION: (1,1),
+    PLAYER1HEALTH: 3,
     SCORE: 0,
     STAGE: 0,
     TIMER: 0

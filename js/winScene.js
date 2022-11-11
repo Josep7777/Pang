@@ -10,6 +10,7 @@ class winScene extends Phaser.Scene{
     }
 
     create(){
+        this.cursores = this.input.keyboard.createCursorKeys();
         this.score = gamePrefs.SCORE;
         this.timerBonus = gamePrefs.TIMER * 100;
         this.stageNumber = gamePrefs.STAGE;
@@ -42,6 +43,9 @@ class winScene extends Phaser.Scene{
     }
 
     update(){
-        
+        if (this.cursores.space.isDown) {
+            gamePrefs.PLAYER1HEALTH = 3,
+            this.scene.start("pang");
+        }
     }
 }
