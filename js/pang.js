@@ -13,9 +13,14 @@ class pang extends Phaser.Scene {
     this.load.image("wall", "Wall.png");
     this.load.image("lifes", "lifes.png");
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
+    this.load.image("powerUp2", "powerUpMolinillo.png");
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
+    });
+    this.load.spritesheet("escudo", "formaCumProtecion.png", {
+      frameWidth: 37,
+      frameHeight: 41,
     });
   }
 
@@ -47,10 +52,13 @@ class pang extends Phaser.Scene {
     this.score = 0;
     this.newLifes = 3;
     this.scoreBoard;
+    this.invencible=false;
 
     //POSICION X/Y DEL FEEDBACK DEL POWER UP
     this.powerUp1FeedbackPosX = 400;
     this.powerUp1FeedbackPosY = 865;
+  //  this.powerUp2FeedbackPosX = 400;
+  //  this.powerUp2FeedbackPosY = 865;
     //Añadimos al jugador con fisicas
     this.player1 = this.physics.add
       .sprite(config.width / 2, config.height - 250, "player1")
@@ -135,6 +143,7 @@ class pang extends Phaser.Scene {
   }
 
   damagePlayer1(_ball, _player) {
+    if(this.invencible==false){
     this.player1Health--;
     
     if (this.player1Health > 0) {
@@ -148,6 +157,14 @@ class pang extends Phaser.Scene {
       this.gameOver();
       
     }
+  }else if (this.invencible==true){
+  
+  console.log("invencible");  
+                                        /////////////////PONER AQUI COSAS DE TIMER PORQUE TE MATAN IMPORTANTE!!!!!!!!!!
+  this.invencible=false;
+  this.shield.x=1000;
+
+  }
   }
 
   pickPowerUp(_nave, _powerUp) {
@@ -171,6 +188,21 @@ class pang extends Phaser.Scene {
     if(_powerUp.tipo == 1){
       this.harpoonNumberMax=2;
       this.feedbackPowerUp = this.add.sprite(this.powerUp1FeedbackPosX, this.powerUp1FeedbackPosY, "powerUp1").setScale(4);
+    
+    }else if(_powerUp.tipo == 2){
+      
+      //INVENVCIBLE
+      if(this.invencible==false){
+      this.invencible = true;
+      this.shield = this.add.sprite(this.player1.x, this.player1.y, "escudo").setScale(4);
+      this.shield.play("shield", true);
+      this.shield.depth = 1;
+      this.player1.depth =2;
+      this.floorD.depth = 3;
+
+      
+    }
+       // this.feedbackPowerUp = this.add.sprite(this.powerUp2FeedbackPosX, this.powerUp2FeedbackPosY, "powerUp2").setScale(4);
     }
     _powerUp.destroy();
   }
@@ -217,7 +249,7 @@ class pang extends Phaser.Scene {
 
     //Modificamos su velocidad
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
-    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * 10 * direct);
+    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * 20 * direct);
 
     this.physics.add.overlap(
       this.ballpool,
@@ -252,16 +284,16 @@ class pang extends Phaser.Scene {
 
   bounce(_ball, _floorD) {
     // _floorD.body.setVelocityY(0);
-    _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (-4 - _floorD.scale))); //por alguna razon floor es la pelota
+    _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (-2.5 - _floorD.scale))); //por alguna razon floor es la pelota
     _floorD.body.setVelocityX(
-      gamePrefs.BALL_SPEED * (10 - _floorD.scale) * _floorD.direct
+      gamePrefs.BALL_SPEED * (20 - _floorD.scale) * _floorD.direct
     ); //*_floorD.direct
   }
 
   bounceP(_ball, _wall) {
     _wall.direct = _wall.direct * -1;
     _wall.body.setVelocityX(
-      gamePrefs.BALL_SPEED * (10 + _wall.scale) * _wall.direct
+      gamePrefs.BALL_SPEED * (20 + _wall.scale) * _wall.direct
     ); //NOVA
 
     //_wall.body.setVelocityY(gamePrefs.GRAVITY * (-10 +_wall.scale)); //por alguna razon floor es la pelota
@@ -328,7 +360,7 @@ class pang extends Phaser.Scene {
     var rnd = Phaser.Math.Between(1,5);
     if(rnd==1)
     {
-        var tipo = Phaser.Math.Between(1,1);
+        var tipo = Phaser.Math.Between(1,2);
         this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
     
@@ -498,6 +530,12 @@ class pang extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
+    this.anims.create({
+      key: "shield",
+      frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
   }
 
   lifesHUD() {
@@ -545,7 +583,11 @@ class pang extends Phaser.Scene {
         if (!this.isShooting) this.player1.setFrame(4);
       }
     }
+    if(this.invencible==true){
+      this.shield.x=this.player1.x;
+      this.shield.y=this.player1.y;
 
+    }
     //Textos que cambian segun avanza la partida
     //this.timer = this.timer - this.scene.time.now;
     this.updateText();

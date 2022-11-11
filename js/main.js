@@ -1,7 +1,7 @@
 var gamePrefs=
 {
     CHARACTER_SPEED: 250,
-    GRAVITY: -35,
+    GRAVITY: -45,
     BALL_SPEED: 10,
     BALL_DIRECTION: (1,1),
     PLAYER1HEALTH: 3,
