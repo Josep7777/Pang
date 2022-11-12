@@ -7,7 +7,8 @@ var gamePrefs=
     PLAYER1HEALTH: 3,
     SCORE: 0,
     STAGE: 0,
-    TIMER: 0
+    TIMER: 0,
+    TIMER2: 0
 }
 
 var config =

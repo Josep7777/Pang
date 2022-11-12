@@ -55,11 +55,14 @@ class pang extends Phaser.Scene {
     this.invencible = false;
     this.isShooting = false;
     this.timer = 0;
+    this.timer2 = 0;
+    this.dañoEscudo = false;
     this.resources = 0;
     //POSICION X/Y DEL FEEDBACK DEL POWER UP
     this.powerUp1FeedbackPosX = 400;
     this.powerUp1FeedbackPosY = 865;
-
+    //POWER UP TIEMPO INMUNE
+    this.timerPower = 5;
     //  this.powerUp2FeedbackPosX = 400;
     //  this.powerUp2FeedbackPosY = 865;
 
@@ -69,6 +72,7 @@ class pang extends Phaser.Scene {
     this.stageNumber = 1;
     this.highScore = 100000;
     this.countDown = 99;
+    this.countDown2 = 1;
     this.timeBoard;
 
     this.score = 0;
@@ -173,9 +177,16 @@ class pang extends Phaser.Scene {
         this.gameOver();
       }
     } else if (this.invencible == true) {
-      /////////////////PONER AQUI COSAS DE TIMER PORQUE TE MATAN IMPORTANTE!!!!!!!!!!
-      this.invencible = false;
-      this.shield.x = 1000;
+    
+      this.dañoEscudo=true;
+      this.shield.destroy();
+      if(this.countDown2<=0){
+      
+      this.countDown2=1;
+      this.dañoEscudo=false;
+      this.invencible=false;
+    }
+    
     }
   }
 
@@ -192,7 +203,9 @@ class pang extends Phaser.Scene {
         .setScale(4);
     } else if (_powerUp.tipo == 2) {
       //Invencibilidad
+
       if (this.invencible == false) {
+       
         this.invencible = true;
         this.shield = this.add
           .sprite(this.player1.x, this.player1.y, "escudo")
@@ -520,16 +533,40 @@ class pang extends Phaser.Scene {
 
       //TIMER
       this.timer += delta;
+     
       while (this.timer > 1000) {
         this.resources += 1;
         this.timer -= 1000;
         this.countDown -= 1;
     }
+    
+
     }
-    if (this.invencible == true) {
+    if (this.invencible == true && this.dañoEscudo==false) {
       this.shield.x = this.player1.x;
       this.shield.y = this.player1.y;
+      
     }
+    
+    if(this.invencible ==true && this.dañoEscudo==true){
+      this.timer2 += delta;
+    
+    while (this.timer2 > 1000) {
+     
+      this.resources2 += 1;
+      this.timer2 -= 1000;
+      this.countDown2 -= 1;
+    
+      if(this.countDown2<=0){
+        this.invencible=false;
+        this.countDown2=1;
+        this.dañoEscudo=false;
+      }  
+  }
+
+    }
+
+
     this.updateText();
     //Funcion que controla el HUD de las vidas
     this.lifesHUD();
