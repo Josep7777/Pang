@@ -54,7 +54,9 @@ class pang extends Phaser.Scene {
     this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
     this.invencible = false;
     this.isShooting = false;
-
+    this.seconds = 0;
+    this.timer2 = 0;
+    this.resources = 0;
     //POSICION X/Y DEL FEEDBACK DEL POWER UP
     this.powerUp1FeedbackPosX = 400;
     this.powerUp1FeedbackPosY = 865;
@@ -67,7 +69,7 @@ class pang extends Phaser.Scene {
     this.worldNumber = 1;
     this.stageNumber = 1;
     this.highScore = 100000;
-    this.timer = 99;
+    this.countDown = 99;
     this.timeBoard;
 
     this.score = 0;
@@ -383,7 +385,7 @@ class pang extends Phaser.Scene {
       .setScale(2);
     //TIMER
     this.timeBoard = this.add
-      .text(1600, 100, "TIME:0" + this.timer, {
+      .text(1600, 100, "TIME:0" + this.countDown, {
         fontFamily: "Public Pixel",
         fill: "#FFFFFF",
         stroke: "#FFFFFF",
@@ -417,7 +419,7 @@ class pang extends Phaser.Scene {
     //SCORE
     this.scoreBoard.setText(this.score);
     //this.timer = this.timer - 0.014;
-    this.timeBoard.setText("TIME:0" + this.timer);
+    this.timeBoard.setText("TIME:0" + Math.round(this.countDown));
   }
 
   createWalls() {
@@ -487,7 +489,7 @@ class pang extends Phaser.Scene {
   winScene() {
     gamePrefs.SCORE = this.score;
     gamePrefs.STAGE = this.stageNumber;
-    gamePrefs.TIMER = this.timer;
+    gamePrefs.TIMER = this.countDown;
     this.scene.start("winScene");
   }
 
@@ -498,7 +500,7 @@ class pang extends Phaser.Scene {
     this.restartGameOver = true;
   }
 
-  update() {
+  update(time,delta) {
     if (this.gameOverflag == false) {
       if (this.cursores.left.isDown) {
         if (!this.isShooting) {
@@ -516,6 +518,14 @@ class pang extends Phaser.Scene {
         this.player1.body.setVelocityX(0);
         if (!this.isShooting) this.player1.setFrame(4);
       }
+      
+      //TIMER
+      this.timer2 += delta;
+      while (this.timer2 > 1000) {
+        this.resources += 1;
+        this.timer2 -= 1000;
+        this.countDown -= 1;
+    }
     }
     if (this.invencible == true) {
       this.shield.x = this.player1.x;
@@ -523,7 +533,10 @@ class pang extends Phaser.Scene {
     }
 
     //Textos que cambian segun avanza la partida
-    //this.timer = this.timer - this.scene.time.now;
+    //time = Math.round(time * 0.001);
+
+
+    
     this.updateText();
     //Funcion que controla el HUD de las vidas
     this.lifesHUD();
