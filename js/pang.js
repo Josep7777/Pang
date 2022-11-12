@@ -54,8 +54,7 @@ class pang extends Phaser.Scene {
     this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
     this.invencible = false;
     this.isShooting = false;
-    this.seconds = 0;
-    this.timer2 = 0;
+    this.timer = 0;
     this.resources = 0;
     //POSICION X/Y DEL FEEDBACK DEL POWER UP
     this.powerUp1FeedbackPosX = 400;
@@ -518,12 +517,12 @@ class pang extends Phaser.Scene {
         this.player1.body.setVelocityX(0);
         if (!this.isShooting) this.player1.setFrame(4);
       }
-      
+
       //TIMER
-      this.timer2 += delta;
-      while (this.timer2 > 1000) {
+      this.timer += delta;
+      while (this.timer > 1000) {
         this.resources += 1;
-        this.timer2 -= 1000;
+        this.timer -= 1000;
         this.countDown -= 1;
     }
     }
@@ -531,12 +530,6 @@ class pang extends Phaser.Scene {
       this.shield.x = this.player1.x;
       this.shield.y = this.player1.y;
     }
-
-    //Textos que cambian segun avanza la partida
-    //time = Math.round(time * 0.001);
-
-
-    
     this.updateText();
     //Funcion que controla el HUD de las vidas
     this.lifesHUD();
