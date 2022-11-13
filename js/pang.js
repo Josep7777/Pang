@@ -14,6 +14,8 @@ class pang extends Phaser.Scene {
     this.load.image("lifes", "lifes.png");
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpMolinillo.png");
+    this.load.image("powerUp3", "fresa.png");
+
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -215,6 +217,10 @@ class pang extends Phaser.Scene {
         this.player1.depth = 2;
         this.floorD.depth = 3;
       }
+    }else if (_powerUp.tipo == 3) {
+      //Invencibilidad
+        this.score += 500;
+    
     }
     _powerUp.destroy();
   }
@@ -307,7 +313,7 @@ class pang extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 2);
+      var tipo = Phaser.Math.Between(1,3);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -534,12 +540,16 @@ class pang extends Phaser.Scene {
       //TIMER
       this.timer += delta;
      
-      while (this.timer > 1000) {
+      if (this.timer > 1000) {
         this.resources += 1;
         this.timer -= 1000;
         this.countDown -= 1;
     }
-    
+    if(this.countDown <= 0){
+      this.gameOverflag = true;
+      this.player1GameOver.setVisible(true);
+      this.gameOver();
+    }
 
     }
     if (this.invencible == true && this.dañoEscudo==false) {
@@ -551,7 +561,7 @@ class pang extends Phaser.Scene {
     if(this.invencible ==true && this.dañoEscudo==true){
       this.timer2 += delta;
     
-    while (this.timer2 > 1000) {
+    if (this.timer2 > 1000) {
      
       this.resources2 += 1;
       this.timer2 -= 1000;

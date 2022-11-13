@@ -13,7 +13,7 @@ class winScene extends Phaser.Scene{
         this.cursores = this.input.keyboard.createCursorKeys();
         this.score = gamePrefs.SCORE;
         this.timerBonus = gamePrefs.TIMER * 100;
-        this.stageNumber = gamePrefs.STAGE;
+        this.stageNumber = 1;
         //console.log(this.score);
         this.add.sprite(config.width/2, config.height - 500, "winImage").setScale(1.5);
             //SCORE
