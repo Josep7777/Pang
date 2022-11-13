@@ -35,7 +35,7 @@ var config =
         arcade:
         {
             gravity:{y:90},
-            debug:true
+            debug:false
         }
     }
 }

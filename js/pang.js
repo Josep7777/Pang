@@ -6,7 +6,6 @@ class pang extends Phaser.Scene {
   preload() {
     //Pre cargamos los recursos
     this.load.setPath("assets/img/");
-    //this.load.image('background','Background.png');
     this.load.image("harpoon", "Harpoon0.png");
     this.load.image("ball", "ball1.png");
     this.load.image("floor", "Floor2.png");
@@ -28,7 +27,6 @@ class pang extends Phaser.Scene {
 
   loadPools() {
     this.ballpool = this.physics.add.group();
-    // this.bulletPool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
   }
 
@@ -60,13 +58,12 @@ class pang extends Phaser.Scene {
     this.timer2 = 0;
     this.dañoEscudo = false;
     this.resources = 0;
+
     //POSICION X/Y DEL FEEDBACK DEL POWER UP
     this.powerUp1FeedbackPosX = 400;
     this.powerUp1FeedbackPosY = 865;
     //POWER UP TIEMPO INMUNE
     this.timerPower = 5;
-    //  this.powerUp2FeedbackPosX = 400;
-    //  this.powerUp2FeedbackPosY = 865;
 
     //Datos del HUD
     this.levelName = "MT.FUJI";
@@ -161,7 +158,6 @@ class pang extends Phaser.Scene {
       null,
       this
     );
-
   }
 
   damagePlayer1(_ball, _player) {
@@ -179,20 +175,17 @@ class pang extends Phaser.Scene {
         this.gameOver();
       }
     } else if (this.invencible == true) {
-    
-      this.dañoEscudo=true;
+      this.dañoEscudo = true;
       this.shield.destroy();
-      if(this.countDown2<=0){
-      
-      this.countDown2=1;
-      this.dañoEscudo=false;
-      this.invencible=false;
-    }
-    
+      if (this.countDown2 <= 0) {
+        this.countDown2 = 1;
+        this.dañoEscudo = false;
+        this.invencible = false;
+      }
     }
   }
 
-  pickPowerUp(_nave, _powerUp) {
+  pickPowerUp(_player, _powerUp) {
     if (_powerUp.tipo == 1) {
       //Doble harpon
       this.harpoonNumberMax = 2;
@@ -205,9 +198,7 @@ class pang extends Phaser.Scene {
         .setScale(4);
     } else if (_powerUp.tipo == 2) {
       //Invencibilidad
-
       if (this.invencible == false) {
-       
         this.invencible = true;
         this.shield = this.add
           .sprite(this.player1.x, this.player1.y, "escudo")
@@ -217,10 +208,9 @@ class pang extends Phaser.Scene {
         this.player1.depth = 2;
         this.floorD.depth = 3;
       }
-    }else if (_powerUp.tipo == 3) {
-      //Invencibilidad
-        this.score += 500;
-    
+    } else if (_powerUp.tipo == 3) {
+      //Objetos que dan puntuacion
+      this.score += 500;
     }
     _powerUp.destroy();
   }
@@ -238,27 +228,33 @@ class pang extends Phaser.Scene {
 
     //Modificamos su velocidad
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
-    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct);
+    _ball.body.setVelocityX(
+      gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct
+    );
   }
 
   bounce(_ball, _floorD) {
-    _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _floorD.scale))); //por alguna razon floor es la pelota
+    _floorD.body.setVelocityY(
+      -(gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _floorD.scale))
+    ); //por alguna razon floor es la pelota
     _floorD.body.setVelocityX(
-      gamePrefs.BALL_SPEED * (gamePrefs.VELOCITY_MAKER - _floorD.scale) * _floorD.direct
+      gamePrefs.BALL_SPEED *
+        (gamePrefs.VELOCITY_MAKER - _floorD.scale) *
+        _floorD.direct
     );
   }
 
   bounceP(_ball, _wall) {
     _wall.direct = _wall.direct * -1; //CAMBIAMOS DIRECCION
     _wall.body.setVelocityX(
-      gamePrefs.BALL_SPEED * (gamePrefs.VELOCITY_MAKER + _wall.scale) * _wall.direct
-    ); //NOVA
-
-    //_wall.body.setVelocityY(gamePrefs.GRAVITY * (-10 +_wall.scale)); //por alguna razon floor es la pelota
-    //  _wall.body.setVelocityX(0);
+      gamePrefs.BALL_SPEED *
+        (gamePrefs.VELOCITY_MAKER + _wall.scale) *
+        _wall.direct
+    );
   }
 
-  createBullet() { //Crea el harpon cuando se presiona espacio
+  createBullet() {
+    //Crea el harpon cuando se presiona espacio
     if (this.harpoonNumber < this.harpoonNumberMax) {
       this.player1.play("shoot", false);
       this.isShooting = true;
@@ -302,7 +298,8 @@ class pang extends Phaser.Scene {
     }
   }
 
-  destroyHarpoon(_harpoon, _floor) { //Destruye al harpon al tocar el techo
+  destroyHarpoon(_harpoon, _floor) {
+    //Destruye al harpon al tocar el techo
     if (this.harpoonNumber > 0) this.harpoonNumber--;
     _harpoon.destroy();
   }
@@ -313,11 +310,12 @@ class pang extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1,3);
+      var tipo = Phaser.Math.Between(1, 3);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
-    if (_ballCol.scale > 1) { //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
+    if (_ballCol.scale > 1) {
+      //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
       this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, 1);
       this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, -1);
     }
@@ -327,12 +325,14 @@ class pang extends Phaser.Scene {
     _harpoon.destroy();
     _ballCol.destroy();
 
-    if (this.ballpool.getLength() == 0) { //Si es la ultima pelota destruida, ganas
+    if (this.ballpool.getLength() == 0) {
+      //Si es la ultima pelota destruida, ganas
       this.winScene();
     }
   }
 
-  createPowerUp(_posX, _posY, _tipo) { //Creamos power up y añadimos a grupo
+  createPowerUp(_posX, _posY, _tipo) {
+    //Creamos power up y añadimos a grupo
     var _powerUp = new powerUpPrefab(this, _posX, _posY, _tipo).setScale(3);
     this.powerUps.add(_powerUp);
   }
@@ -436,7 +436,6 @@ class pang extends Phaser.Scene {
   updateText() {
     //SCORE
     this.scoreBoard.setText(this.score);
-    //this.timer = this.timer - 0.014;
     this.timeBoard.setText("TIME:0" + Math.round(this.countDown));
   }
 
@@ -513,12 +512,11 @@ class pang extends Phaser.Scene {
 
   gameOver() {
     this.gameOverText.setVisible(true);
-    //this.scene.pause('pang');
     this.player1.destroy();
     this.restartGameOver = true;
   }
 
-  update(time,delta) {
+  update(time, delta) {
     if (this.gameOverflag == false) {
       if (this.cursores.left.isDown) {
         if (!this.isShooting) {
@@ -539,45 +537,41 @@ class pang extends Phaser.Scene {
 
       //TIMER
       this.timer += delta;
-     
+
       if (this.timer > 1000) {
         this.resources += 1;
         this.timer -= 1000;
         this.countDown -= 1;
+      }
+      if (this.countDown <= 0) {
+        this.gameOverflag = true;
+        this.player1GameOver.setVisible(true);
+        this.gameOver();
+      }
     }
-    if(this.countDown <= 0){
-      this.gameOverflag = true;
-      this.player1GameOver.setVisible(true);
-      this.gameOver();
-    }
-
-    }
-    if (this.invencible == true && this.dañoEscudo==false) {
+    if (this.invencible == true && this.dañoEscudo == false) {
       this.shield.x = this.player1.x;
       this.shield.y = this.player1.y;
-      
     }
-    
-    if(this.invencible ==true && this.dañoEscudo==true){
+
+    if (this.invencible == true && this.dañoEscudo == true) {
       this.timer2 += delta;
-    
-    if (this.timer2 > 1000) {
-     
-      this.resources2 += 1;
-      this.timer2 -= 1000;
-      this.countDown2 -= 1;
-    
-      if(this.countDown2<=0){
-        this.invencible=false;
-        this.countDown2=1;
-        this.dañoEscudo=false;
-      }  
-  }
 
+      if (this.timer2 > 1000) {
+        this.resources2 += 1;
+        this.timer2 -= 1000;
+        this.countDown2 -= 1;
+
+        if (this.countDown2 <= 0) {
+          this.invencible = false;
+          this.countDown2 = 1;
+          this.dañoEscudo = false;
+        }
+      }
     }
-
 
     this.updateText();
+
     //Funcion que controla el HUD de las vidas
     this.lifesHUD();
 
