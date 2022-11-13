@@ -8,7 +8,9 @@ var gamePrefs=
     SCORE: 0,
     STAGE: 0,
     TIMER: 0,
-    TIMER2: 0
+    TIMER2: 0,
+    VELOCITY_MAKER: 20,
+    VELOCITY_MAKER2: -2.5
 }
 
 var config =

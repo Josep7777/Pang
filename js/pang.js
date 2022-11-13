@@ -13,14 +13,14 @@ class pang extends Phaser.Scene {
     this.load.image("wall", "Wall.png");
     this.load.image("lifes", "lifes.png");
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
-    this.load.image("powerUp2", "powerUpMolinillo.png");
+    this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
     });
-    this.load.spritesheet("escudo", "formaCumProtecion.png", {
+    this.load.spritesheet("escudo", "Shield.png", {
       frameWidth: 37,
       frameHeight: 41,
     });
@@ -238,20 +238,20 @@ class pang extends Phaser.Scene {
 
     //Modificamos su velocidad
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
-    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * 20 * direct);
+    _ball.body.setVelocityX(gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct);
   }
 
   bounce(_ball, _floorD) {
-    _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (-2.5 - _floorD.scale))); //por alguna razon floor es la pelota
+    _floorD.body.setVelocityY(-(gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _floorD.scale))); //por alguna razon floor es la pelota
     _floorD.body.setVelocityX(
-      gamePrefs.BALL_SPEED * (20 - _floorD.scale) * _floorD.direct
+      gamePrefs.BALL_SPEED * (gamePrefs.VELOCITY_MAKER - _floorD.scale) * _floorD.direct
     );
   }
 
   bounceP(_ball, _wall) {
-    _wall.direct = _wall.direct * -1;
+    _wall.direct = _wall.direct * -1; //CAMBIAMOS DIRECCION
     _wall.body.setVelocityX(
-      gamePrefs.BALL_SPEED * (20 + _wall.scale) * _wall.direct
+      gamePrefs.BALL_SPEED * (gamePrefs.VELOCITY_MAKER + _wall.scale) * _wall.direct
     ); //NOVA
 
     //_wall.body.setVelocityY(gamePrefs.GRAVITY * (-10 +_wall.scale)); //por alguna razon floor es la pelota
