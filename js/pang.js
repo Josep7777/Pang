@@ -39,22 +39,14 @@ class pang extends Phaser.Scene {
 
     this.createWalls(); // Funcion para crear suelo, techo y paredes
 
-    //Creamos la pelota, le pasamos lax, la y, y la escala
+    //Creamos la pelota, le pasamos la x, la y, y la escala
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
     //Añadimos al jugador con fisicas
-    this.player1 = this.physics.add
-      .sprite(config.width / 2, config.height - 250, "player1")
-      .setScale(3)
-      .setFrame(4);
+    this.player1 = new playerPrefab(this, config.width / 2, config.height - 250, "player1");
 
     //Variables del jugador
-    this.player1Health = gamePrefs.PLAYER1HEALTH;
-    this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
-    this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
-    this.invencible = false;
-    this.isShooting = false;
-    this.timer = 0;
+    this.invencible = false;    
     this.timer2 = 0;
     this.dañoEscudo = false;
     this.resources = 0;
@@ -65,13 +57,16 @@ class pang extends Phaser.Scene {
     //POWER UP TIEMPO INMUNE
     this.timerPower = 5;
 
+    this.countDown2 = 1;
+
     //Datos del HUD
+    //this.hud = new hudPrefab(this, "hud");
     this.levelName = "MT.FUJI";
     this.worldNumber = 1;
     this.stageNumber = 1;
     this.highScore = 100000;
-    this.countDown = 99;
-    this.countDown2 = 1;
+    this.timer = 0;
+    this.countDown = 99;    
     this.timeBoard;
 
     this.score = 0;
@@ -97,15 +92,6 @@ class pang extends Phaser.Scene {
 
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
-
-    //Cuando le das al espacio, el jugador dispara
-    this.cursores.space.on(
-      "down",
-      function () {
-        this.createBullet();
-      },
-      this
-    );
 
     //Añadimos colisiones
     this.physics.add.collider(this.floorD, this.player1);
@@ -162,11 +148,11 @@ class pang extends Phaser.Scene {
 
   damagePlayer1(_ball, _player) {
     if (this.invencible == false) {
-      this.player1Health--;
+      this.player1.playerHealth--;
 
-      if (this.player1Health > 0) {
+      if (this.player1.playerHealth > 0) {
         //HUD perder vida
-        gamePrefs.PLAYER1HEALTH = this.player1Health;
+        gamePrefs.PLAYER1HEALTH = this.player1.playerHealth;
         this.scene.restart();
       } else {
         //gameOver
@@ -188,7 +174,7 @@ class pang extends Phaser.Scene {
   pickPowerUp(_player, _powerUp) {
     if (_powerUp.tipo == 1) {
       //Doble harpon
-      this.harpoonNumberMax = 2;
+      _player.harpoonNumberMax = 2;
       this.feedbackPowerUp = this.add
         .sprite(
           this.powerUp1FeedbackPosX,
@@ -255,17 +241,17 @@ class pang extends Phaser.Scene {
 
   createBullet() {
     //Crea el harpon cuando se presiona espacio
-    if (this.harpoonNumber < this.harpoonNumberMax) {
+    if (this.player1.harpoonNumber < this.player1.harpoonNumberMax) {
       this.player1.play("shoot", false);
-      this.isShooting = true;
+      this.player1.isShooting = true;
 
       //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
 
       this.player1.once("animationcomplete", () => {
-        this.isShooting = false;
+        this.player1.isShooting = false;
       });
 
-      this.harpoonNumber++;
+      this.player1.harpoonNumber++;
 
       var harpoon = this.physics.add
         .image(this.player1.x, this.player1.y, "harpoon")
@@ -300,7 +286,7 @@ class pang extends Phaser.Scene {
 
   destroyHarpoon(_harpoon, _floor) {
     //Destruye al harpon al tocar el techo
-    if (this.harpoonNumber > 0) this.harpoonNumber--;
+    if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
   }
 
@@ -321,7 +307,7 @@ class pang extends Phaser.Scene {
     }
 
     //Destruimos harpon y pelota
-    if (this.harpoonNumber > 0) this.harpoonNumber--;
+    if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
     _ballCol.destroy();
 
@@ -493,12 +479,12 @@ class pang extends Phaser.Scene {
 
   lifesHUD() {
     //Se van eliminando el indicador de vidas conforme se va perdiendo
-    if (this.player1Health == 2) {
+    if (this.player1.playerHealth == 2) {
       this.live3.destroy();
-    } else if (this.player1Health == 1) {
+    } else if (this.player1.playerHealth == 1) {
       this.live3.destroy();
       this.live2.destroy();
-    } else if (this.player1Health == 0) {
+    } else if (this.player1.playerHealth == 0) {
       this.live1.destroy();
     }
   }
@@ -518,23 +504,6 @@ class pang extends Phaser.Scene {
 
   update(time, delta) {
     if (this.gameOverflag == false) {
-      if (this.cursores.left.isDown) {
-        if (!this.isShooting) {
-          this.player1.setFlipX(false);
-          this.player1.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
-          this.player1.play("move", true);
-        }
-      } else if (this.cursores.right.isDown) {
-        if (!this.isShooting) {
-          this.player1.setFlipX(true);
-          this.player1.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
-          this.player1.play("move", true);
-        }
-      } else {
-        this.player1.body.setVelocityX(0);
-        if (!this.isShooting) this.player1.setFrame(4);
-      }
-
       //TIMER
       this.timer += delta;
 
