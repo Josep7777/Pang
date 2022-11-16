@@ -136,36 +136,6 @@ class level1_1 extends Phaser.Scene {
       null,
       this
     );
-
-    this.physics.add.overlap(
-      this.ballpool,
-      this.floorD,
-      this.bounce,
-      null,
-      this
-    );
-
-    this.physics.add.overlap(
-      this.ballpool,
-      this.floorU,
-      this.bounce,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.ballpool,
-      this.wall,
-      this.bounceP,
-      null,
-      this
-    );
-    this.physics.add.overlap(
-      this.ballpool,
-      this.wallR,
-      this.bounceP,
-      null,
-      this
-    );
   }
 
   damagePlayer(_ball, _player) {
@@ -238,26 +208,6 @@ class level1_1 extends Phaser.Scene {
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct
-    );
-  }
-
-  bounce(_ball, _floorD) {
-    _floorD.body.setVelocityY(
-      -(gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _floorD.scale))
-    ); //por alguna razon floor es la pelota
-    _floorD.body.setVelocityX(
-      gamePrefs.BALL_SPEED *
-        (gamePrefs.VELOCITY_MAKER - _floorD.scale) *
-        _floorD.direct
-    );
-  }
-
-  bounceP(_ball, _wall) {
-    _wall.direct = _wall.direct * -1; //CAMBIAMOS DIRECCION
-    _wall.body.setVelocityX(
-      gamePrefs.BALL_SPEED *
-        (gamePrefs.VELOCITY_MAKER + _wall.scale) *
-        _wall.direct
     );
   }
 
@@ -432,19 +382,6 @@ class level1_1 extends Phaser.Scene {
     }
   }
 
-  winScene() {
-    gamePrefs.SCORE = this.score;
-    gamePrefs.STAGE = this.stageNumber;
-    gamePrefs.TIMER = this.countDown;
-    this.scene.start("winScene");
-  }
-
-  gameOver() {
-    this.gameOverText.setVisible(true);
-    this.player1.destroy();
-    this.restartGameOver = true;
-  }
-
   updateText() {
     //SCORE
     this.scoreBoard.setText(this.score);
@@ -504,4 +441,18 @@ class level1_1 extends Phaser.Scene {
       }
     }
   }
+
+  winScene() {
+    gamePrefs.SCORE = this.score;
+    gamePrefs.STAGE = this.stageNumber;
+    gamePrefs.TIMER = this.countDown;
+    this.scene.start("winScene");
+  }
+
+  gameOver() {
+    this.gameOverText.setVisible(true);
+    this.player1.destroy();
+    this.restartGameOver = true;
+  }
+
 }
