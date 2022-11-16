@@ -124,7 +124,7 @@ class level1_1 extends Phaser.Scene {
     this.physics.add.overlap(
       this.ballpool,
       this.player1,
-      this.damagePlayer1,
+      this.damagePlayer,
       null,
       this
     );
@@ -168,7 +168,7 @@ class level1_1 extends Phaser.Scene {
     );
   }
 
-  damagePlayer1(_ball, _player) {
+  damagePlayer(_ball, _player) {
     if (this.invencible == false) {
       this.player1.playerHealth--;
 
@@ -259,57 +259,6 @@ class level1_1 extends Phaser.Scene {
         (gamePrefs.VELOCITY_MAKER + _wall.scale) *
         _wall.direct
     );
-  }
-
-  createBullet() {
-    //Crea el harpon cuando se presiona espacio
-    if (this.player1.harpoonNumber < this.player1.harpoonNumberMax) {
-      this.player1.play("shoot", false);
-      this.player1.isShooting = true;
-
-      //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
-
-      this.player1.once("animationcomplete", () => {
-        this.player1.isShooting = false;
-      });
-
-      this.player1.harpoonNumber++;
-
-      var harpoon = this.physics.add
-        .image(this.player1.x, this.player1.y, "harpoon")
-        .setScale(3);
-      harpoon.scaleY = 0;
-
-      this.tweens.add({
-        //Crea una animacion para alargar el harpon
-        targets: harpoon,
-        y: 200,
-        scaleY: 5,
-        duration: 2000,
-      });
-
-      this.physics.add.overlap(
-        harpoon,
-        this.ballpool,
-        this.hitBall,
-        null,
-        this
-      );
-
-      this.physics.add.overlap(
-        harpoon,
-        this.floorU,
-        this.destroyHarpoon,
-        null,
-        this
-      );
-    }
-  }
-
-  destroyHarpoon(_harpoon, _floor) {
-    //Destruye al harpon al tocar el techo
-    if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
-    _harpoon.destroy();
   }
 
   hitBall(_harpoon, _ballCol) {
@@ -470,8 +419,6 @@ class level1_1 extends Phaser.Scene {
     this.wallR.body.allowGravity = false;
     this.wallR.body.setImmovable(true);
   }
-
-  
 
   lifesHUD() {
     //Se van eliminando el indicador de vidas conforme se va perdiendo

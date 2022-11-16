@@ -15,10 +15,61 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.cursores.space.on(
       "down",
       function () {
-        _scene.createBullet();
+        this.createBullet(_scene);
       },
       this
     );
+  }
+
+  createBullet(_sceneParam) {
+    //Crea el harpon cuando se presiona espacio
+    if (this.harpoonNumber < this.harpoonNumberMax) {
+      this.anims.play("shoot", false);
+      this.isShooting = true;
+
+      //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
+
+      this.once("animationcomplete", () => {
+        this.isShooting = false;
+      });
+
+      this.harpoonNumber++;
+
+      var harpoon = _sceneParam.physics.add
+        .image(this.x, this.y, "harpoon")
+        .setScale(3);
+      harpoon.scaleY = 0;
+
+      _sceneParam.tweens.add({
+        //Crea una animacion para alargar el harpon
+        targets: harpoon,
+        y: 200,
+        scaleY: 5,
+        duration: 2000,
+      });
+
+      _sceneParam.physics.add.overlap(
+        harpoon,
+        _sceneParam.ballpool,
+        _sceneParam.hitBall,
+        null,
+        _sceneParam
+      );
+
+      _sceneParam.physics.add.overlap(
+        harpoon,
+        _sceneParam.floorU,
+        this.destroyHarpoon,
+        null,
+        this
+      );
+    }
+  }
+
+  destroyHarpoon(_harpoon, _floor) {
+    //Destruye al harpon al tocar el techo
+    if (this.harpoonNumber > 0) this.harpoonNumber--;
+    _harpoon.destroy();
   }
 
   preUpdate(time, delta) {
