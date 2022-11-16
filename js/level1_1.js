@@ -1,4 +1,4 @@
-class pang extends Phaser.Scene {
+class level1_1 extends Phaser.Scene {
   constructor() {
     super({ key: "pang" });
   }
@@ -22,6 +22,28 @@ class pang extends Phaser.Scene {
     this.load.spritesheet("escudo", "Shield.png", {
       frameWidth: 37,
       frameHeight: 41,
+    });
+  }
+
+  loadAnimations() {
+    this.anims.create({
+      key: "shoot",
+      frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
+      frameRate: 10,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "move",
+      frames: this.anims.generateFrameNumbers("player1", { start: 0, end: 3 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "shield",
+      frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
     });
   }
 
@@ -419,12 +441,6 @@ class pang extends Phaser.Scene {
     this.gameOverText.setVisible(false);
   }
 
-  updateText() {
-    //SCORE
-    this.scoreBoard.setText(this.score);
-    this.timeBoard.setText("TIME:0" + Math.round(this.countDown));
-  }
-
   createWalls() {
     //Creamos el suelo
     this.floorD = this.physics.add.sprite(
@@ -455,27 +471,7 @@ class pang extends Phaser.Scene {
     this.wallR.body.setImmovable(true);
   }
 
-  loadAnimations() {
-    this.anims.create({
-      key: "shoot",
-      frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
-      frameRate: 10,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "move",
-      frames: this.anims.generateFrameNumbers("player1", { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "shield",
-      frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-  }
+  
 
   lifesHUD() {
     //Se van eliminando el indicador de vidas conforme se va perdiendo
@@ -500,6 +496,12 @@ class pang extends Phaser.Scene {
     this.gameOverText.setVisible(true);
     this.player1.destroy();
     this.restartGameOver = true;
+  }
+
+  updateText() {
+    //SCORE
+    this.scoreBoard.setText(this.score);
+    this.timeBoard.setText("TIME:0" + Math.round(this.countDown));
   }
 
   update(time, delta) {
