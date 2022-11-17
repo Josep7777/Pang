@@ -31,11 +31,10 @@ var config =
     },
     physics:
     {
-        default:'arcade',
-        arcade:
-        {
-            gravity:{y:90},
-            debug:false
+        default: 'matter',
+        matter: {
+            enableSleeping: true
+            
         }
     }
 }
