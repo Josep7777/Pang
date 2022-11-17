@@ -19,7 +19,7 @@ var config =
     width: 1920,
     height: 900,
     //scene:[menu,pang],
-    scene:[level1_2,winScene],
+    scene:[level1_1,winScene],
     render:
     {
         pixelArt:true
@@ -31,10 +31,11 @@ var config =
     },
     physics:
     {
-        default: 'matter',
-        matter: {
-            enableSleeping: true
-            
+        default:'arcade',
+        arcade:
+        {
+            gravity:{y:90},
+            debug:false
         }
     }
 }
