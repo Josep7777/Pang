@@ -63,6 +63,14 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         null,
         this
       );
+
+      _sceneParam.physics.add.overlap(
+        harpoon,
+        _sceneParam.destructivePlatforms,
+        this.destroyHarpoonAndPlatform,
+        null,
+        this
+      );
     }
   }
 
@@ -70,6 +78,15 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     //Destruye al harpon al tocar el techo
     if (this.harpoonNumber > 0) this.harpoonNumber--;
     _harpoon.destroy();
+  }
+
+  destroyHarpoonAndPlatform(_harpoon, _platform) {
+    //Destruye al harpon al tocar la plataforma
+    if (this.harpoonNumber > 0) this.harpoonNumber--;
+    _harpoon.destroy();
+
+    //Tambien destruye la plataforma
+    _platform.destroy();
   }
 
   preUpdate(time, delta) {

@@ -19,7 +19,7 @@ var config =
     width: 1920,
     height: 900,
     //scene:[menu,pang],
-    scene:[level1_1,winScene],
+    scene:[level1_2,winScene],
     render:
     {
         pixelArt:true
