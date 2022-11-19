@@ -10,7 +10,8 @@ var gamePrefs=
     TIMER: 0,
     TIMER2: 0,
     VELOCITY_MAKER: 20,
-    VELOCITY_MAKER2: -2.5
+    VELOCITY_MAKER2: -2.5,
+    CRAB_SPEED: 100
 }
 
 var config =

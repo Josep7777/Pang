@@ -15,6 +15,9 @@ class level1_1 extends Phaser.Scene {
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
 
+    this.load.spritesheet('crab','crab.png',
+        {frameWidth:38.4,frameHeight:30});
+
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -45,11 +48,18 @@ class level1_1 extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
+    this.anims.create({
+      key: "crabWalking",
+      frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9}),
+      frameRate: 5,
+      repeat: -1,
+    });
   }
 
   loadPools() {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
+    this.enemies = this.add.group();
   }
 
   create() {
@@ -136,6 +146,21 @@ class level1_1 extends Phaser.Scene {
       null,
       this
     );
+
+    this.enemyTimer = this.time.addEvent
+        (
+            {
+                delay:5000, //ms
+                callback:this.createEnemy,
+                callbackScope:this,
+                repeat: -1
+            }
+        );
+  }
+
+  createEnemy(){
+    var _crab = new crabPrefab(this,config.width/2,config.height/2);
+    this.enemies.add(_crab);
   }
 
   damagePlayer(_ball, _player) {

@@ -7,15 +7,15 @@ class enemyPrefab extends Phaser.GameObjects.Sprite
         _scene.physics.world.enable(this);
         this.direccion = 1;
         this.scene = _scene;
-        this.body.setVelocityX(gamePrefs.ENEMY_SPEED*this.direccion);
-        _scene.physics.add.overlap
+        //this.body.setVelocityX(gamePrefs.ENEMY_SPEED*this.direccion);
+        /*_scene.physics.add.overlap
         (
             this,
-            _scene.hero,
+            _scene.player1,
             this.hit,
             null,
             this
-        );
+        );*/
     }
 
     hit(_enemy,_hero)
