@@ -14,6 +14,7 @@ class level1_1 extends Phaser.Scene {
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
+    this.load.image("background","Background.png")
 
     this.load.spritesheet('crab','crab.png',
         {frameWidth:38.4,frameHeight:30});
@@ -65,7 +66,7 @@ class level1_1 extends Phaser.Scene {
   create() {
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-
+    this.add.sprite(config.width/2, config.height/2-82, "background");
     //Cargamos las pools
     this.loadPools();
 
