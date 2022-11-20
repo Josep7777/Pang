@@ -1,6 +1,6 @@
 class level1_1 extends Phaser.Scene {
   constructor() {
-    super({ key: "pang" });
+    super({ key: "level1_1" });
   }
 
   preload() {
@@ -96,7 +96,8 @@ class level1_1 extends Phaser.Scene {
     this.powerUp1FeedbackPosY = 865;
     //POWER UP TIEMPO INMUNE
     this.timerPower = 5;
-
+    this.timerText = 0;
+    this.flashText = false;
     this.countDown2 = 1;
 
     //Datos del HUD
@@ -353,7 +354,7 @@ class level1_1 extends Phaser.Scene {
       .setOrigin(0.5)
       .setScale(2);
     //INSERT COIN
-    this.add
+    this.insertCoin = this.add
       .text(1550, 830, "INSERT COIN", {
         fontFamily: "Public Pixel",
         fill: "#FFFFFF",
@@ -454,6 +455,7 @@ class level1_1 extends Phaser.Scene {
     if (this.gameOverflag == false) {
       //TIMER
       this.timer += delta;
+      this.timerText += delta;
 
       if (this.timer > 1000) {
         this.resources += 1;
@@ -464,6 +466,17 @@ class level1_1 extends Phaser.Scene {
         this.gameOverflag = true;
         this.player1GameOver.setVisible(true);
         this.gameOver();
+      }
+      if(this.timerText > 500){
+        if(this.flashText){
+          this.insertCoin.setVisible(true);
+          this.flashText = false;
+        }
+        else if(!this.flashText){
+          this.insertCoin.setVisible(false);
+          this.flashText = true;
+        }
+        this.timerText -= 500;
       }
     }
     if (this.invencible == true && this.dañoEscudo == false) {
