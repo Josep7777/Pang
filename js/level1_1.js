@@ -55,6 +55,12 @@ class level1_1 extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
+    this.anims.create({
+      key: "crabDeath",
+      frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5}),
+      frameRate: 5,
+      repeat: 0,
+    });
   }
 
   loadPools() {
@@ -67,6 +73,7 @@ class level1_1 extends Phaser.Scene {
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
     this.add.sprite(config.width/2, config.height/2-82, "background");
+    
     //Cargamos las pools
     this.loadPools();
 
@@ -129,8 +136,15 @@ class level1_1 extends Phaser.Scene {
     //Añadimos colisiones
     this.physics.add.collider(this.floorD, this.player1);
     this.physics.add.collider(this.floorD, this.powerUps);
+    this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
+    this.physics.add.collider(this.wallR, this.enemies);
+    //this.physics.add.collider(this.wall, this.enemies);
+    /*var collider = this.physics.add.collider(this.wall, this.enemies, null, function ()
+    {
+        this.physics.world.removeCollider(collider);
+    }, this);*/
 
     this.physics.add.overlap(
       this.ballpool,
@@ -148,20 +162,40 @@ class level1_1 extends Phaser.Scene {
       this
     );
 
+    this.randomEnemySpawn = Phaser.Math.Between(10000, 20000);
     this.enemyTimer = this.time.addEvent
         (
             {
-                delay:5000, //ms
+                delay: 1000, //ms
                 callback:this.createEnemy,
                 callbackScope:this,
-                repeat: -1
+                repeat: 0
             }
         );
   }
 
   createEnemy(){
-    var _crab = new crabPrefab(this,config.width/2,config.height/2);
-    this.enemies.add(_crab);
+    var enemyType = Phaser.Math.Between(1, 1);
+
+    switch(enemyType){
+      case 1:
+        var randomXPos = Phaser.Math.Between(100, config.width-100);
+        var _crab = new crabPrefab(this,randomXPos,30);
+        this.enemies.add(_crab);
+        break;
+    }
+
+    this.randomEnemySpawn = Phaser.Math.Between(10000, 20000);
+    this.enemyTimer = this.time.addEvent
+        (
+            {
+                delay: this.randomEnemySpawn, //ms
+                callback:this.createEnemy,
+                callbackScope:this,
+                repeat: 0
+            }
+        );
+
   }
 
   damagePlayer(_ball, _player) {
@@ -263,6 +297,8 @@ class level1_1 extends Phaser.Scene {
       this.winScene();
     }
   }
+
+
 
   createPowerUp(_posX, _posY, _tipo) {
     //Creamos power up y añadimos a grupo

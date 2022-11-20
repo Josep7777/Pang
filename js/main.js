@@ -11,7 +11,7 @@ var gamePrefs=
     TIMER2: 0,
     VELOCITY_MAKER: 20,
     VELOCITY_MAKER2: -2.5,
-    CRAB_SPEED: 100,
+    CRAB_SPEED: 200,
     CURRENT_WORLD: 1,
     TIMER_LEVELSELECTOR: 10
 }
@@ -22,7 +22,7 @@ var config =
     width: 1920,
     height: 900,
     //scene:[menu,pang],
-    scene:[levelSelector,level1_1,winScene],
+    scene:[level1_1,winScene],
     render:
     {
         pixelArt:true

@@ -58,6 +58,14 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
       _sceneParam.physics.add.overlap(
         harpoon,
+        _sceneParam.enemies,
+        this.hitEnemy,
+        null,
+        this
+      );
+
+      _sceneParam.physics.add.overlap(
+        harpoon,
         _sceneParam.floorU,
         this.destroyHarpoon,
         null,
@@ -72,6 +80,18 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         this
       );
     }
+  }
+
+  hitEnemy(_harpoon, _enemy){
+    //Destruimos harpon y pelota
+    if (this.harpoonNumber > 0) this.harpoonNumber--;
+    _harpoon.destroy();
+    _enemy.lives--;
+    _enemy.hit()
+    
+    /*if(_enemy.lives<=0){
+      _enemy.destroy();
+    }*/
   }
 
   destroyHarpoon(_harpoon, _floor) {
