@@ -1,37 +1,30 @@
-class crabPrefab extends enemyPrefab {
-  constructor(_scene, _positionX, _positionY, _spriteTag = "crab") {
+class bird1Prefab extends enemyPrefab {
+  constructor(_scene, _positionX, _positionY, _spriteTag = "bird1") {
     super(_scene, _positionX, _positionY, _spriteTag).setScale(3);
     this.lives = 2;
     this.isGoingtoDie = false;
     this.scene = _scene;
-    _scene.physics.add.collider(_scene.wallR, this);
+    this.body.allowGravity = false;
+    _scene.physics.add.overlap(this, _scene.ballpool, this.hitBall, null, this);
     this.invencible = false;
   }
 
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
-    console.log(this.isGoingtoDie);
+
     if (!this.isGoingtoDie) {
-      this.anims.play("crabWalking", true);
+      this.anims.play("bird1Fly", true);
 
-      if (this.body.blocked.down) {
-        this.body.setVelocityX(gamePrefs.CRAB_SPEED * this.direccion);
-      }
+      this.body.setVelocityX(gamePrefs.BIRD1_SPEED * this.direccion);
 
-      if (this.body.blocked.right) {
-        this.direccion *= -1;
-        this.body.setVelocityX(gamePrefs.CRAB_SPEED * this.direccion);
-        this.flipX = !this.flipX;
-      }
-
-      if (this.x < 0) this.destroy();
+      if (this.x > config.width) this.destroy();
     }
   }
 
   hit() {
     if (!this.invencible) {
       if (this.lives <= 0) {
-        this.anims.play("crabDeath", false);
+        this.anims.play("bird1Death", false);
         this.isGoingtoDie = true;
         this.body.setVelocityX(0);
         this.once("animationcomplete", () => {
@@ -54,5 +47,19 @@ class crabPrefab extends enemyPrefab {
   startMoving() {
     this.invencible = false;
     this.isGoingtoDie = false;
+  }
+
+  hitBall(_enemy, _ballCol) {
+    if (!this.invencible) {
+      this.hit();
+
+      if (_ballCol.scale > 1) {
+        //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
+        this.scene.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, 1);
+        this.scene.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, -1);
+      }
+
+      _ballCol.destroy();
+    }
   }
 }

@@ -20,6 +20,9 @@ class level1_1 extends Phaser.Scene {
     this.load.spritesheet('crab','crab.png',
         {frameWidth:38.4,frameHeight:30});
 
+    this.load.spritesheet('bird1','bird1.png',
+        {frameWidth:36,frameHeight:30});
+
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -59,6 +62,18 @@ class level1_1 extends Phaser.Scene {
     this.anims.create({
       key: "crabDeath",
       frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5}),
+      frameRate: 7,
+      repeat: 0,
+    });
+    this.anims.create({
+      key: "bird1Fly",
+      frames: this.anims.generateFrameNumbers("bird1", { start: 0, end: 5}),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "bird1Death",
+      frames: this.anims.generateFrameNumbers("bird1", { start: 10, end: 14}),
       frameRate: 5,
       repeat: 0,
     });
@@ -141,7 +156,7 @@ class level1_1 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-    this.physics.add.collider(this.wallR, this.enemies);
+    //this.physics.add.collider(this.wallR, this.enemies);
     //this.physics.add.collider(this.wall, this.enemies);
     /*var collider = this.physics.add.collider(this.wall, this.enemies, null, function ()
     {
@@ -177,7 +192,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   createEnemy(){
-    var enemyType = Phaser.Math.Between(1, 1);
+    var enemyType = Phaser.Math.Between(1, 2);
 
     switch(enemyType){
       case 1:
@@ -185,9 +200,15 @@ class level1_1 extends Phaser.Scene {
         var _crab = new crabPrefab(this,randomXPos,30);
         this.enemies.add(_crab);
         break;
+
+      case 2:
+        var randomYPos = Phaser.Math.Between(100, config.height-300);
+        var _bird1 = new bird1Prefab(this,100,randomYPos);
+        this.enemies.add(_bird1);
+        break;
     }
 
-    this.randomEnemySpawn = Phaser.Math.Between(10000, 20000);
+    this.randomEnemySpawn = Phaser.Math.Between(20000, 30000);
     this.enemyTimer = this.time.addEvent
         (
             {
