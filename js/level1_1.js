@@ -117,7 +117,6 @@ class level1_1 extends Phaser.Scene {
 
     this.gameOverflag = false;
     this.restartGameOver = false;
-damagePlayer
     //HUD de las vidas
     this.live1 = this.add
       .sprite(config.width - 1750, config.height - 50, "lifes")
@@ -132,6 +131,7 @@ damagePlayer
     //Funcion que crea los textos estaticos
     this.loadText();
 
+    this.stopGravityBalls = false;
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
 
@@ -252,11 +252,29 @@ damagePlayer
       //Objetos que dan puntuacion
       this.score += 500;
     }else if(_powerUp.tipo == 4){
-      console.log("slowTime")
+
+      this.stopGravityBalls = true;
+      this.ballTimer = this.time.addEvent
+      (
+          {
+              delay: 8000, //ms
+              callback:this.powerUpTimeFinished,
+              callbackScope:this,
+              repeat: 0
+          }
+      );
+
     }
     _powerUp.destroy();
   }
 
+  powerUpTimeFinished(){
+    console.log("devuelta velocidad")
+    this.stopGravityBalls = false;
+    this.ballpool.setVelocityY(gamePrefs.GRAVITY);
+    this.ballpool.setVelocityX(gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER
+    );
+  }
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
     var _ball = new ballPrefab(
@@ -455,6 +473,10 @@ damagePlayer
   }
 
   update(time, delta) {
+    if(this.stopGravityBalls == true){
+      this.ballpool.setVelocityX(0)
+      this.ballpool.setVelocityY(0)
+    }
     if (this.gameOverflag == false) {
       //TIMER
       this.timer += delta;
