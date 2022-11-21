@@ -23,6 +23,9 @@ class level1_1 extends Phaser.Scene {
     this.load.spritesheet('bird1','bird1.png',
         {frameWidth:36,frameHeight:30});
 
+        this.load.spritesheet('owl','owl.png',
+        {frameWidth:38.36,frameHeight:33});
+
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -73,7 +76,28 @@ class level1_1 extends Phaser.Scene {
     });
     this.anims.create({
       key: "bird1Death",
-      frames: this.anims.generateFrameNumbers("bird1", { start: 10, end: 14}),
+      frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
+      frameRate: 5,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "owlFly",
+      frames: this.anims.generateFrameNumbers("owl", { start: 0, end: 5}),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "owlHit",
+      frames: this.anims.generateFrameNumbers("owl", { start: 12, end: 13}),
+      frameRate: 5,
+      repeat: 2,
+    });
+
+    this.anims.create({
+      key: "owlDeath",
+      frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
       frameRate: 5,
       repeat: 0,
     });
@@ -192,7 +216,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   createEnemy(){
-    var enemyType = Phaser.Math.Between(1, 2);
+    var enemyType = Phaser.Math.Between(1, 3);
 
     switch(enemyType){
       case 1:
@@ -206,6 +230,12 @@ class level1_1 extends Phaser.Scene {
         var _bird1 = new bird1Prefab(this,100,randomYPos);
         this.enemies.add(_bird1);
         break;
+      
+      case 3:
+          var randomYPos = Phaser.Math.Between(100, config.height-600);
+          var _owl = new owlPrefab(this,100,randomYPos);
+          this.enemies.add(_owl);
+          break;
     }
 
     this.randomEnemySpawn = Phaser.Math.Between(20000, 30000);

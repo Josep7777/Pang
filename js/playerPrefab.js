@@ -10,6 +10,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
     this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
     this.isShooting = false;
+    this.canShoot=true;
     this.cursores = _scene.input.keyboard.createCursorKeys();
     //Cuando le das al espacio, el jugador dispara
     this.cursores.space.on(
@@ -23,7 +24,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
   createBullet(_sceneParam) {
     //Crea el harpon cuando se presiona espacio
-    if (this.harpoonNumber < this.harpoonNumberMax) {
+    if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot) {
       this.anims.play("shoot", false);
       this.isShooting = true;
 
@@ -107,6 +108,10 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
     //Tambien destruye la plataforma
     _platform.destroy();
+  }
+
+  canShootAgain(){
+    this.canShoot=true;
   }
 
   preUpdate(time, delta) {

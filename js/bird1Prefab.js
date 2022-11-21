@@ -35,7 +35,7 @@ class bird1Prefab extends enemyPrefab {
         this.invencible = true;
         this.body.setVelocityX(0);
         this.enemyTimer = this.scene.time.addEvent({
-          delay: 1000, //ms
+          delay: 2000, //ms
           callback: this.startMoving,
           callbackScope: this,
           repeat: 0,
@@ -51,6 +51,7 @@ class bird1Prefab extends enemyPrefab {
 
   hitBall(_enemy, _ballCol) {
     if (!this.invencible) {
+      this.lives--;
       this.hit();
 
       if (_ballCol.scale > 1) {
