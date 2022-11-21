@@ -14,6 +14,7 @@ class level1_1 extends Phaser.Scene {
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
+    this.load.image("powerUp4", "slowTime.png");
     this.load.image("background","Background.png")
 
     this.load.spritesheet('crab','crab.png',
@@ -116,7 +117,7 @@ class level1_1 extends Phaser.Scene {
 
     this.gameOverflag = false;
     this.restartGameOver = false;
-
+damagePlayer
     //HUD de las vidas
     this.live1 = this.add
       .sprite(config.width - 1750, config.height - 50, "lifes")
@@ -250,6 +251,8 @@ class level1_1 extends Phaser.Scene {
     } else if (_powerUp.tipo == 3) {
       //Objetos que dan puntuacion
       this.score += 500;
+    }else if(_powerUp.tipo == 4){
+      console.log("slowTime")
     }
     _powerUp.destroy();
   }
@@ -278,7 +281,7 @@ class level1_1 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 3);
+      var tipo = Phaser.Math.Between(1, 4);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -529,5 +532,4 @@ class level1_1 extends Phaser.Scene {
     this.player1.destroy();
     this.restartGameOver = true;
   }
-
 }

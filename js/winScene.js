@@ -45,7 +45,7 @@ class winScene extends Phaser.Scene{
     update(){
         if (this.cursores.space.isDown) {
             gamePrefs.PLAYER1HEALTH = 3,
-            this.scene.start("pang");
+            this.scene.start("level1_2");
         }
     }
 }
