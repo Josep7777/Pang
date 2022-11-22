@@ -70,6 +70,7 @@ class owlPrefab extends enemyPrefab {
       callbackScope: _player,
       repeat: 0,
     });
-    this.destroy();
+    this.lives=0;
+    this.hit();
   }
 }

@@ -10,7 +10,6 @@ class crabPrefab extends enemyPrefab {
 
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
-    console.log(this.isGoingtoDie);
     if (!this.isGoingtoDie) {
       this.anims.play("crabWalking", true);
 

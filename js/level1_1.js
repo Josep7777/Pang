@@ -23,8 +23,11 @@ class level1_1 extends Phaser.Scene {
     this.load.spritesheet('bird1','bird1.png',
         {frameWidth:36,frameHeight:30});
 
-        this.load.spritesheet('owl','owl.png',
+    this.load.spritesheet('owl','owl.png',
         {frameWidth:38.36,frameHeight:33});
+
+    this.load.spritesheet('conch','conch.png',
+        {frameWidth:30,frameHeight:29});
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -97,6 +100,20 @@ class level1_1 extends Phaser.Scene {
 
     this.anims.create({
       key: "owlDeath",
+      frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
+      frameRate: 5,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "conchDown",
+      frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3}),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "conchDeath",
       frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
       frameRate: 5,
       repeat: 0,
@@ -203,11 +220,11 @@ class level1_1 extends Phaser.Scene {
       this
     );
 
-    this.randomEnemySpawn = Phaser.Math.Between(10000, 20000);
+    this.randomEnemySpawn = Phaser.Math.Between(10000, 30000);
     this.enemyTimer = this.time.addEvent
         (
             {
-                delay: 1000, //ms
+                delay: this.randomEnemySpawn, //ms
                 callback:this.createEnemy,
                 callbackScope:this,
                 repeat: 0
@@ -216,7 +233,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   createEnemy(){
-    var enemyType = Phaser.Math.Between(1, 3);
+    var enemyType = Phaser.Math.Between(1, 4);
 
     switch(enemyType){
       case 1:
@@ -235,6 +252,12 @@ class level1_1 extends Phaser.Scene {
           var randomYPos = Phaser.Math.Between(100, config.height-600);
           var _owl = new owlPrefab(this,100,randomYPos);
           this.enemies.add(_owl);
+          break;
+
+      case 4:
+          var randomXPos = Phaser.Math.Between(100, config.width-100);
+          var _conch = new conchPrefab(this,randomXPos,30);
+          this.enemies.add(_conch);
           break;
     }
 
@@ -326,6 +349,8 @@ class level1_1 extends Phaser.Scene {
     this.ballpool.setVelocityX(gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER
     );
   }
+
+
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
     var _ball = new ballPrefab(
@@ -370,8 +395,6 @@ class level1_1 extends Phaser.Scene {
       this.winScene();
     }
   }
-
-
 
   createPowerUp(_posX, _posY, _tipo) {
     //Creamos power up y añadimos a grupo
