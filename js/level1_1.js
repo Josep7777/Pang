@@ -27,7 +27,7 @@ class level1_1 extends Phaser.Scene {
         {frameWidth:38.36,frameHeight:33});
 
     this.load.spritesheet('conch','conch.png',
-        {frameWidth:30,frameHeight:29});
+        {frameWidth:19.25,frameHeight:26});
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -130,6 +130,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   create() {
+    this.sound.stopAll();
     this.backgroundMusic = this.sound.add('mtFujiTheme', { loop: true });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
@@ -229,7 +230,7 @@ class level1_1 extends Phaser.Scene {
     this.enemyTimer = this.time.addEvent
         (
             {
-                delay: this.randomEnemySpawn, //ms
+                delay: 1000, //ms
                 callback:this.createEnemy,
                 callbackScope:this,
                 repeat: 0
@@ -238,7 +239,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   createEnemy(){
-    var enemyType = Phaser.Math.Between(1, 4);
+    var enemyType = Phaser.Math.Between(4, 4);
 
     switch(enemyType){
       case 1:

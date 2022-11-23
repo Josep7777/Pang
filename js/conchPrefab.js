@@ -29,6 +29,7 @@ class conchPrefab extends enemyPrefab {
 
       if (this.body.blocked.down && !this.isAttacking) {
         this.body.allowGravity = false;
+        this.angle=0;
         this.isOnTop=false;
         if(this.direccion>0) this.direccion*=-1;
         this.body.setVelocityX(gamePrefs.CONCH_SPEED * this.direccion);
@@ -41,23 +42,26 @@ class conchPrefab extends enemyPrefab {
 
       if (this.body.blocked.left) {
         this.isOnTop=false;
+        this.angle=90;
         //this.direccion *= -1;
         this.body.setVelocityY(gamePrefs.CONCH_SPEED * this.direccion);
-        this.flipX = !this.flipX;
+        //this.flipX = !this.flipX;
       }
 
       if (this.body.blocked.right) {
         this.isOnTop=false;
+        this.angle=270;
         //this.direccion *= -1;
         this.body.setVelocityY(gamePrefs.CONCH_SPEED * this.direccion);
-        this.flipX = !this.flipX;
+        //this.flipX = !this.flipX;
       }
 
       if (this.body.blocked.up) {
         this.isOnTop=true;
+        this.angle=180;
         if(this.direccion<0) this.direccion*=-1;       
         this.body.setVelocityX(gamePrefs.CONCH_SPEED * this.direccion);
-        this.flipX = !this.flipX;
+        //this.flipX = !this.flipX;
         //if(this.x > this.player1-0.1 && this.x < this.player1+0.1) console.log("aaaaaaaaaaaa");
       }
       if(this.x >= this.player1.x-10 && this.x <= this.player1.x+10 && this.isOnTop) this.attack();
