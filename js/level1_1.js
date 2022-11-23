@@ -37,6 +37,9 @@ class level1_1 extends Phaser.Scene {
       frameWidth: 37,
       frameHeight: 41,
     });
+    //Cargamos sonidos
+    this.load.setPath("assets/music/");
+    this.load.audio('mtFujiTheme', 'mtFuji.mp3');
   }
 
   loadAnimations() {
@@ -127,6 +130,8 @@ class level1_1 extends Phaser.Scene {
   }
 
   create() {
+    this.backgroundMusic = this.sound.add('mtFujiTheme', { loop: true });
+    this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
     this.add.sprite(config.width/2, config.height/2-82, "background");

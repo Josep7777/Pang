@@ -15,6 +15,7 @@ class level1_2 extends Phaser.Scene {
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
+    this.load.image("background","background1-2.png")
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -24,6 +25,9 @@ class level1_2 extends Phaser.Scene {
       frameWidth: 37,
       frameHeight: 41,
     });
+    //Cargamos sonidos
+    this.load.setPath("assets/music/");
+    this.load.audio('mtFujiTheme', 'mtFuji.mp3');
   }
 
   loadAnimations() {
@@ -55,9 +59,11 @@ class level1_2 extends Phaser.Scene {
   }
 
   create() {
+    this.backgroundMusic = this.sound.add('mtFujiTheme', { loop: true });
+    this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-
+    this.add.sprite(config.width/2, config.height/2-100, "background");
     //Cargamos las pools
     this.loadPools();
 
