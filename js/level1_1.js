@@ -230,7 +230,7 @@ class level1_1 extends Phaser.Scene {
     this.enemyTimer = this.time.addEvent
         (
             {
-                delay: 1000, //ms
+                delay: this.randomEnemySpawn, //ms
                 callback:this.createEnemy,
                 callbackScope:this,
                 repeat: 0
@@ -239,7 +239,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   createEnemy(){
-    var enemyType = Phaser.Math.Between(4, 4);
+    var enemyType = Phaser.Math.Between(1, 4);
 
     switch(enemyType){
       case 1:
@@ -581,7 +581,7 @@ class level1_1 extends Phaser.Scene {
           this.insertCoin.setVisible(false);
           this.flashText = true;
         }
-        this.timerText -= 500;
+        this.timerText = 0;
       }
     }
     if (this.invencible == true && this.dañoEscudo == false) {

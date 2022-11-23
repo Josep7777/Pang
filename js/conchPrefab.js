@@ -19,6 +19,7 @@ class conchPrefab extends enemyPrefab {
       null,
       this
     );
+    
   }
 
   preUpdate(time, delta) {
