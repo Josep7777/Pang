@@ -40,6 +40,11 @@ class level1_1 extends Phaser.Scene {
     //Cargamos sonidos
     this.load.setPath("assets/music/");
     this.load.audio('mtFujiTheme', 'mtFuji.mp3');
+    //FONTS
+    this.load.setPath('assets/fonts/');
+    this.load.bitmapFont('publicPixel','publicPixel.png','publicPixel.xml');
+    this.load.bitmapFont('publicPixelWhite','publicPixelWhite.png','publicPixelWhite.xml');
+    this.load.bitmapFont('publicPixelYellow','publicPixelYellow.png','publicPixelYellow.xml');
   }
 
   loadAnimations() {
@@ -410,95 +415,28 @@ class level1_1 extends Phaser.Scene {
 
   loadText() {
     //PLAYERS
-    this.add
-      .text(250, 750, "PLAYER-1", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+      this.add.bitmapText(130, 730, 'publicPixelWhite', "PLAYER-1",30);
+      this.add.bitmapText(1430, 730, 'publicPixelWhite', "PLAYER-2",30);
 
-    this.add
-      .text(1550, 750, "PLAYER-2", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
     //NOMBRE DEL MUNDO ACTUAL
-    this.add
-      .text(1000, 750, this.levelName, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+      this.add.bitmapText(890, 730, 'publicPixelWhite', this.levelName,30);
     //NUMERO DE MUNDO Y NIVEL
-    this.add
-      .text(1000, 830, this.worldNumber + "-" + this.stageNumber + " STAGE", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+      this.add.bitmapText(860, 810, 'publicPixelWhite', this.worldNumber + "-" + this.stageNumber + " STAGE",30);
     //HIGH SCORE
-    this.add
-      .text(1000, 870, "HI: " + this.highScore, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+    this.add.bitmapText(840, 860, 'publicPixelWhite', "HI: " + this.highScore,30);
+
     //INSERT COIN
-    this.insertCoin = this.add
-      .text(1550, 830, "INSERT COIN", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+    this.insertCoin = this.add.bitmapText(1390, 810, 'publicPixelWhite', "INSERT COIN",30);
+
     //SCORE
-    this.scoreBoard = this.add
-      .text(400, 800, this.score, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+    this.scoreBoard = this.add.bitmapText(389, 777, 'publicPixelWhite', this.score,30);
+      
     //TIMER
-    this.timeBoard = this.add
-      .text(1600, 100, "TIME:0" + this.countDown, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(4);
+    this.timeBoard = this.scoreBoard = this.add.bitmapText(1350, 50, 'publicPixelWhite', "TIME:0" + this.countDown,65);
 
-    this.player1GameOver = this.add
-      .text(270, 830, "GAME OVER!", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-
-    this.gameOverText = this.add
-      .text(config.width / 2, config.height / 2 - 100, "GAME OVER", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(4);
+    //GAME OVER UI
+    this.player1GameOver = this.add.bitmapText(120, 830, 'publicPixelWhite', "GAME OVER!",30);
+    this.gameOverText = this.add.bitmapText(config.width / 2 - 250, config.height / 2 - 100, 'publicPixelWhite', "GAME OVER",65);
 
     this.player1GameOver.setVisible(false);
     this.gameOverText.setVisible(false);

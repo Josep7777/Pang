@@ -15,7 +15,7 @@ class level1_2 extends Phaser.Scene {
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
-    this.load.image("background","background1-2.png")
+    this.load.image("background2","background1-2.png")
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -63,7 +63,7 @@ class level1_2 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width/2, config.height/2-100, "background");
+    this.add.sprite(config.width/2, config.height/2-100, "background2");
     //Cargamos las pools
     this.loadPools();
 
@@ -254,95 +254,28 @@ class level1_2 extends Phaser.Scene {
 
   loadText() {
     //PLAYERS
-    this.add
-      .text(250, 750, "PLAYER-1", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+    this.add.bitmapText(130, 730, 'publicPixelWhite', "PLAYER-1",30);
+    this.add.bitmapText(1430, 730, 'publicPixelWhite', "PLAYER-2",30);
 
-    this.add
-      .text(1550, 750, "PLAYER-2", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-    //NOMBRE DEL MUNDO ACTUAL
-    this.add
-      .text(1000, 750, this.levelName, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-    //NUMERO DE MUNDO Y NIVEL
-    this.add
-      .text(1000, 830, this.worldNumber + "-" + this.stageNumber + " STAGE", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-    //HIGH SCORE
-    this.add
-      .text(1000, 870, "HI: " + this.highScore, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-    //INSERT COIN
-    this.add
-      .text(1550, 830, "INSERT COIN", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-    //SCORE
-    this.scoreBoard = this.add
-      .text(400, 800, this.score, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
-    //TIMER
-    this.timeBoard = this.add
-      .text(1600, 100, "TIME:0" + this.countDown, {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(4);
+  //NOMBRE DEL MUNDO ACTUAL
+    this.add.bitmapText(890, 730, 'publicPixelWhite', this.levelName,30);
+  //NUMERO DE MUNDO Y NIVEL
+    this.add.bitmapText(860, 810, 'publicPixelWhite', this.worldNumber + "-" + this.stageNumber + " STAGE",30);
+  //HIGH SCORE
+  this.add.bitmapText(840, 860, 'publicPixelWhite', "HI: " + this.highScore,30);
 
-    this.player1GameOver = this.add
-      .text(270, 830, "GAME OVER!", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(2);
+  //INSERT COIN
+  this.insertCoin = this.add.bitmapText(1390, 810, 'publicPixelWhite', "INSERT COIN",30);
 
-    this.gameOverText = this.add
-      .text(config.width / 2, config.height / 2 - 100, "GAME OVER", {
-        fontFamily: "Public Pixel",
-        fill: "#FFFFFF",
-        stroke: "#FFFFFF",
-      })
-      .setOrigin(0.5)
-      .setScale(4);
+  //SCORE
+  this.scoreBoard = this.add.bitmapText(389, 777, 'publicPixelWhite', this.score,30);
+    
+  //TIMER
+  this.timeBoard = this.scoreBoard = this.add.bitmapText(1350, 50, 'publicPixelWhite', "TIME:0" + this.countDown,65);
+
+  //GAME OVER UI
+  this.player1GameOver = this.add.bitmapText(120, 830, 'publicPixelWhite', "GAME OVER!",30);
+  this.gameOverText = this.add.bitmapText(config.width / 2 - 250, config.height / 2 - 100, 'publicPixelWhite', "GAME OVER",65);
 
     this.player1GameOver.setVisible(false);
     this.gameOverText.setVisible(false);
