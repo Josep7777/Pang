@@ -354,7 +354,6 @@ class level1_1 extends Phaser.Scene {
   }
 
   powerUpTimeFinished(){
-    console.log("devuelta velocidad")
     this.stopGravityBalls = false;
     this.ballpool.setVelocityY(gamePrefs.GRAVITY);
     this.ballpool.setVelocityX(gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER
@@ -392,8 +391,14 @@ class level1_1 extends Phaser.Scene {
 
     if (_ballCol.scale > 1) {
       //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
-      this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, 1);
-      this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, -1);
+      if(this.stopGravityBalls){
+        this.createBall(_ballCol.x-50, _ballCol.y, _ballCol.scale - 1, 1);
+        this.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scale - 1, -1);
+      }else{
+        this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, 1);
+        this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, -1);
+      }
+
     }
 
     //Destruimos harpon y pelota
