@@ -12,6 +12,7 @@ class conchPrefab extends enemyPrefab {
     this.player1 = _scene.player1;
     this.isOnTop=false;
     this.isAttacking=false;
+    this.isDead=false;
     _scene.physics.add.overlap(
       this,
       _scene.player1,
@@ -113,6 +114,7 @@ class conchPrefab extends enemyPrefab {
   }
 
   hitPlayer(_enemy, _player){
+    if(!this.isDead){
     _player.canShoot=false;
     this.enemyTimer = this.scene.time.addEvent({
       delay: 3000, //ms
@@ -120,7 +122,28 @@ class conchPrefab extends enemyPrefab {
       callbackScope: _player,
       repeat: 0,
     });
+
+    var i=0;
+    this.tintTimer = this.scene.time.addEvent({
+      delay: 100,
+      callback: ()=>{ 
+        if(i % 2 == 0)
+          _player.tint = 0xffffff; 
+        else
+        _player.tint = 0xffff00;
+
+        i++;
+        if(i >= 26)
+        _player.tint = 0xffffff;
+      },
+      callbackScope: this,
+
+      repeat: 26 
+    });
+
     this.lives=0;
     this.hit();
+    this.isDead=true;
+  }
   }
 }

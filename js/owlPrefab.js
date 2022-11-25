@@ -6,7 +6,7 @@ class owlPrefab extends enemyPrefab {
     this.scene = _scene;
     this.body.allowGravity = false;
     this.invencible = false;
-
+    this.isDead=false;
     _scene.physics.add.overlap(
       this,
       _scene.player1,
@@ -63,6 +63,7 @@ class owlPrefab extends enemyPrefab {
   }
 
   hitPlayer(_enemy, _player){
+    if(!this.isDead){
     _player.canShoot=false;
     this.enemyTimer = this.scene.time.addEvent({
       delay: 3000, //ms
@@ -70,7 +71,28 @@ class owlPrefab extends enemyPrefab {
       callbackScope: _player,
       repeat: 0,
     });
+
+    var i=0;
+    this.tintTimer = this.scene.time.addEvent({
+      delay: 75,
+      callback: ()=>{ 
+        if(i % 2 == 0)
+          _player.tint = 0xffffff; 
+        else
+        _player.tint = 0xffff00;
+
+        i++;
+        if(i >= 26)
+        _player.tint = 0xffffff;
+      },
+      callbackScope: this,
+
+      repeat: 26 
+    });
+
     this.lives=0;
     this.hit();
+    this.isDead=true;
+  }
   }
 }
