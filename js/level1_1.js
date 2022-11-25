@@ -20,6 +20,9 @@ class level1_1 extends Phaser.Scene {
     this.load.spritesheet('crab','crab.png',
         {frameWidth:38.4,frameHeight:30});
 
+    this.load.spritesheet('bird','birdEnemy.png',
+    {frameWidth:34,frameHeight:24});
+
     this.load.spritesheet('bird1','bird1.png',
         {frameWidth:36,frameHeight:30});
 
@@ -81,10 +84,18 @@ class level1_1 extends Phaser.Scene {
     });
     this.anims.create({
       key: "bird1Fly",
-      frames: this.anims.generateFrameNumbers("bird1", { start: 0, end: 5}),
+      frames: this.anims.generateFrameNumbers("bird", { start: 0, end: 5}),
       frameRate: 5,
       repeat: -1,
     });
+
+    this.anims.create({
+      key: "bird1Hit",
+      frames: this.anims.generateFrameNumbers("bird", { start: 6, end: 7}),
+      frameRate: 5,
+      repeat: 4,
+    });
+
     this.anims.create({
       key: "bird1Death",
       frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),

@@ -1,5 +1,5 @@
 class bird1Prefab extends enemyPrefab {
-  constructor(_scene, _positionX, _positionY, _spriteTag = "bird1") {
+  constructor(_scene, _positionX, _positionY, _spriteTag = "bird") {
     super(_scene, _positionX, _positionY, _spriteTag).setScale(3);
     this.lives = 2;
     this.isGoingtoDie = false;
@@ -31,6 +31,7 @@ class bird1Prefab extends enemyPrefab {
           this.destroy();
         });
       } else {
+        this.anims.play("bird1Hit", false);
         this.isGoingtoDie = true;
         this.invencible = true;
         this.body.setVelocityX(0);
