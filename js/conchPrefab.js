@@ -84,7 +84,7 @@ class conchPrefab extends enemyPrefab {
   hit() {
     if (!this.invencible) {
       if (this.lives <= 0) {
-        this.anims.play("conchDeath", false);
+        this.anims.play("enemyDeath", false);
         this.isGoingtoDie = true;
         this.body.setVelocityX(0);
         this.body.setVelocityY(0);

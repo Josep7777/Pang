@@ -23,8 +23,8 @@ class level1_1 extends Phaser.Scene {
     this.load.spritesheet('bird','birdEnemy.png',
     {frameWidth:34,frameHeight:24});
 
-    this.load.spritesheet('bird1','bird1.png',
-        {frameWidth:36,frameHeight:30});
+    this.load.spritesheet('enemyDeath','EnemiesDeath.png',
+        {frameWidth:33,frameHeight:32});
 
     this.load.spritesheet('owl','owl.png',
         {frameWidth:38.36,frameHeight:33});
@@ -97,8 +97,8 @@ class level1_1 extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "bird1Death",
-      frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
+      key: "enemyDeath",
+      frames: this.anims.generateFrameNumbers("enemyDeath", { start: 0, end: 4}),
       frameRate: 5,
       repeat: 0,
     });
@@ -118,24 +118,10 @@ class level1_1 extends Phaser.Scene {
     });
 
     this.anims.create({
-      key: "owlDeath",
-      frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
-      frameRate: 5,
-      repeat: 0,
-    });
-
-    this.anims.create({
       key: "conchDown",
       frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3}),
       frameRate: 5,
       repeat: -1,
-    });
-
-    this.anims.create({
-      key: "conchDeath",
-      frames: this.anims.generateFrameNumbers("bird1", { start: 13, end: 14}),
-      frameRate: 5,
-      repeat: 0,
     });
   }
 

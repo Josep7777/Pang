@@ -30,7 +30,7 @@ class crabPrefab extends enemyPrefab {
   hit() {
     if (!this.invencible) {
       if (this.lives <= 0) {
-        this.anims.play("crabDeath", false);
+        this.anims.play("enemyDeath", false);
         this.isGoingtoDie = true;
         this.body.setVelocityX(0);
         this.once("animationcomplete", () => {
