@@ -27,7 +27,7 @@ var config =
     width: 1920,
     height: 900,
     //scene:[menu,pang],
-    scene:[levelSelector,level1_1,level1_2,winScene],
+    scene:[levelSelector,level1_1,level1_2,level1_3,level1_4,winScene],
     render:
     {
         pixelArt:true
@@ -43,7 +43,7 @@ var config =
         arcade:
         {
             gravity:{y:90},
-            debug:false
+            debug:true
         }
     }
 }

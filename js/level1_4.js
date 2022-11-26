@@ -1,6 +1,6 @@
-class level1_2 extends Phaser.Scene {
+class level1_4 extends Phaser.Scene {
   constructor() {
-    super({ key: "level1_2" });
+    super({ key: "level1_4" });
   }
 
   preload() {
@@ -15,13 +15,19 @@ class level1_2 extends Phaser.Scene {
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
-    this.load.image("background2","background1-2.png")
+    this.load.image("normalPlat", "YellowPlatform.png");
+    this.load.image("ladder", "escalera.png");
+    this.load.image("background4","background1-4.png")
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
     });
     this.load.spritesheet("escudo", "Shield.png", {
+      frameWidth: 37,
+      frameHeight: 41,
+    });
+    this.load.spritesheet("powerUp4", "PowerUpDinamita.png", {
       frameWidth: 37,
       frameHeight: 41,
     });
@@ -56,6 +62,7 @@ class level1_2 extends Phaser.Scene {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
+    this.normalPlatforms = this.physics.add.group();
   }
 
   create() {
@@ -64,12 +71,13 @@ class level1_2 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width/2, config.height/2-100, "background2");
+    this.add.sprite(config.width/2, config.height/2-100, "background4");
     //Cargamos las pools
     this.loadPools();
 
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
+    this.createStairs();
     //Creamos la pelota, le pasamos la x, la y, y la escala
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
@@ -199,9 +207,27 @@ class level1_2 extends Phaser.Scene {
       //Objetos que dan puntuacion
       this.score += 500;
     }
+    else if (_powerUp.tipo == 4) {
+      //Dinamita
+     this.Kaboom();
+    }
+
     _powerUp.destroy();
   }
 
+  Kaboom(){
+    this.ballpool.getChildren().forEach(function(children){
+    //  console.log(children.scaleX);
+    if (children.scaleX > 1) { //recorrer pelotas
+      //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas 
+     
+      this.createBall(children.x, children.y, children.scaleX - 1, 1);//MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
+      this.createBall(children.x, children.y, children.scaleX - 1, -1);
+      children.destroy();
+      this.Kaboom();
+    }//si no no hace nada
+  },this);
+  }
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
     var _ball = new ballPrefab(
@@ -225,9 +251,9 @@ class level1_2 extends Phaser.Scene {
     this.score += 10;
 
     //Genera PowerUp
-    var rnd = Phaser.Math.Between(1, 5);
+    var rnd = Phaser.Math.Between(1, 1);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 3);
+      var tipo = Phaser.Math.Between(4, 4);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -320,23 +346,44 @@ class level1_2 extends Phaser.Scene {
 
   createPlatforms(){
     var _platform1 = this.add.sprite(
-      config.width/2-60,
-      config.height/2-100,
-      "destructPlat"
+      config.width/2+10,
+      config.height-335,
+      "normalPlat"
     ).setScale(0.6);
-
-    this.destructivePlatforms.add(_platform1);
+    this.normalPlatforms.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
 
     var _platform2 = this.add.sprite(
-      config.width/2+60,
-      config.height/2-100,
-      "destructPlat"
+      config.width/2+40,
+      config.height-335,
+      "normalPlat"
     ).setScale(0.6);
-    this.destructivePlatforms.add(_platform2);
+    this.normalPlatforms.add(_platform2);
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
+  
+  }
+  
+  
+  createStairs(){
+    var _ladder1 = this.add.sprite(
+      config.width/2-50,
+      config.height-300,
+      "ladder"
+    ).setScale(4);
+    this.normalPlatforms.add(_ladder1);
+    _ladder1.body.allowGravity = false;
+    _ladder1.body.setImmovable(true);
+    
+    var _ladder2 = this.add.sprite(
+      config.width/2+90,
+      config.height-300,
+      "ladder"
+    ).setScale(4);
+    this.normalPlatforms.add(_ladder2);
+    _ladder2.body.allowGravity = false;
+    _ladder2.body.setImmovable(true);
   }
 
   lifesHUD() {

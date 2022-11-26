@@ -1,6 +1,6 @@
-class level1_2 extends Phaser.Scene {
+class level1_3 extends Phaser.Scene {
   constructor() {
-    super({ key: "level1_2" });
+    super({ key: "level1_3" });
   }
 
   preload() {
@@ -14,8 +14,9 @@ class level1_2 extends Phaser.Scene {
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
-    this.load.image("destructPlat", "BrokenPlatform.png");
-    this.load.image("background2","background1-2.png")
+    this.load.image("destructPlat", "PlataformaRoja2.png");
+    this.load.image("normalPlat", "PlataformaRoja1.png");
+    this.load.image("background3","background1-3.png")
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -56,6 +57,7 @@ class level1_2 extends Phaser.Scene {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
+    this.normalPlatforms = this.physics.add.group();
   }
 
   create() {
@@ -64,7 +66,7 @@ class level1_2 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width/2, config.height/2-100, "background2");
+    this.add.sprite(config.width/2, config.height/2-100, "background3");
     //Cargamos las pools
     this.loadPools();
 
@@ -72,6 +74,7 @@ class level1_2 extends Phaser.Scene {
     this.createPlatforms();
     //Creamos la pelota, le pasamos la x, la y, y la escala
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
+    this.createBall(config.width/2-50, config.height/2-50, 1, 1);
 
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(this, config.width / 2, config.height - 250, "player1");
@@ -320,8 +323,8 @@ class level1_2 extends Phaser.Scene {
 
   createPlatforms(){
     var _platform1 = this.add.sprite(
-      config.width/2-60,
-      config.height/2-100,
+      config.width/2,
+      config.height/2-180,
       "destructPlat"
     ).setScale(0.6);
 
@@ -330,13 +333,35 @@ class level1_2 extends Phaser.Scene {
     _platform1.body.setImmovable(true);
 
     var _platform2 = this.add.sprite(
-      config.width/2+60,
-      config.height/2-100,
+      config.width/2,
+      config.height/2,
       "destructPlat"
     ).setScale(0.6);
+
     this.destructivePlatforms.add(_platform2);
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
+    
+
+    var _platform3 = this.add.sprite(
+      config.width/2+460,
+      config.height/2-180,
+      "normalPlat"
+    ).setScale(0.6);
+    this.normalPlatforms.add(_platform3);
+    _platform3.body.allowGravity = false;
+    _platform3.body.setImmovable(true);
+
+
+    var _platform4 = this.add.sprite(
+      config.width/2-460,
+      config.height/2-180,
+      "normalPlat"
+    ).setScale(0.6);
+    this.normalPlatforms.add(_platform4);
+    _platform4.body.allowGravity = false;
+    _platform4.body.setImmovable(true);
+
   }
 
   lifesHUD() {

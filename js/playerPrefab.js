@@ -12,6 +12,8 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.isShooting = false;
     this.canShoot=true;
     this.cursores = _scene.input.keyboard.createCursorKeys();
+
+    this.body.setSize(this.width-7, this.height, true);
     //Cuando le das al espacio, el jugador dispara
     this.cursores.space.on(
       "down",
@@ -73,10 +75,18 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         this
       );
 
+
       _sceneParam.physics.add.overlap(
         harpoon,
         _sceneParam.destructivePlatforms,
         this.destroyHarpoonAndPlatform,
+        null,
+        this
+      );
+      _sceneParam.physics.add.overlap(
+        harpoon,
+        _sceneParam.normalPlatforms,
+        this.destroyHarpoon,
         null,
         this
       );

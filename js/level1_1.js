@@ -366,10 +366,11 @@ class level1_1 extends Phaser.Scene {
       positionY,
       "ball",
       direct
-    ).setScale(scale);
+    ).setScale(scale, scale/0.9);
     this.ballpool.add(_ball);
 
     //Modificamos su velocidad
+    _ball.body.setCircle(_ball.width/2, 0, _ball.height/2 - _ball.width/2);
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct
@@ -386,16 +387,15 @@ class level1_1 extends Phaser.Scene {
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
-    if (_ballCol.scale > 1) {
+    if (_ballCol.scaleX > 1) {
       //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
       if(this.stopGravityBalls){
-        this.createBall(_ballCol.x-50, _ballCol.y, _ballCol.scale - 1, 1);
-        this.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scale - 1, -1);
+        this.createBall(_ballCol.x-50, _ballCol.y, _ballCol.X - 1, 1);
+        this.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scaleX - 1, -1);
       }else{
-        this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, 1);
-        this.createBall(_ballCol.x, _ballCol.y, _ballCol.scale - 1, -1);
+        this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, 1);
+        this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, -1);
       }
-
     }
 
     //Destruimos harpon y pelota
@@ -403,10 +403,7 @@ class level1_1 extends Phaser.Scene {
     _harpoon.destroy();
     _ballCol.destroy();
 
-    if (this.ballpool.getLength() == 0) {
-      //Si es la ultima pelota destruida, ganas
-      this.winScene();
-    }
+    
   }
 
   createPowerUp(_posX, _posY, _tipo) {
@@ -493,6 +490,15 @@ class level1_1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+
+
+    if (this.ballpool.getLength() == 0) {
+      //Si es la ultima pelota destruida, ganas
+      this.winScene();
+    }
+
+
+
     if(this.stopGravityBalls == true){
       this.ballpool.setVelocityX(0)
       this.ballpool.setVelocityY(0)
