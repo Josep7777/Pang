@@ -18,6 +18,21 @@ class level1_3 extends Phaser.Scene {
     this.load.image("normalPlat", "PlataformaRoja1.png");
     this.load.image("background3","background1-3.png")
 
+    this.load.spritesheet('crab','crab.png',
+        {frameWidth:38.4,frameHeight:30});
+
+    this.load.spritesheet('bird','birdEnemy.png',
+    {frameWidth:34,frameHeight:24});
+
+    this.load.spritesheet('enemyDeath','EnemiesDeath.png',
+        {frameWidth:33,frameHeight:32});
+
+    this.load.spritesheet('owl','owl.png',
+        {frameWidth:38.36,frameHeight:33});
+
+    this.load.spritesheet('conch','conch.png',
+        {frameWidth:19.25,frameHeight:26});
+
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
       frameHeight: 32,
@@ -51,6 +66,59 @@ class level1_3 extends Phaser.Scene {
       frameRate: 5,
       repeat: -1,
     });
+    this.anims.create({
+      key: "crabWalking",
+      frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9}),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
+      key: "crabDeath",
+      frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5}),
+      frameRate: 7,
+      repeat: 0,
+    });
+    this.anims.create({
+      key: "bird1Fly",
+      frames: this.anims.generateFrameNumbers("bird", { start: 0, end: 5}),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "bird1Hit",
+      frames: this.anims.generateFrameNumbers("bird", { start: 6, end: 7}),
+      frameRate: 5,
+      repeat: 4,
+    });
+
+    this.anims.create({
+      key: "enemyDeath",
+      frames: this.anims.generateFrameNumbers("enemyDeath", { start: 0, end: 4}),
+      frameRate: 5,
+      repeat: 0,
+    });
+
+    this.anims.create({
+      key: "owlFly",
+      frames: this.anims.generateFrameNumbers("owl", { start: 0, end: 5}),
+      frameRate: 5,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: "owlHit",
+      frames: this.anims.generateFrameNumbers("owl", { start: 12, end: 13}),
+      frameRate: 5,
+      repeat: 2,
+    });
+
+    this.anims.create({
+      key: "conchDown",
+      frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3}),
+      frameRate: 5,
+      repeat: -1,
+    });
   }
 
   loadPools() {
@@ -58,6 +126,7 @@ class level1_3 extends Phaser.Scene {
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
     this.normalPlatforms = this.physics.add.group();
+    this.enemies = this.add.group();
   }
 
   create() {
@@ -97,7 +166,7 @@ class level1_3 extends Phaser.Scene {
     //this.hud = new hudPrefab(this, "hud");
     this.levelName = "MT.FUJI";
     this.worldNumber = 1;
-    this.stageNumber = 1;
+    this.stageNumber = 3;
     this.highScore = 100000;
     this.timer = 0;
     this.countDown = 99;    
@@ -130,6 +199,7 @@ class level1_3 extends Phaser.Scene {
     //Añadimos colisiones
     this.physics.add.collider(this.floorD, this.player1);
     this.physics.add.collider(this.floorD, this.powerUps);
+    this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
 
@@ -148,6 +218,59 @@ class level1_3 extends Phaser.Scene {
       null,
       this
     );
+
+    this.randomEnemySpawn = Phaser.Math.Between(10000, 30000);
+    this.enemyTimer = this.time.addEvent
+        (
+            {
+                delay: this.randomEnemySpawn, //ms
+                callback:this.createEnemy,
+                callbackScope:this,
+                repeat: 0
+            }
+        );
+  }
+
+  createEnemy(){
+    var enemyType = Phaser.Math.Between(1, 4);
+
+    switch(enemyType){
+      case 1:
+        var randomXPos = Phaser.Math.Between(100, config.width-100);
+        var _crab = new crabPrefab(this,randomXPos,30);
+        this.enemies.add(_crab);
+        break;
+
+      case 2:
+        var randomYPos = Phaser.Math.Between(100, config.height-300);
+        var _bird1 = new bird1Prefab(this,100,randomYPos);
+        this.enemies.add(_bird1);
+        break;
+      
+      case 3:
+          var randomYPos = Phaser.Math.Between(100, config.height-600);
+          var _owl = new owlPrefab(this,100,randomYPos);
+          this.enemies.add(_owl);
+          break;
+
+      case 4:
+          var randomXPos = Phaser.Math.Between(100, config.width-100);
+          var _conch = new conchPrefab(this,randomXPos,30);
+          this.enemies.add(_conch);
+          break;
+    }
+
+    this.randomEnemySpawn = Phaser.Math.Between(20000, 30000);
+    this.enemyTimer = this.time.addEvent
+        (
+            {
+                delay: this.randomEnemySpawn, //ms
+                callback:this.createEnemy,
+                callbackScope:this,
+                repeat: 0
+            }
+        );
+
   }
 
   damagePlayer(_ball, _player) {
