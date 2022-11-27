@@ -15,7 +15,7 @@ class level1_4 extends Phaser.Scene {
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
-    this.load.image("normalPlat", "YellowPlatform.png");
+    this.load.image("normalPlatV", "YellowPlatform.png");
     this.load.image("ladder", "escalera.png");
     this.load.image("background4", "background1-4.png");
     this.load.image("powerUp5", "powerUpGanchoFijo.png");
@@ -143,7 +143,7 @@ class level1_4 extends Phaser.Scene {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
-    this.normalPlatforms = this.physics.add.group();
+    this.normalPlatformsV = this.physics.add.group();
     this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
   }
@@ -226,8 +226,8 @@ class level1_4 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-    this.physics.add.collider(this.normalPlatforms, this.player1);
-    this.physics.add.collider(this.normalPlatforms, this.ballpool);
+    this.physics.add.collider(this.normalPlatformsV, this.player1);
+    this.physics.add.collider(this.normalPlatformsV, this.ballpool);
     this.physics.add.overlap(
       this.ballpool,
       this.player1,
@@ -237,7 +237,7 @@ class level1_4 extends Phaser.Scene {
     );
     this.physics.add.overlap(
       this.ballpool,
-      this.normalPlatforms,
+      this.normalPlatformsV,
       this.changeBallDirection,
       null,
       this
@@ -548,16 +548,16 @@ class level1_4 extends Phaser.Scene {
 
   createPlatforms() {
     var _platform1 = this.add
-      .sprite(config.width / 2 + 10, config.height - 335, "normalPlat")
+      .sprite(config.width / 2 + 10, config.height - 335, "normalPlatV")
       .setScale(0.6);
-    this.normalPlatforms.add(_platform1);
+    this.normalPlatformsV.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
 
     var _platform2 = this.add
-      .sprite(config.width / 2 + 40, config.height - 335, "normalPlat")
+      .sprite(config.width / 2 + 40, config.height - 335, "normalPlatV")
       .setScale(0.6);
-    this.normalPlatforms.add(_platform2);
+    this.normalPlatformsV.add(_platform2);
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
   }

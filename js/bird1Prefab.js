@@ -3,6 +3,7 @@ class bird1Prefab extends enemyPrefab {
     super(_scene, _positionX, _positionY, _spriteTag).setScale(3);
     this.lives = 2;
     this.isGoingtoDie = false;
+    this.isDead = false;
     this.scene = _scene;
     this.body.allowGravity = false;
     _scene.physics.add.overlap(this, _scene.ballpool, this.hitBall, null, this);
@@ -24,6 +25,7 @@ class bird1Prefab extends enemyPrefab {
   hit() {
     if (!this.invencible) {
       if (this.lives <= 0) {
+        this.isDead=true;
         this.anims.play("enemyDeath", false);
         this.isGoingtoDie = true;
         this.body.setVelocityX(0);
@@ -51,7 +53,7 @@ class bird1Prefab extends enemyPrefab {
   }
 
   hitBall(_enemy, _ballCol) {
-    if (!this.invencible) {
+    if (!this.invencible && !this.isDead) {
       this.lives--;
       this.hit();
 
