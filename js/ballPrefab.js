@@ -37,6 +37,7 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
   }
 
   bounce(_ball, _floorD) {
+    
     _ball.body.setVelocityY(
       -(gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _ball.scale))
     );
@@ -46,6 +47,7 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
         _ball.direct
     );
   }
+
 
   bounceP(_ball, _wall) {
     _ball.direct = _ball.direct * -1; //CAMBIAMOS DIRECCION

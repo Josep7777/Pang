@@ -58,11 +58,11 @@ class bird1Prefab extends enemyPrefab {
       if (_ballCol.scaleX > 1) {
         //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
         if(this.stopGravityBalls){
-          this.createBall(_ballCol.x-50, _ballCol.y, _ballCol.X - 1, 1);
-          this.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scaleX - 1, -1);
+          this.scene.createBall(_ballCol.x-50, _ballCol.y, _ballCol.X - 1, 1);
+          this.scene.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scaleX - 1, -1);
         }else{
-          this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, 1);
-          this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, -1);
+          this.scene.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, 1);
+          this.scene.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, -1);
         }
       }
 

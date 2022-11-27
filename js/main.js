@@ -1,7 +1,7 @@
 var gamePrefs=
 {
     CHARACTER_SPEED: 250,
-    GRAVITY: -45,
+    GRAVITY: -45,//REBOTE
     BALL_SPEED: 10,
     BALL_DIRECTION: (1,1),
     PLAYER1HEALTH: 3,
@@ -10,7 +10,7 @@ var gamePrefs=
     TIMER: 0,
     TIMER2: 0,
     VELOCITY_MAKER: 20,
-    VELOCITY_MAKER2: -2.5,
+    VELOCITY_MAKER2: -2,
     CRAB_SPEED: 200,
     BIRD1_SPEED: 300,
     OWL_SPEED: 300,

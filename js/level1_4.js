@@ -18,7 +18,7 @@ class level1_4 extends Phaser.Scene {
     this.load.image("normalPlat", "YellowPlatform.png");
     this.load.image("ladder", "escalera.png");
     this.load.image("background4", "background1-4.png");
-
+    this.load.image("powerUp5", "powerUpGanchoFijo.png");
     this.load.spritesheet("crab", "crab.png", {
       frameWidth: 38.4,
       frameHeight: 30,
@@ -53,8 +53,8 @@ class level1_4 extends Phaser.Scene {
       frameHeight: 41,
     });
     this.load.spritesheet("powerUp4", "PowerUpDinamita.png", {
-      frameWidth: 37,
-      frameHeight: 41,
+      frameWidth: 22.6,
+      frameHeight: 16,
     });
     //Cargamos sonidos
     this.load.setPath("assets/music/");
@@ -144,6 +144,7 @@ class level1_4 extends Phaser.Scene {
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
     this.normalPlatforms = this.physics.add.group();
+    this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
   }
 
@@ -156,7 +157,7 @@ class level1_4 extends Phaser.Scene {
     this.add.sprite(config.width / 2, config.height / 2 - 100, "background4");
     //Cargamos las pools
     this.loadPools();
-
+    
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
     this.createStairs();
@@ -184,7 +185,7 @@ class level1_4 extends Phaser.Scene {
     this.timerPower = 5;
 
     this.countDown2 = 1;
-
+   
     //Datos del HUD
     //this.hud = new hudPrefab(this, "hud");
     this.levelName = "MT.FUJI";
@@ -225,11 +226,19 @@ class level1_4 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-
+    this.physics.add.collider(this.normalPlatforms, this.player1);
+    this.physics.add.collider(this.normalPlatforms, this.ballpool);
     this.physics.add.overlap(
       this.ballpool,
       this.player1,
       this.damagePlayer,
+      null,
+      this
+    );
+    this.physics.add.overlap(
+      this.ballpool,
+      this.normalPlatforms,
+      this.changeBallDirection,
       null,
       this
     );
@@ -250,7 +259,15 @@ class level1_4 extends Phaser.Scene {
       repeat: 0,
     });
   }
+  changeBallDirection(_ball,_platform){
+    _ball.direct = _ball.direct * -1; //CAMBIAMOS DIRECCION
+    _ball.body.setVelocityX(
+      gamePrefs.BALL_SPEED *
+        (gamePrefs.VELOCITY_MAKER + _ball.scale) *
+        _ball.direct
+    );
 
+  }
   createEnemy() {
     var enemyType = Phaser.Math.Between(1, 4);
 
@@ -343,6 +360,9 @@ class level1_4 extends Phaser.Scene {
     } else if (_powerUp.tipo == 4) {
       //Dinamita
       this.Kaboom();
+    }else if (_powerUp.tipo == 5) {
+      //HookNoseque
+      this.player1.FixShoot = true;
     }
 
     _powerUp.destroy();
@@ -351,12 +371,14 @@ class level1_4 extends Phaser.Scene {
   Kaboom() {
     this.ballpool.getChildren().forEach(function (children) {
       //  console.log(children.scaleX);
+      this.margen=0;
       if (children.scaleX > 1) {
         //recorrer pelotas
         //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
-
-        this.createBall(children.x, children.y, children.scaleX - 1, 1); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
-        this.createBall(children.x, children.y, children.scaleX - 1, -1);
+      
+        this.createBall(children.x+ this.margen, children.y+this.margen, children.scaleX - 1, 1); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
+        this.createBall(children.x+this.margen, children.y+this.margen, children.scaleX - 1, -1);
+        this.margen=this.margen+100;
         children.destroy();
         this.Kaboom();
       } //si no no hace nada
@@ -391,7 +413,7 @@ class level1_4 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 1);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(4, 4);
+      var tipo = Phaser.Math.Between(5, 5);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -544,14 +566,14 @@ class level1_4 extends Phaser.Scene {
     var _ladder1 = this.add
       .sprite(config.width / 2 - 50, config.height - 300, "ladder")
       .setScale(4);
-    this.normalPlatforms.add(_ladder1);
+    this.ladder.add(_ladder1);
     _ladder1.body.allowGravity = false;
     _ladder1.body.setImmovable(true);
 
     var _ladder2 = this.add
       .sprite(config.width / 2 + 90, config.height - 300, "ladder")
       .setScale(4);
-    this.normalPlatforms.add(_ladder2);
+    this.ladder.add(_ladder2);
     _ladder2.body.allowGravity = false;
     _ladder2.body.setImmovable(true);
   }
