@@ -129,6 +129,7 @@ class level1_1 extends Phaser.Scene {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
     this.enemies = this.add.group();
+    this.ladder = this.physics.add.group();
   }
 
   create() {
@@ -366,7 +367,7 @@ class level1_1 extends Phaser.Scene {
       positionY,
       "ball",
       direct
-    ).setScale(scale, scale/0.9);
+    ).setScale(scale,scale/0.9);
     this.ballpool.add(_ball);
 
     //Modificamos su velocidad

@@ -65,8 +65,14 @@ class level1_4 extends Phaser.Scene {
     this.anims.create({
       key: "shoot",
       frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
-      frameRate: 10,
+      frameRate: 8,
       repeat: 0,
+    });
+    this.anims.create({
+      key: "playerladder",
+      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 9}),
+      frameRate: 10,
+      repeat: -1,
     });
 
     this.anims.create({
@@ -167,7 +173,7 @@ class level1_4 extends Phaser.Scene {
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
-      config.width / 2,
+      config.width / 2-250,
       config.height - 250,
       "player1"
     );
@@ -411,9 +417,9 @@ class level1_4 extends Phaser.Scene {
     this.score += 10;
 
     //Genera PowerUp
-    var rnd = Phaser.Math.Between(1, 1);
+    var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(5, 5);
+      var tipo = Phaser.Math.Between(1, 5);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 

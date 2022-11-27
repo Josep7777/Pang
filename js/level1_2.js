@@ -125,6 +125,7 @@ class level1_2 extends Phaser.Scene {
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
     this.enemies = this.add.group();
+    this.ladder = this.physics.add.group();
   }
 
   create() {

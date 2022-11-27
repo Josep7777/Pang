@@ -7,6 +7,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
     this.playerHealth = gamePrefs.PLAYER1HEALTH;
     this.FixShoot =false;
+    this.escaleraColider = false;
     this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
     this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
     this.isShooting = false;
@@ -22,7 +23,20 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       },
       this
     );
+   
+    _scene.physics.add.overlap(
+      this.scene.ladder,
+      this,
+      this.colisionLader,
+      null,
+      this
+    );
   }
+
+  colisionLader(_ladder,_player){
+    this.escaleraColider = true;
+  }
+
 
   createBullet(_sceneParam) {
     //Crea el harpon cuando se presiona espacio
@@ -226,11 +240,32 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       }
     } else {
       this.body.setVelocityX(0);
-      if (!this.isShooting) {
+      if (!this.isShooting && !this.cursores.up.isDown) {
         this.anims.stop();
         this.setFrame(4);
       }
     }
+    if(this.escaleraColider){
+
+      if (this.cursores.up.isDown) {
+        this.y-=gamePrefs.CHARACTER_SPEEDLADDER;
+        this.anims.play("playerladder", true);  
+      
+
+      }/*else{
+        this.anims.stop();
+        this.setFrame(4);
+      }*/
+     // if(this.y>){ //IMPLEMENTAR PODER QUEDARTE ENCIMA DE LA ESCALERA
+     // }
+
+    }else{//ESTAS ENCIMA DE LA ESCALERA O ESTAS CAYENDO
+      this.body.setVelocityY(-gamePrefs.GRAVITYCHARACTER);
+   
+    }
+
+
+    this.escaleraColider=false;
 
     super.preUpdate(time, delta);
   }
