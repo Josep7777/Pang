@@ -15,22 +15,37 @@ class level1_1 extends Phaser.Scene {
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
     this.load.image("powerUp4", "slowTime.png");
-    this.load.image("background","Background.png")
+    this.load.image("powerUp5", "powerUpGanchoFijo.png");
+    this.load.spritesheet("powerUp6", "PowerUpDinamita.png", {
+      frameWidth: 22.6,
+      frameHeight: 16,
+    });
+    this.load.image("background", "Background.png");
 
-    this.load.spritesheet('crab','crab.png',
-        {frameWidth:38.4,frameHeight:30});
+    this.load.spritesheet("crab", "crab.png", {
+      frameWidth: 38.4,
+      frameHeight: 30,
+    });
 
-    this.load.spritesheet('bird','birdEnemy.png',
-    {frameWidth:34,frameHeight:24});
+    this.load.spritesheet("bird", "birdEnemy.png", {
+      frameWidth: 34,
+      frameHeight: 24,
+    });
 
-    this.load.spritesheet('enemyDeath','EnemiesDeath.png',
-        {frameWidth:33,frameHeight:32});
+    this.load.spritesheet("enemyDeath", "EnemiesDeath.png", {
+      frameWidth: 33,
+      frameHeight: 32,
+    });
 
-    this.load.spritesheet('owl','owl.png',
-        {frameWidth:38.36,frameHeight:33});
+    this.load.spritesheet("owl", "owl.png", {
+      frameWidth: 38.36,
+      frameHeight: 33,
+    });
 
-    this.load.spritesheet('conch','conch.png',
-        {frameWidth:19.25,frameHeight:26});
+    this.load.spritesheet("conch", "conch.png", {
+      frameWidth: 19.25,
+      frameHeight: 26,
+    });
 
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -42,12 +57,20 @@ class level1_1 extends Phaser.Scene {
     });
     //Cargamos sonidos
     this.load.setPath("assets/music/");
-    this.load.audio('mtFujiTheme', 'mtFuji.mp3');
+    this.load.audio("mtFujiTheme", "mtFuji.mp3");
     //FONTS
-    this.load.setPath('assets/fonts/');
-    this.load.bitmapFont('publicPixel','publicPixel.png','publicPixel.xml');
-    this.load.bitmapFont('publicPixelWhite','publicPixelWhite.png','publicPixelWhite.xml');
-    this.load.bitmapFont('publicPixelYellow','publicPixelYellow.png','publicPixelYellow.xml');
+    this.load.setPath("assets/fonts/");
+    this.load.bitmapFont("publicPixel", "publicPixel.png", "publicPixel.xml");
+    this.load.bitmapFont(
+      "publicPixelWhite",
+      "publicPixelWhite.png",
+      "publicPixelWhite.xml"
+    );
+    this.load.bitmapFont(
+      "publicPixelYellow",
+      "publicPixelYellow.png",
+      "publicPixelYellow.xml"
+    );
   }
 
   loadAnimations() {
@@ -72,54 +95,57 @@ class level1_1 extends Phaser.Scene {
     });
     this.anims.create({
       key: "crabWalking",
-      frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9}),
+      frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9 }),
       frameRate: 5,
       repeat: -1,
     });
     this.anims.create({
       key: "crabDeath",
-      frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5}),
+      frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5 }),
       frameRate: 7,
       repeat: 0,
     });
     this.anims.create({
       key: "bird1Fly",
-      frames: this.anims.generateFrameNumbers("bird", { start: 0, end: 5}),
+      frames: this.anims.generateFrameNumbers("bird", { start: 0, end: 5 }),
       frameRate: 5,
       repeat: -1,
     });
 
     this.anims.create({
       key: "bird1Hit",
-      frames: this.anims.generateFrameNumbers("bird", { start: 6, end: 7}),
+      frames: this.anims.generateFrameNumbers("bird", { start: 6, end: 7 }),
       frameRate: 5,
       repeat: 4,
     });
 
     this.anims.create({
       key: "enemyDeath",
-      frames: this.anims.generateFrameNumbers("enemyDeath", { start: 0, end: 4}),
+      frames: this.anims.generateFrameNumbers("enemyDeath", {
+        start: 0,
+        end: 4,
+      }),
       frameRate: 5,
       repeat: 0,
     });
 
     this.anims.create({
       key: "owlFly",
-      frames: this.anims.generateFrameNumbers("owl", { start: 0, end: 5}),
+      frames: this.anims.generateFrameNumbers("owl", { start: 0, end: 5 }),
       frameRate: 5,
       repeat: -1,
     });
 
     this.anims.create({
       key: "owlHit",
-      frames: this.anims.generateFrameNumbers("owl", { start: 12, end: 13}),
+      frames: this.anims.generateFrameNumbers("owl", { start: 12, end: 13 }),
       frameRate: 5,
       repeat: 2,
     });
 
     this.anims.create({
       key: "conchDown",
-      frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3}),
+      frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3 }),
       frameRate: 5,
       repeat: -1,
     });
@@ -134,12 +160,12 @@ class level1_1 extends Phaser.Scene {
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add('mtFujiTheme', { loop: true });
+    this.backgroundMusic = this.sound.add("mtFujiTheme", { loop: true });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width/2, config.height/2-82, "background");
-    
+    this.add.sprite(config.width / 2, config.height / 2 - 82, "background");
+
     //Cargamos las pools
     this.loadPools();
 
@@ -149,10 +175,15 @@ class level1_1 extends Phaser.Scene {
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
     //Añadimos al jugador con fisicas
-    this.player1 = new playerPrefab(this, config.width / 2, config.height - 250, "player1");
+    this.player1 = new playerPrefab(
+      this,
+      config.width / 2,
+      config.height - 250,
+      "player1"
+    );
 
     //Variables del jugador
-    this.invencible = false;    
+    this.invencible = false;
     this.timer2 = 0;
     this.dañoEscudo = false;
     this.resources = 0;
@@ -173,7 +204,7 @@ class level1_1 extends Phaser.Scene {
     this.stageNumber = 1;
     this.highScore = 100000;
     this.timer = 0;
-    this.countDown = 99;    
+    this.countDown = 99;
     this.timeBoard;
 
     this.score = 0;
@@ -230,61 +261,54 @@ class level1_1 extends Phaser.Scene {
     );
 
     this.randomEnemySpawn = Phaser.Math.Between(10000, 30000);
-    this.enemyTimer = this.time.addEvent
-        (
-            {
-                delay: this.randomEnemySpawn, //ms
-                callback:this.createEnemy,
-                callbackScope:this,
-                repeat: 0
-            }
-        );
+    this.enemyTimer = this.time.addEvent({
+      delay: this.randomEnemySpawn, //ms
+      callback: this.createEnemy,
+      callbackScope: this,
+      repeat: 0,
+    });
   }
 
-  createEnemy(){
+  createEnemy() {
     var enemyType = Phaser.Math.Between(1, 4);
 
-    switch(enemyType){
+    switch (enemyType) {
       case 1:
-        var randomXPos = Phaser.Math.Between(100, config.width-100);
-        var _crab = new crabPrefab(this,randomXPos,30);
+        var randomXPos = Phaser.Math.Between(100, config.width - 100);
+        var _crab = new crabPrefab(this, randomXPos, 30);
         this.enemies.add(_crab);
         break;
 
       case 2:
-        var randomYPos = Phaser.Math.Between(100, config.height-300);
-        var _bird1 = new bird1Prefab(this,100,randomYPos);
+        var randomYPos = Phaser.Math.Between(100, config.height - 300);
+        var _bird1 = new bird1Prefab(this, 100, randomYPos);
         this.enemies.add(_bird1);
         break;
-      
+
       case 3:
-          var randomYPos = Phaser.Math.Between(100, config.height-600);
-          var _owl = new owlPrefab(this,100,randomYPos);
-          this.enemies.add(_owl);
-          break;
+        var randomYPos = Phaser.Math.Between(100, config.height - 600);
+        var _owl = new owlPrefab(this, 100, randomYPos);
+        this.enemies.add(_owl);
+        break;
 
       case 4:
-          var randomXPos = Phaser.Math.Between(100, config.width-100);
-          var _conch = new conchPrefab(this,randomXPos,30);
-          this.enemies.add(_conch);
-          break;
+        var randomXPos = Phaser.Math.Between(100, config.width - 100);
+        var _conch = new conchPrefab(this, randomXPos, 30);
+        this.enemies.add(_conch);
+        break;
     }
 
     this.randomEnemySpawn = Phaser.Math.Between(20000, 30000);
-    this.enemyTimer = this.time.addEvent
-        (
-            {
-                delay: this.randomEnemySpawn, //ms
-                callback:this.createEnemy,
-                callbackScope:this,
-                repeat: 0
-            }
-        );
-
+    this.enemyTimer = this.time.addEvent({
+      delay: this.randomEnemySpawn, //ms
+      callback: this.createEnemy,
+      callbackScope: this,
+      repeat: 0,
+    });
   }
 
   damagePlayer(_ball, _player) {
-    if (this.invencible == false) {
+    if (this.invencible == false && !this.stopGravityBalls) {
       this.player1.playerHealth--;
 
       if (this.player1.playerHealth > 0) {
@@ -309,55 +333,96 @@ class level1_1 extends Phaser.Scene {
   }
 
   pickPowerUp(_player, _powerUp) {
-    if (_powerUp.tipo == 1) {
-      //Doble harpon
-      _player.harpoonNumberMax = 2;
-      this.feedbackPowerUp = this.add
-        .sprite(
-          this.powerUp1FeedbackPosX,
-          this.powerUp1FeedbackPosY,
-          "powerUp1"
-        )
-        .setScale(4);
-    } else if (_powerUp.tipo == 2) {
-      //Invencibilidad
-      if (this.invencible == false) {
-        this.invencible = true;
-        this.shield = this.add
-          .sprite(this.player1.x, this.player1.y, "escudo")
+    switch (_powerUp.tipo) {
+      case 1:
+        //Doble harpon
+        _player.harpoonNumberMax = 2;
+        this.feedbackPowerUp = this.add
+          .sprite(
+            this.powerUp1FeedbackPosX,
+            this.powerUp1FeedbackPosY,
+            "powerUp1"
+          )
           .setScale(4);
-        this.shield.play("shield", true);
-        this.shield.depth = 1;
-        this.player1.depth = 2;
-        this.floorD.depth = 3;
-      }
-    } else if (_powerUp.tipo == 3) {
-      //Objetos que dan puntuacion
-      this.score += 500;
-    }else if(_powerUp.tipo == 4){
-
-      this.stopGravityBalls = true;
-      this.ballTimer = this.time.addEvent
-      (
-          {
-              delay: 8000, //ms
-              callback:this.powerUpTimeFinished,
-              callbackScope:this,
-              repeat: 0
-          }
-      );
-
+        break;
+      case 2:
+        //Invencibilidad
+        if (this.invencible == false) {
+          this.invencible = true;
+          this.shield = this.add
+            .sprite(this.player1.x, this.player1.y, "escudo")
+            .setScale(4);
+          this.shield.play("shield", true);
+          this.shield.depth = 1;
+          this.player1.depth = 2;
+          this.floorD.depth = 3;
+        }
+        break;
+      case 3:
+        //Objetos que dan puntuacion
+        this.score += 500;
+        break;
+      case 4:
+        //Parar tiempo
+        if (!this.stopGravityBalls) {
+          this.stopGravityBalls = true;
+          this.ballTimer = this.time.addEvent({
+            delay: 8000, //ms
+            callback: this.powerUpTimeFinished,
+            callbackScope: this,
+            repeat: 0,
+          });
+        }
+        break;
+      case 5:
+        //PowerWire
+        this.player1.FixShoot = true;
+        break;
+      case 6:
+        //Dinamita
+        this.Kaboom();
+        break;
     }
     _powerUp.destroy();
   }
 
-  powerUpTimeFinished(){
-    this.stopGravityBalls = false;
-    this.ballpool.setVelocityY(gamePrefs.GRAVITY);
-    this.ballpool.setVelocityX(gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER
-    );
+  Kaboom() {
+    this.ballpool.getChildren().forEach(function (children) {
+      //  console.log(children.scaleX);
+      this.margen = 0;
+      if (children.scaleX > 1) {
+        //recorrer pelotas
+        //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
+
+        this.createBall(
+          children.x + this.margen,
+          children.y + this.margen,
+          children.scaleX - 1,
+          1
+        ); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
+        this.createBall(
+          children.x + this.margen,
+          children.y + this.margen,
+          children.scaleX - 1,
+          -1
+        );
+        this.margen = this.margen + 100;
+        children.destroy();
+        this.Kaboom();
+      } //si no no hace nada
+    }, this);
   }
 
+  powerUpTimeFinished() {
+    this.stopGravityBalls = false;
+    this.ballpool.children.each(function (ball) {
+      ball.body.allowGravity = true;
+      ball.body.setVelocityX(
+        gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+      );
+      ball.body.setVelocityY(gamePrefs.GRAVITY);
+    }, this);
+  }
 
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
@@ -367,11 +432,15 @@ class level1_1 extends Phaser.Scene {
       positionY,
       "ball",
       direct
-    ).setScale(scale,scale/0.9);
+    ).setScale(scale, scale / 0.9);
     this.ballpool.add(_ball);
 
     //Modificamos su velocidad
-    _ball.body.setCircle(_ball.width/2, 0, _ball.height/2 - _ball.width/2);
+    _ball.body.setCircle(
+      _ball.width / 2,
+      0,
+      _ball.height / 2 - _ball.width / 2
+    );
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct
@@ -384,16 +453,16 @@ class level1_1 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 4);
+      var tipo = Phaser.Math.Between(1, 6);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
     if (_ballCol.scaleX > 1) {
       //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
-      if(this.stopGravityBalls){
-        this.createBall(_ballCol.x-50, _ballCol.y, _ballCol.X - 1, 1);
-        this.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scaleX - 1, -1);
-      }else{
+      if (this.stopGravityBalls) {
+        this.createBall(_ballCol.x - 50, _ballCol.y, _ballCol.scaleX - 1, 1);
+        this.createBall(_ballCol.x + 50, _ballCol.y, _ballCol.scaleX - 1, -1);
+      } else {
         this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, 1);
         this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, -1);
       }
@@ -403,8 +472,6 @@ class level1_1 extends Phaser.Scene {
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
     _ballCol.destroy();
-
-    
   }
 
   createPowerUp(_posX, _posY, _tipo) {
@@ -415,28 +482,70 @@ class level1_1 extends Phaser.Scene {
 
   loadText() {
     //PLAYERS
-      this.add.bitmapText(130, 730, 'publicPixelWhite', "PLAYER-1",30);
-      this.add.bitmapText(1430, 730, 'publicPixelWhite', "PLAYER-2",30);
+    this.add.bitmapText(130, 730, "publicPixelWhite", "PLAYER-1", 30);
+    this.add.bitmapText(1430, 730, "publicPixelWhite", "PLAYER-2", 30);
 
     //NOMBRE DEL MUNDO ACTUAL
-      this.add.bitmapText(890, 730, 'publicPixelWhite', this.levelName,30);
+    this.add.bitmapText(890, 730, "publicPixelWhite", this.levelName, 30);
     //NUMERO DE MUNDO Y NIVEL
-      this.add.bitmapText(860, 810, 'publicPixelWhite', this.worldNumber + "-" + this.stageNumber + " STAGE",30);
+    this.add.bitmapText(
+      860,
+      810,
+      "publicPixelWhite",
+      this.worldNumber + "-" + this.stageNumber + " STAGE",
+      30
+    );
     //HIGH SCORE
-    this.add.bitmapText(840, 860, 'publicPixelWhite', "HI: " + this.highScore,30);
+    this.add.bitmapText(
+      840,
+      860,
+      "publicPixelWhite",
+      "HI: " + this.highScore,
+      30
+    );
 
     //INSERT COIN
-    this.insertCoin = this.add.bitmapText(1390, 810, 'publicPixelWhite', "INSERT COIN",30);
+    this.insertCoin = this.add.bitmapText(
+      1390,
+      810,
+      "publicPixelWhite",
+      "INSERT COIN",
+      30
+    );
 
     //SCORE
-    this.scoreBoard = this.add.bitmapText(389, 777, 'publicPixelWhite', this.score,30);
-      
+    this.scoreBoard = this.add.bitmapText(
+      389,
+      777,
+      "publicPixelWhite",
+      this.score,
+      30
+    );
+
     //TIMER
-    this.timeBoard = this.scoreBoard = this.add.bitmapText(1350, 50, 'publicPixelWhite', "TIME:0" + this.countDown,65);
+    this.timeBoard = this.scoreBoard = this.add.bitmapText(
+      1350,
+      50,
+      "publicPixelWhite",
+      "TIME:0" + this.countDown,
+      65
+    );
 
     //GAME OVER UI
-    this.player1GameOver = this.add.bitmapText(120, 830, 'publicPixelWhite', "GAME OVER!",30);
-    this.gameOverText = this.add.bitmapText(config.width / 2 - 250, config.height / 2 - 100, 'publicPixelWhite', "GAME OVER",65);
+    this.player1GameOver = this.add.bitmapText(
+      120,
+      830,
+      "publicPixelWhite",
+      "GAME OVER!",
+      30
+    );
+    this.gameOverText = this.add.bitmapText(
+      config.width / 2 - 250,
+      config.height / 2 - 100,
+      "publicPixelWhite",
+      "GAME OVER",
+      65
+    );
 
     this.player1GameOver.setVisible(false);
     this.gameOverText.setVisible(false);
@@ -491,19 +600,19 @@ class level1_1 extends Phaser.Scene {
   }
 
   update(time, delta) {
-
-
     if (this.ballpool.getLength() == 0) {
       //Si es la ultima pelota destruida, ganas
       this.winScene();
     }
 
-
-
-    if(this.stopGravityBalls == true){
-      this.ballpool.setVelocityX(0)
-      this.ballpool.setVelocityY(0)
+    if (this.stopGravityBalls == true) {
+      this.ballpool.children.each(function (ball) {
+        ball.body.allowGravity = false;
+        ball.body.setVelocityX(0);
+        ball.body.setVelocityY(0);
+      }, this);
     }
+
     if (this.gameOverflag == false) {
       //TIMER
       this.timer += delta;
@@ -519,12 +628,11 @@ class level1_1 extends Phaser.Scene {
         this.player1GameOver.setVisible(true);
         this.gameOver();
       }
-      if(this.timerText > 500){
-        if(this.flashText){
+      if (this.timerText > 500) {
+        if (this.flashText) {
           this.insertCoin.setVisible(true);
           this.flashText = false;
-        }
-        else if(!this.flashText){
+        } else if (!this.flashText) {
           this.insertCoin.setVisible(false);
           this.flashText = true;
         }

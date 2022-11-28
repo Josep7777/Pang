@@ -14,11 +14,16 @@ class level1_4 extends Phaser.Scene {
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
+    this.load.image("powerUp4", "slowTime.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
     this.load.image("normalPlatV", "YellowPlatform.png");
     this.load.image("ladder", "escalera.png");
     this.load.image("background4", "background1-4.png");
     this.load.image("powerUp5", "powerUpGanchoFijo.png");
+    this.load.spritesheet("powerUp6", "PowerUpDinamita.png", {
+      frameWidth: 22.6,
+      frameHeight: 16,
+    });
     this.load.spritesheet("crab", "crab.png", {
       frameWidth: 38.4,
       frameHeight: 30,
@@ -52,10 +57,7 @@ class level1_4 extends Phaser.Scene {
       frameWidth: 37,
       frameHeight: 41,
     });
-    this.load.spritesheet("powerUp4", "PowerUpDinamita.png", {
-      frameWidth: 22.6,
-      frameHeight: 16,
-    });
+    
     //Cargamos sonidos
     this.load.setPath("assets/music/");
     this.load.audio("mtFujiTheme", "mtFuji.mp3");
@@ -70,7 +72,7 @@ class level1_4 extends Phaser.Scene {
     });
     this.anims.create({
       key: "playerladder",
-      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 9}),
+      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 9 }),
       frameRate: 10,
       repeat: -1,
     });
@@ -163,7 +165,7 @@ class level1_4 extends Phaser.Scene {
     this.add.sprite(config.width / 2, config.height / 2 - 100, "background4");
     //Cargamos las pools
     this.loadPools();
-    
+
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
     this.createStairs();
@@ -173,7 +175,7 @@ class level1_4 extends Phaser.Scene {
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
-      config.width / 2-250,
+      config.width / 2 - 250,
       config.height - 250,
       "player1"
     );
@@ -191,7 +193,7 @@ class level1_4 extends Phaser.Scene {
     this.timerPower = 5;
 
     this.countDown2 = 1;
-   
+
     //Datos del HUD
     //this.hud = new hudPrefab(this, "hud");
     this.levelName = "MT.FUJI";
@@ -208,6 +210,8 @@ class level1_4 extends Phaser.Scene {
 
     this.gameOverflag = false;
     this.restartGameOver = false;
+
+    this.stopGravityBalls = false;
 
     //HUD de las vidas
     this.live1 = this.add
@@ -265,14 +269,13 @@ class level1_4 extends Phaser.Scene {
       repeat: 0,
     });
   }
-  changeBallDirection(_ball,_platform){
+  changeBallDirection(_ball, _platform) {
     _ball.direct = _ball.direct * -1; //CAMBIAMOS DIRECCION
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED *
         (gamePrefs.VELOCITY_MAKER + _ball.scale) *
         _ball.direct
     );
-
   }
   createEnemy() {
     var enemyType = Phaser.Math.Between(1, 4);
@@ -313,7 +316,7 @@ class level1_4 extends Phaser.Scene {
   }
 
   damagePlayer(_ball, _player) {
-    if (this.invencible == false) {
+    if (this.invencible == false && !this.stopGravityBalls) {
       this.player1.playerHealth--;
 
       if (this.player1.playerHealth > 0) {
@@ -338,7 +341,57 @@ class level1_4 extends Phaser.Scene {
   }
 
   pickPowerUp(_player, _powerUp) {
-    if (_powerUp.tipo == 1) {
+    switch (_powerUp.tipo) {
+      case 1:
+        //Doble harpon
+        _player.harpoonNumberMax = 2;
+        this.feedbackPowerUp = this.add
+          .sprite(
+            this.powerUp1FeedbackPosX,
+            this.powerUp1FeedbackPosY,
+            "powerUp1"
+          )
+          .setScale(4);
+        break;
+      case 2:
+        //Invencibilidad
+        if (this.invencible == false) {
+          this.invencible = true;
+          this.shield = this.add
+            .sprite(this.player1.x, this.player1.y, "escudo")
+            .setScale(4);
+          this.shield.play("shield", true);
+          this.shield.depth = 1;
+          this.player1.depth = 2;
+          this.floorD.depth = 3;
+        }
+        break;
+      case 3:
+        //Objetos que dan puntuacion
+        this.score += 500;
+        break;
+      case 4:
+        //Parar tiempo
+        if (!this.stopGravityBalls) {
+          this.stopGravityBalls = true;
+          this.ballTimer = this.time.addEvent({
+            delay: 8000, //ms
+            callback: this.powerUpTimeFinished,
+            callbackScope: this,
+            repeat: 0,
+          });
+        }
+        break;
+      case 5:
+        //PowerWire
+        this.player1.FixShoot = true;
+        break;
+      case 6:
+        //Dinamita
+        this.Kaboom();
+        break;
+    }
+    /*if (_powerUp.tipo == 1) {
       //Doble harpon
       _player.harpoonNumberMax = 2;
       this.feedbackPowerUp = this.add
@@ -364,32 +417,65 @@ class level1_4 extends Phaser.Scene {
       //Objetos que dan puntuacion
       this.score += 500;
     } else if (_powerUp.tipo == 4) {
+      //Parar tiempo
+      if (!this.stopGravityBalls) {
+        this.stopGravityBalls = true;
+        this.ballTimer = this.time.addEvent({
+          delay: 8000, //ms
+          callback: this.powerUpTimeFinished,
+          callbackScope: this,
+          repeat: 0,
+        });
+      }
+    } else if (_powerUp.tipo == 6) {
       //Dinamita
       this.Kaboom();
     }else if (_powerUp.tipo == 5) {
       //HookNoseque
       this.player1.FixShoot = true;
-    }
+    }*/
 
     _powerUp.destroy();
+  }
+
+  powerUpTimeFinished() {
+    this.stopGravityBalls = false;
+    this.ballpool.children.each(function (ball) {
+      ball.body.allowGravity = true;
+      ball.body.setVelocityX(
+        gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+      );
+      ball.body.setVelocityY(gamePrefs.GRAVITY);
+    }, this);
   }
 
   Kaboom() {
     this.ballpool.getChildren().forEach(function (children) {
       //  console.log(children.scaleX);
-      this.margen=0;
+      this.margen = 0;
       if (children.scaleX > 1) {
         //recorrer pelotas
         //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
-      
-        this.createBall(children.x+ this.margen, children.y+this.margen, children.scaleX - 1, 1); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
-        this.createBall(children.x+this.margen, children.y+this.margen, children.scaleX - 1, -1);
-        this.margen=this.margen+100;
+
+        this.createBall(
+          children.x + this.margen,
+          children.y + this.margen,
+          children.scaleX - 1,
+          1
+        ); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
+        this.createBall(
+          children.x + this.margen,
+          children.y + this.margen,
+          children.scaleX - 1,
+          -1
+        );
+        this.margen = this.margen + 100;
         children.destroy();
         this.Kaboom();
       } //si no no hace nada
     }, this);
   }
+  
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
     var _ball = new ballPrefab(
@@ -419,14 +505,14 @@ class level1_4 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 5);
+      var tipo = Phaser.Math.Between(1, 6);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
     if (_ballCol.scaleX > 1) {
       //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
       if (this.stopGravityBalls) {
-        this.createBall(_ballCol.x - 50, _ballCol.y, _ballCol.X - 1, 1);
+        this.createBall(_ballCol.x - 50, _ballCol.y, _ballCol.scaleX - 1, 1);
         this.createBall(_ballCol.x + 50, _ballCol.y, _ballCol.scaleX - 1, -1);
       } else {
         this.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, 1);
@@ -603,6 +689,14 @@ class level1_4 extends Phaser.Scene {
   }
 
   update(time, delta) {
+    if (this.stopGravityBalls == true) {
+      this.ballpool.children.each(function (ball) {
+        ball.body.allowGravity = false;
+        ball.body.setVelocityX(0);
+        ball.body.setVelocityY(0);
+      }, this);
+    }
+
     if (this.gameOverflag == false) {
       //TIMER
       this.timer += delta;
