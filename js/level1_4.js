@@ -451,12 +451,8 @@ class level1_4 extends Phaser.Scene {
 
   Kaboom() {
     this.ballpool.getChildren().forEach(function (children) {
-      //  console.log(children.scaleX);
       this.margen = 0;
       if (children.scaleX > 1) {
-        //recorrer pelotas
-        //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
-
         this.createBall(
           children.x + this.margen,
           children.y + this.margen,
@@ -471,11 +467,18 @@ class level1_4 extends Phaser.Scene {
         );
         this.margen = this.margen + 100;
         children.destroy();
-        this.Kaboom();
+
+      this.enemyTimer = this.time.addEvent({
+      delay: 500, //ms
+      callback: this.Kaboom,
+      callbackScope: this,
+      repeat: 0,
+    });
+        //this.Kaboom();
       } //si no no hace nada
     }, this);
   }
-  
+
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
     var _ball = new ballPrefab(
