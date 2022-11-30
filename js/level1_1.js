@@ -481,6 +481,35 @@ class level1_1 extends Phaser.Scene {
     //Creamos power up y añadimos a grupo
     var _powerUp = new powerUpPrefab(this, _posX, _posY, _tipo).setScale(3);
     this.powerUps.add(_powerUp);
+
+    this.powerUpTimer = this.time.addEvent({
+      delay: gamePrefs.POWERUP_DESTROY_TIMER, //ms
+      callback: this.destroyPowerUp,
+      args: [_powerUp],
+      callbackScope: this,
+      repeat: 0,
+    });
+  }
+
+  destroyPowerUp(_powerUp){
+    var i=0;
+    this.tintTimer = this.time.addEvent({
+      delay: 200,
+      callback: ()=>{ 
+        if(i % 2 == 0)
+        _powerUp.tint = 0xffffff; 
+        else
+        _powerUp.tint = 0x9b9b9b;
+
+        i++;
+        if(i >= 20)
+        _powerUp.destroy();
+      },
+      callbackScope: this,
+
+      repeat: 20 
+    });
+    //_powerUp.destroy(); 
   }
 
   loadText() {
