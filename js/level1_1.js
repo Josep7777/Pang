@@ -14,12 +14,13 @@ class level1_1 extends Phaser.Scene {
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
-    this.load.image("powerUp4", "slowTime.png");
+    this.load.image("powerUp4", "PowerUpStopTime.png");
     this.load.image("powerUp5", "powerUpGanchoFijo.png");
     this.load.spritesheet("powerUp6", "PowerUpDinamita.png", {
       frameWidth: 22.6,
       frameHeight: 16,
     });
+    this.load.image("powerUp7", "PowerUpSlowTime.png");
     this.load.image("background", "Background.png");
 
     this.load.spritesheet("crab", "crab.png", {
@@ -171,6 +172,7 @@ class level1_1 extends Phaser.Scene {
 
     this.createWalls(); // Funcion para crear suelo, techo y paredes
 
+    gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
     //Creamos la pelota, le pasamos la x, la y, y la escala
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
@@ -382,6 +384,23 @@ class level1_1 extends Phaser.Scene {
         //Dinamita
         this.Kaboom();
         break;
+      case 7:
+        gamePrefs.BALL_SPEED/=2;
+
+        this.ballpool.children.each(function (ball) {
+          ball.body.setVelocityX(
+            gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+          );
+          ball.body.setVelocityY(gamePrefs.GRAVITY);
+        }, this);
+
+        this.slowTimer = this.time.addEvent({
+          delay: 8000, //ms
+          callback: this.powerUpSlowTimeFinished,
+          callbackScope: this,
+          repeat: 0,
+        });
+          break;
     }
     _powerUp.destroy();
   }
@@ -427,6 +446,17 @@ class level1_1 extends Phaser.Scene {
     }, this);
   }
 
+  powerUpSlowTimeFinished() {
+    gamePrefs.BALL_SPEED*=2;
+        
+        this.ballpool.children.each(function (ball) {
+          ball.body.setVelocityX(
+            gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+          );
+          ball.body.setVelocityY(gamePrefs.GRAVITY);
+        }, this);
+  }
+
   createBall(positionX, positionY, scale, direct) {
     //Creamos una nueva pelota y la añadimos al grupo
     var _ball = new ballPrefab(
@@ -456,7 +486,7 @@ class level1_1 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 6);
+      var tipo = Phaser.Math.Between(1, 7);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -592,6 +622,7 @@ class level1_1 extends Phaser.Scene {
     );
     this.floorD.body.allowGravity = false;
     this.floorD.body.setImmovable(true);
+    this.floorD.setDepth(1);
     this.floorU = this.physics.add.sprite(
       config.width - 960,
       config.height - 882,

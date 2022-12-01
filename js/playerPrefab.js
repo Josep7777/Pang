@@ -56,15 +56,15 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         this.harpoonNumber++;
   
         var harpoon = _sceneParam.physics.add
-          .image(this.x, this.y, "harpoon")
-          .setScale(3);
-        harpoon.scaleY = 0;
+        .image(this.x, this.y+30, "harpoon")
+        .setScale(3);
+      harpoon.scaleY = 0;
   
        this.animation = _sceneParam.tweens.add({
           //Crea una animacion para alargar el harpon
           targets: harpoon,
-          y: 200,
-          scaleY: 5,
+          y: 0,
+          scaleY: 8,
           duration: 2000,
         });
   
@@ -123,15 +123,14 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       this.harpoonNumber++;
 
       var harpoon = _sceneParam.physics.add
-        .image(this.x, this.y, "harpoon")
+        .image(this.x, this.y+30, "harpoon")
         .setScale(3);
       harpoon.scaleY = 0;
-
       _sceneParam.tweens.add({
         //Crea una animacion para alargar el harpon
         targets: harpoon,
-        y: 200,
-        scaleY: 5,
+        y: 0,
+        scaleY: 8,
         duration: 2000,
       });
 

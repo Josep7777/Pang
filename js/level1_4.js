@@ -14,7 +14,7 @@ class level1_4 extends Phaser.Scene {
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
     this.load.image("powerUp3", "fresa.png");
-    this.load.image("powerUp4", "slowTime.png");
+    this.load.image("powerUp4", "PowerUpStopTime.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
     this.load.image("normalPlatV", "YellowPlatform.png");
     this.load.image("ladder", "escalera.png");
@@ -24,6 +24,8 @@ class level1_4 extends Phaser.Scene {
       frameWidth: 22.6,
       frameHeight: 16,
     });
+    this.load.image("powerUp7", "PowerUpSlowTime.png");
+
     this.load.spritesheet("crab", "crab.png", {
       frameWidth: 38.4,
       frameHeight: 30,
@@ -169,6 +171,9 @@ class level1_4 extends Phaser.Scene {
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
     this.createStairs();
+
+    gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
+    
     //Creamos la pelota, le pasamos la x, la y, y la escala
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
@@ -390,51 +395,24 @@ class level1_4 extends Phaser.Scene {
         //Dinamita
         this.Kaboom();
         break;
-    }
-    /*if (_powerUp.tipo == 1) {
-      //Doble harpon
-      _player.harpoonNumberMax = 2;
-      this.feedbackPowerUp = this.add
-        .sprite(
-          this.powerUp1FeedbackPosX,
-          this.powerUp1FeedbackPosY,
-          "powerUp1"
-        )
-        .setScale(4);
-    } else if (_powerUp.tipo == 2) {
-      //Invencibilidad
-      if (this.invencible == false) {
-        this.invencible = true;
-        this.shield = this.add
-          .sprite(this.player1.x, this.player1.y, "escudo")
-          .setScale(4);
-        this.shield.play("shield", true);
-        this.shield.depth = 1;
-        this.player1.depth = 2;
-        this.floorD.depth = 3;
-      }
-    } else if (_powerUp.tipo == 3) {
-      //Objetos que dan puntuacion
-      this.score += 500;
-    } else if (_powerUp.tipo == 4) {
-      //Parar tiempo
-      if (!this.stopGravityBalls) {
-        this.stopGravityBalls = true;
-        this.ballTimer = this.time.addEvent({
+        case 7:
+        gamePrefs.BALL_SPEED/=2;
+
+        this.ballpool.children.each(function (ball) {
+          ball.body.setVelocityX(
+            gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+          );
+          ball.body.setVelocityY(gamePrefs.GRAVITY);
+        }, this);
+
+        this.slowTimer = this.time.addEvent({
           delay: 8000, //ms
-          callback: this.powerUpTimeFinished,
+          callback: this.powerUpSlowTimeFinished,
           callbackScope: this,
           repeat: 0,
         });
-      }
-    } else if (_powerUp.tipo == 6) {
-      //Dinamita
-      this.Kaboom();
-    }else if (_powerUp.tipo == 5) {
-      //HookNoseque
-      this.player1.FixShoot = true;
-    }*/
-
+          break;
+    }
     _powerUp.destroy();
   }
 
@@ -447,6 +425,17 @@ class level1_4 extends Phaser.Scene {
       );
       ball.body.setVelocityY(gamePrefs.GRAVITY);
     }, this);
+  }
+
+  powerUpSlowTimeFinished() {
+    gamePrefs.BALL_SPEED*=2;
+        
+        this.ballpool.children.each(function (ball) {
+          ball.body.setVelocityX(
+            gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+          );
+          ball.body.setVelocityY(gamePrefs.GRAVITY);
+        }, this);
   }
 
   Kaboom() {
@@ -508,7 +497,7 @@ class level1_4 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 6);
+      var tipo = Phaser.Math.Between(1, 7);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -650,6 +639,7 @@ class level1_4 extends Phaser.Scene {
     );
     this.floorD.body.allowGravity = false;
     this.floorD.body.setImmovable(true);
+    this.floorD.setDepth(1);
     this.floorU = this.physics.add.sprite(
       config.width - 960,
       config.height - 882,
