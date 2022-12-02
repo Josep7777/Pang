@@ -60,6 +60,11 @@ class level1_4 extends Phaser.Scene {
       frameHeight: 41,
     });
     
+    this.load.spritesheet("ballExplosion", "BallExplosion.png", {
+      frameWidth: 62,
+      frameHeight: 52,
+    });
+    
     //Cargamos sonidos
     this.load.setPath("assets/music/");
     this.load.audio("mtFujiTheme", "mtFuji.mp3");
@@ -146,6 +151,13 @@ class level1_4 extends Phaser.Scene {
       frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3 }),
       frameRate: 5,
       repeat: -1,
+    });
+
+    this.anims.create({
+      key: "ballDestroy",
+      frames: this.anims.generateFrameNumbers("ballExplosion", { start: 0, end: 2 }),
+      frameRate: 5,
+      repeat: 1,
     });
   }
 
