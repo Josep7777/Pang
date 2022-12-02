@@ -160,8 +160,8 @@ class level1_1 extends Phaser.Scene {
     this.anims.create({
       key: "ballDestroy",
       frames: this.anims.generateFrameNumbers("ballExplosion", { start: 0, end: 2 }),
-      frameRate: 5,
-      repeat: 1,
+      frameRate: 15,
+      repeat: 0
     });
   }
 
@@ -514,6 +514,7 @@ class level1_1 extends Phaser.Scene {
       }
     }
 
+    var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
