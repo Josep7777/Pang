@@ -13,7 +13,9 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.isShooting = false;
     this.canShoot=true;
     this.cursores = _scene.input.keyboard.createCursorKeys();
+    this.scene = _scene;
 
+    this.enterOnce=true;
     this.body.setSize(this.width-7, this.height, true);
     //Cuando le das al espacio, el jugador dispara
     this.cursores.space.on(
@@ -177,18 +179,31 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
   }
   }
 
-  countdownFix(_harpoon,_floor){              //DUBTE PER EL RICHARD
+  countdownFix(_harpoon,_floor){
+    if(this.enterOnce){
     this.animation.stop();
-    _harpoon.setImmovable(true);
+    _harpoon.body.setImmovable(true);
     _harpoon.body.setAllowGravity(false);
-    this.TimerFix = this.scene.time.addEvent({
+    _harpoon.body.setVelocityY(0);
+
+    this.TimerFixFlash = this.scene.time.addEvent({
       delay: 2000, //ms
+      callback: this.flash,
+      args: [_harpoon],
+      callbackScope: this,
+      repeat: 0
+    })
+
+    this.TimerFix = this.scene.time.addEvent({
+      delay: 4000, //ms
       callback: this.destroyHarpoon,
       args: [_harpoon,_floor],
       callbackScope: this,
-      repeat: 0,
+      repeat: 0
     })
+    this.enterOnce=false;
   }
+}
  
 
   hitEnemy(_harpoon, _enemy){
@@ -204,10 +219,30 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
   }
 
   destroyHarpoon(_harpoon, _floor) {
+    this.enterOnce=true;
     //Destruye al harpon al tocar el techo
     if (this.harpoonNumber > 0) this.harpoonNumber--;
     _harpoon.destroy();
     if(this.FixShoot==true) this.FixShoot=false;
+  }
+
+  flash(_harpoon){
+    var i=0;
+    this.tintTimer = this.scene.time.addEvent({
+      delay: 75,
+      callback: ()=>{ 
+        if(i % 2 == 0)
+          _harpoon.tint = 0xffffff; 
+        else
+        _harpoon.tint = 0xffff00;
+        i++;
+        if(i >= 26)
+        _harpoon.tint = 0xffffff;
+      },
+      callbackScope: this,
+
+      repeat: 26 
+    });
   }
 
 
