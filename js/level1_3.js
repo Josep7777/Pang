@@ -86,6 +86,13 @@ class level1_3 extends Phaser.Scene {
       frameRate: 15,
       repeat: 0
     });
+    
+    this.anims.create({
+      key: "dynamite",
+      frames: this.anims.generateFrameNumbers("powerUp6", { start: 0, end: 2 }),
+      frameRate: 3,
+      repeat: -1,
+    });
   }
 
   loadPools() {
@@ -450,7 +457,7 @@ class level1_3 extends Phaser.Scene {
     //Creamos power up y añadimos a grupo
     var _powerUp = new powerUpPrefab(this, _posX, _posY, _tipo).setScale(3);
     this.powerUps.add(_powerUp);
-
+    if(_tipo==6) _powerUp.anims.play("dynamite");
     this.powerUpTimer = this.time.addEvent({
       delay: gamePrefs.POWERUP_DESTROY_TIMER, //ms
       callback: this.destroyPowerUp,
