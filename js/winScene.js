@@ -5,8 +5,6 @@ class winScene extends Phaser.Scene{
 	}
 
     preload(){
-        this.load.setPath("assets/img/");
-        this.load.image("winImage","winImage1.png");
     }
 
     create(){
