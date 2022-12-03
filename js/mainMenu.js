@@ -28,6 +28,7 @@ class mainMenu extends Phaser.Scene {
     this.load.image("background2", "background1-2.png");
     this.load.image("background3", "background1-3.png");
     this.load.image("background4", "background1-4.png");
+    this.load.image("background6", "background1-6.png");
     this.load.image("logo", "pangLogo.gif");
 
     //PowerUps
