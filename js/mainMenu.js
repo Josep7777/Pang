@@ -19,6 +19,11 @@ class mainMenu extends Phaser.Scene {
     this.load.image("normalPlat", "PlataformaRoja1.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
     this.load.image("normalPlatV", "YellowPlatform.png");
+    this.load.image("destructPlatV", "PlataformaAzulVertical.png");
+    this.load.image("normalPlatAPetita", "PlataformaAmarillaPequena.png");
+    this.load.image("destructPlatA", "PlataformaAmarillaRompible.png");
+    this.load.image("normalBlueVertical", "PlataformaAzulClaroH.png");
+    this.load.image("normalBlueHorizontal", "PlataformaAzulClaroV.png");
     this.load.image("ladder", "escalera.png");
 
     //Fondos
@@ -28,7 +33,10 @@ class mainMenu extends Phaser.Scene {
     this.load.image("background2", "background1-2.png");
     this.load.image("background3", "background1-3.png");
     this.load.image("background4", "background1-4.png");
+    this.load.image("background5", "background1-5.png");
     this.load.image("background6", "background1-6.png");
+    this.load.image("background7", "background1-7.png");
+    this.load.image("background8", "background1-8.png");
     this.load.image("logo", "pangLogo.gif");
 
     //PowerUps
