@@ -46,6 +46,7 @@ class mainMenu extends Phaser.Scene {
       frameWidth: 37,
       frameHeight: 41,
     });
+
     this.load.image("powerUp3", "fresa.png");
     this.load.image("powerUp4", "PowerUpStopTime.png");
     this.load.image("powerUp5", "powerUpGanchoFijo.png");
@@ -54,7 +55,12 @@ class mainMenu extends Phaser.Scene {
       frameHeight: 16,
     });
     this.load.image("powerUp7", "PowerUpSlowTime.png");
+    this.load.image("powerUp8", "powerUpDoubleShoot.png");
     
+    this.load.spritesheet("doubleShoot", "doubleShoot.png", {
+      frameWidth: 19,
+      frameHeight: 9,
+    });
     //Enemigos
     this.load.image("ball", "ball1.png");
     this.load.spritesheet("ballExplosion", "BallExplosion.png", {

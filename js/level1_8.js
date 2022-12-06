@@ -33,6 +33,12 @@ class level1_8 extends Phaser.Scene {
       repeat: -1,
     });
     this.anims.create({
+      key: "doubleShoot",
+      frames: this.anims.generateFrameNumbers("doubleShoot", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
       key: "crabWalking",
       frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9 }),
       frameRate: 5,
@@ -111,6 +117,7 @@ class level1_8 extends Phaser.Scene {
     this.normalPlatformsV = this.physics.add.group();
     this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
+    this.bullets = this.physics.add.group();
   }
 
   create() {
@@ -367,6 +374,10 @@ class level1_8 extends Phaser.Scene {
           repeat: 0,
         });
           break;
+          case 8:
+            //DisparoDoble
+            this.player1.doubleShoot = true;
+            break;
     }
     _powerUp.destroy();
   }
@@ -450,9 +461,9 @@ class level1_8 extends Phaser.Scene {
     this.score += 10;
 
     //Genera PowerUp
-    var rnd = Phaser.Math.Between(1, 5);
+    var rnd = Phaser.Math.Between(1, 1);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 7);
+      var tipo = Phaser.Math.Between(8, 8);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 

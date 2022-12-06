@@ -7,6 +7,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
     this.playerHealth = gamePrefs.PLAYER1HEALTH;
     this.FixShoot =false;
+    this.doubleShoot = false;
     this.escaleraColider = false;
     this.harpoonNumber = 0; //Variable que se usara para determinar cuantos disparos consecutivos puede hacer el jugador
     this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
@@ -111,8 +112,45 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
           this
         );
       }
+    }else if(this.doubleShoot == true){
+
+    //IMPLEMENTARBALAS
+    console.log("Ha entrado");
+    var _bullet= new bulletPrefab(this.scene, this.x, this.y);
+   
+    _sceneParam.physics.add.overlap(
+      _bullet,
+      _sceneParam.ballpool,
+      _sceneParam.hitBall,
+      null,
+      _sceneParam
+    );
+
+    _sceneParam.physics.add.overlap(
+      _bullet,
+      _sceneParam.enemies,
+      this.hitEnemyB,
+      null,
+      this
+    );
+
+    _sceneParam.physics.add.overlap(
+      _bullet,
+      _sceneParam.destructivePlatforms,
+      this.destroyBulletAndPlatform,
+      null,
+      this
+    );
+    _sceneParam.physics.add.overlap(
+      _bullet,
+      _sceneParam.normalPlatforms,
+      this.destroyBullet,
+      null,
+      this
+    );
+
     }else{
-    if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot) {
+    if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot && this.doubleShoot==false) {
       this.anims.play("shoot", false);
       this.isShooting = true;
 
@@ -218,12 +256,30 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     }*/
   }
 
+  hitEnemyB(_bullet, _enemy){
+   
+    _bullet.destroy();
+    _enemy.lives--;
+    _enemy.hit()
+    
+  }
+
+
+
   destroyHarpoon(_harpoon, _floor) {
     this.enterOnce=true;
     //Destruye al harpon al tocar el techo
     if (this.harpoonNumber > 0) this.harpoonNumber--;
     _harpoon.destroy();
     if(this.FixShoot==true) this.FixShoot=false;
+  }
+
+  destroyBullet(_bullet,_floor){
+  _bullet.destroy();
+  }
+  destroyBulletAndPlatform(_bullet,_platform){
+    _bullet.destroy();
+    _platform.destroy();  
   }
 
   flash(_harpoon){
