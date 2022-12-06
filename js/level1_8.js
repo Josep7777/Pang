@@ -468,7 +468,7 @@ class level1_8 extends Phaser.Scene {
     }
 
     var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
-
+    var _scoreOnScreen = new scoreOnScreenPrefab(this,_ballCol.x,_ballCol.y);
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
