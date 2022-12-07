@@ -46,6 +46,8 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
   
 
     if(this.FixShoot==true){
+      this.LaserShootSound = this.scene.sound.add("ShootSound", { loop: false });
+      this.LaserShootSound.play();
       if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot) {
         this.anims.play("shoot", false);
         this.isShooting = true;
@@ -113,9 +115,16 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         );
       }
     }else if(this.doubleShoot == true){
-
+      this.LaserShootSound = this.scene.sound.add("LaserShootSound", { loop: false });
+      this.LaserShootSound.play();
     //IMPLEMENTARBALAS
-    console.log("Ha entrado");
+    this.anims.play("shoot", true);
+    this.isShooting = true;
+    this.once("animationcomplete", () => {
+      this.isShooting = false;
+    });
+
+
     var _bullet= new bulletPrefab(this.scene, this.x, this.y);
    
     _sceneParam.physics.add.overlap(
@@ -150,10 +159,13 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     );
 
     }else{
+
+      
     if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot && this.doubleShoot==false) {
       this.anims.play("shoot", false);
       this.isShooting = true;
-
+      this.LaserShootSound = this.scene.sound.add("ShootSound", { loop: false });
+      this.LaserShootSound.play();
       //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
 
       this.once("animationcomplete", () => {

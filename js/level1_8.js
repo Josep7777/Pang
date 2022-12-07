@@ -122,7 +122,7 @@ class level1_8 extends Phaser.Scene {
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("mtFujiTheme", { loop: true });
+    this.backgroundMusic = this.sound.add("EmeraldTemple", { loop: true });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
@@ -459,7 +459,8 @@ class level1_8 extends Phaser.Scene {
 
   hitBall(_harpoon, _ballCol) {
     this.score += 10;
-
+    this.explosionSound = this.sound.add("explosionSound", { loop: false });
+    this.explosionSound.play();
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 1);
     if (rnd == 1) {

@@ -116,7 +116,7 @@ class level1_6 extends Phaser.Scene {
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("mtFujiTheme", { loop: true });
+    this.backgroundMusic = this.sound.add("mtKeirin", { loop: true });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();

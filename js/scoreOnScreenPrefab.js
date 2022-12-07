@@ -4,9 +4,8 @@ class scoreOnScreenPrefab extends Phaser.GameObjects.GameObject
     {
         super(_scene,_positionX,_positionY);
           this.texto="100pts!";
-        //_scene.add.text(_positionX,_positionY,this.texto);
-        this.text = _scene.add.text(_positionX, _positionY, this.texto, { font: "50px publicPixel", fill: "#ffffff", align: "center" });
-        this.text.setDepth(10);//FALTA PONER FUENTUES BIEN
+        this.text = _scene.add.bitmapText(_positionX, _positionY, "publicPixelWhite", this.texto, 15);
+        this.text.setDepth(10);
         this.timeOnScreen = _scene.time.addEvent({
             delay: 1000, //ms
             callback: this.destroyText,
