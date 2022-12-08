@@ -4,7 +4,6 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
 
     _scene.add.existing(this);
     this.direct = _direct;
-
     _scene.physics.add.overlap(
       this,
       _scene.floorD,
@@ -36,6 +35,29 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
     );
   }
 
+  preUpdate(time, delta) {
+    
+
+    if(this.body.touching.up)
+    {
+      console.log("Arriba");
+    }
+    if(this.body.touching.down)
+    {
+      console.log("Abajo");
+    }
+    /*if(this.body.touching.right)
+    {
+      console.log("Dere");
+    }
+    if(this.body.touching.left)
+    {
+      console.log("Izqui");
+    }*/
+
+    super.preUpdate(time, delta);
+  }
+
   bounce(_ball, _floorD) {
     
     _ball.body.setVelocityY(
@@ -47,7 +69,6 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
         _ball.direct
     );
   }
-
 
   bounceP(_ball, _wall) {
     _ball.direct = _ball.direct * -1; //CAMBIAMOS DIRECCION
