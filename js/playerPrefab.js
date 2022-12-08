@@ -17,7 +17,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.scene = _scene;
 
     this.enterOnce=true;
-    this.body.setSize(this.width-7, this.height, true);
+    this.body.setSize(this.width-11, this.height-7, true);
     //Cuando le das al espacio, el jugador dispara
     this.cursores.space.on(
       "down",
