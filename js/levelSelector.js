@@ -52,6 +52,6 @@ class levelSelector extends Phaser.Scene {
 
     playLevel(){
       if(this.worldSelected == 1)
-        this.scene.start("level1_8");
+        this.scene.start("level1_6");
     }
 }

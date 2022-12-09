@@ -119,7 +119,7 @@ class level1_7 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width / 2, config.height / 2 - 100, "background7");
+    this.add.sprite(config.width / 2, config.height / 2 - 82, "background7");
     //Cargamos las pools
     this.loadPools();
 
