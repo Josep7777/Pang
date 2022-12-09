@@ -676,7 +676,6 @@ _platform12.body.setImmovable(true);
       //TIMER
       if (this.countDown <= 0) {
         this.gameOverflag = true;
-        this.player1GameOver.setVisible(true);
         this.gameOver();
       }
     }
