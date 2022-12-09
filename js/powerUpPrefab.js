@@ -8,7 +8,6 @@ class powerUpPrefab extends Phaser.GameObjects.Sprite{
 
     preUpdate(time,delta)
     {
-        
         super.preUpdate(time, delta);
     }
 }

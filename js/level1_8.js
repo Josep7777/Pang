@@ -171,9 +171,7 @@ class level1_8 extends Phaser.Scene {
     this.countDown = 99;
     this.timeBoard;
 
-    this.score = 0;
     this.newLifes = 3;
-    this.scoreBoard;
 
     this.gameOverflag = false;
     this.restartGameOver = false;
@@ -192,7 +190,7 @@ class level1_8 extends Phaser.Scene {
       .setScale(4);
 
     //Funcion que crea los textos estaticos
-    this.loadText();
+    this._hud = new hudPrefab(this, this.levelName, this.worldNumber, this.stageNumber,this.highScore,this.score,this.countDown);
 
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
@@ -335,7 +333,7 @@ class level1_8 extends Phaser.Scene {
         break;
       case 3:
         //Objetos que dan puntuacion
-        this.score += 500;
+        this._hud.setScore(500);
         break;
       case 4:
         //Parar tiempo
@@ -458,7 +456,7 @@ class level1_8 extends Phaser.Scene {
   }
 
   hitBall(_harpoon, _ballCol) {
-    this.score += 10;
+    this._hud.setScore(10);
     this.explosionSound = this.sound.add("explosionSound", { loop: false });
     this.explosionSound.play();
     //Genera PowerUp
@@ -527,77 +525,7 @@ class level1_8 extends Phaser.Scene {
     });
     //_powerUp.destroy(); 
   }
-  
-  loadText() {
-    //PLAYERS
-    this.add.bitmapText(130, 730, "publicPixelWhite", "PLAYER-1", 30);
-    this.add.bitmapText(1430, 730, "publicPixelWhite", "PLAYER-2", 30);
 
-    //NOMBRE DEL MUNDO ACTUAL
-    this.add.bitmapText(890, 730, "publicPixelWhite", this.levelName, 30);
-    //NUMERO DE MUNDO Y NIVEL
-    this.add.bitmapText(
-      860,
-      810,
-      "publicPixelWhite",
-      this.worldNumber + "-" + this.stageNumber + " STAGE",
-      30
-    );
-    //HIGH SCORE
-    this.add.bitmapText(
-      840,
-      860,
-      "publicPixelWhite",
-      "HI: " + this.highScore,
-      30
-    );
-
-    //INSERT COIN
-    this.insertCoin = this.add.bitmapText(
-      1390,
-      810,
-      "publicPixelWhite",
-      "INSERT COIN",
-      30
-    );
-
-    //SCORE
-    this.scoreBoard = this.add.bitmapText(
-      389,
-      777,
-      "publicPixelWhite",
-      this.score,
-      30
-    );
-
-    //TIMER
-    this.timeBoard = this.scoreBoard = this.add.bitmapText(
-      1350,
-      50,
-      "publicPixelWhite",
-      "TIME:0" + this.countDown,
-      65
-    );
-
-    //GAME OVER UI
-    this.player1GameOver = this.add.bitmapText(
-      120,
-      830,
-      "publicPixelWhite",
-      "GAME OVER!",
-      30
-    );
-    this.gameOverText = this.add.bitmapText(
-      config.width / 2 - 250,
-      config.height / 2 - 100,
-      "publicPixelWhite",
-      "GAME OVER",
-      65
-    );
-
-    this.player1GameOver.setVisible(false);
-    this.gameOverText.setVisible(false);
-  }
 
   createWalls() {
     //Creamos el suelo
@@ -701,12 +629,6 @@ _platform8.body.setImmovable(true);
     }
   }
 
-  updateText() {
-    //SCORE
-    this.scoreBoard.setText(this.score);
-    this.timeBoard.setText("TIME:0" + Math.round(this.countDown));
-  }
-
   update(time, delta) {
     if (this.stopGravityBalls == true) {
       this.ballpool.children.each(function (ball) {
@@ -718,13 +640,6 @@ _platform8.body.setImmovable(true);
 
     if (this.gameOverflag == false) {
       //TIMER
-      this.timer += delta;
-
-      if (this.timer > 1000) {
-        this.resources += 1;
-        this.timer -= 1000;
-        this.countDown -= 1;
-      }
       if (this.countDown <= 0) {
         this.gameOverflag = true;
         this.player1GameOver.setVisible(true);
@@ -752,8 +667,6 @@ _platform8.body.setImmovable(true);
       }
     }
 
-    this.updateText();
-
     //Funcion que controla el HUD de las vidas
     this.lifesHUD();
 
@@ -777,7 +690,6 @@ _platform8.body.setImmovable(true);
   }
 
   gameOver() {
-    this.gameOverText.setVisible(true);
     this.player1.destroy();
     this.restartGameOver = true;
   }

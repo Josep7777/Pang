@@ -134,7 +134,6 @@ class level1_1 extends Phaser.Scene {
     this.invencible = false;
     this.timer2 = 0;
     this.dañoEscudo = false;
-    this.resources = 0;
 
     //POSICION X/Y DEL FEEDBACK DEL POWER UP
     this.powerUp1FeedbackPosX = 400;
@@ -142,7 +141,7 @@ class level1_1 extends Phaser.Scene {
     //POWER UP TIEMPO INMUNE
     this.timerPower = 5;
     this.timerText = 0;
-    this.flashText = false;
+    //this.flashText = false;
     this.countDown2 = 1;
 
     //Datos del HUD
@@ -173,7 +172,9 @@ class level1_1 extends Phaser.Scene {
       .setScale(4);
 
     //Funcion que crea los textos estaticos
-    this.loadText();
+    this._hud = new hudPrefab(this, this.levelName, this.worldNumber, this.stageNumber,this.highScore,this.score,this.countDown);
+
+        //GAME OVER UI
 
     this.stopGravityBalls = false;
     //Creamos los cursores para input
@@ -266,7 +267,6 @@ class level1_1 extends Phaser.Scene {
       } else {
         //gameOver
         this.gameOverflag = true;
-        this.player1GameOver.setVisible(true);
         this.gameOver();
       }
     } else if (this.invencible == true) {
@@ -308,7 +308,7 @@ class level1_1 extends Phaser.Scene {
         break;
       case 3:
         //Objetos que dan puntuacion
-        this.score += 500;
+        this._hud.setScore(500);
         break;
       case 4:
         //Parar tiempo
@@ -427,7 +427,8 @@ class level1_1 extends Phaser.Scene {
   }
 
   hitBall(_harpoon, _ballCol) {
-    this.score += 10;
+    //this.score += 10;
+    this._hud.setScore(10);
 
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
@@ -490,77 +491,6 @@ class level1_1 extends Phaser.Scene {
     //_powerUp.destroy(); 
   }
 
-  loadText() {
-    //PLAYERS
-    this.add.bitmapText(130, 730, "publicPixelWhite", "PLAYER-1", 30);
-    this.add.bitmapText(1430, 730, "publicPixelWhite", "PLAYER-2", 30);
-
-    //NOMBRE DEL MUNDO ACTUAL
-    this.add.bitmapText(890, 730, "publicPixelWhite", this.levelName, 30);
-    //NUMERO DE MUNDO Y NIVEL
-    this.add.bitmapText(
-      860,
-      810,
-      "publicPixelWhite",
-      this.worldNumber + "-" + this.stageNumber + " STAGE",
-      30
-    );
-    //HIGH SCORE
-    this.add.bitmapText(
-      840,
-      860,
-      "publicPixelWhite",
-      "HI: " + this.highScore,
-      30
-    );
-
-    //INSERT COIN
-    this.insertCoin = this.add.bitmapText(
-      1390,
-      810,
-      "publicPixelWhite",
-      "INSERT COIN",
-      30
-    );
-
-    //SCORE
-    this.scoreBoard = this.add.bitmapText(
-      389,
-      777,
-      "publicPixelWhite",
-      this.score,
-      30
-    );
-
-    //TIMER
-    this.timeBoard = this.scoreBoard = this.add.bitmapText(
-      1350,
-      50,
-      "publicPixelWhite",
-      "TIME:0" + this.countDown,
-      65
-    );
-
-    //GAME OVER UI
-    this.player1GameOver = this.add.bitmapText(
-      120,
-      830,
-      "publicPixelWhite",
-      "GAME OVER!",
-      30
-    );
-    this.gameOverText = this.add.bitmapText(
-      config.width / 2 - 250,
-      config.height / 2 - 100,
-      "publicPixelWhite",
-      "GAME OVER",
-      65
-    );
-
-    this.player1GameOver.setVisible(false);
-    this.gameOverText.setVisible(false);
-  }
-
   createWalls() {
     //Creamos el suelo
     this.floorD = this.physics.add.sprite(
@@ -604,12 +534,6 @@ class level1_1 extends Phaser.Scene {
     }
   }
 
-  updateText() {
-    //SCORE
-    this.scoreBoard.setText(this.score);
-    this.timeBoard.setText("TIME:0" + Math.round(this.countDown));
-  }
-
   update(time, delta) {
     if (this.ballpool.getLength() == 0) {
       //Si es la ultima pelota destruida, ganas
@@ -626,28 +550,11 @@ class level1_1 extends Phaser.Scene {
 
     if (this.gameOverflag == false) {
       //TIMER
-      this.timer += delta;
-      this.timerText += delta;
+      
 
-      if (this.timer > 1000) {
-        this.resources += 1;
-        this.timer -= 1000;
-        this.countDown -= 1;
-      }
       if (this.countDown <= 0) {
         this.gameOverflag = true;
-        this.player1GameOver.setVisible(true);
         this.gameOver();
-      }
-      if (this.timerText > 500) {
-        if (this.flashText) {
-          this.insertCoin.setVisible(true);
-          this.flashText = false;
-        } else if (!this.flashText) {
-          this.insertCoin.setVisible(false);
-          this.flashText = true;
-        }
-        this.timerText = 0;
       }
     }
     if (this.invencible == true && this.dañoEscudo == false) {
@@ -670,8 +577,6 @@ class level1_1 extends Phaser.Scene {
         }
       }
     }
-
-    this.updateText();
 
     //Funcion que controla el HUD de las vidas
     this.lifesHUD();
@@ -696,7 +601,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   gameOver() {
-    this.gameOverText.setVisible(true);
+    this._hud.setGameOverText();
     this.player1.destroy();
     this.restartGameOver = true;
   }
