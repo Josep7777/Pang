@@ -36,23 +36,13 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
   }
 
   preUpdate(time, delta) {
-    
-
-    if(this.body.touching.up)
+    /*if(this.body.touching.right)
     {
       console.log("Arriba");
     }
-    if(this.body.touching.down)
-    {
-      console.log("Abajo");
-    }
-    /*if(this.body.touching.right)
-    {
-      console.log("Dere");
-    }
     if(this.body.touching.left)
     {
-      console.log("Izqui");
+      console.log("Abajo");
     }*/
 
     super.preUpdate(time, delta);

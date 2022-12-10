@@ -197,7 +197,8 @@ class level1_4 extends Phaser.Scene {
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
     this.physics.add.collider(this.normalPlatformsV, this.player1);
-    this.physics.add.collider(this.normalPlatformsV, this.ballpool);
+    //this.physics.add.collider(this.normalPlatformsV, this.ballpool);
+    this.physics.add.collider(this.ballpool, this.normalPlatformsV, this.collideBallPlatform);
     this.physics.add.overlap(
       this.ballpool,
       this.player1,
@@ -205,13 +206,13 @@ class level1_4 extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.overlap(
+    /*this.physics.add.overlap(
       this.ballpool,
       this.normalPlatformsV,
       this.changeBallDirection,
       null,
       this
-    );
+    );*/
 
     this.physics.add.overlap(
       this.player1,
@@ -229,14 +230,26 @@ class level1_4 extends Phaser.Scene {
       repeat: 0,
     });
   }
-  changeBallDirection(_ball, _platform) {
+  /*changeBallDirection(_ball, _platform) {
     _ball.direct = _ball.direct * -1; //CAMBIAMOS DIRECCION
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED *
         (gamePrefs.VELOCITY_MAKER + _ball.scale) *
         _ball.direct
     );
+  }*/
+
+  collideBallPlatform(_ball, _plat){
+    if(_plat.body.touching.right)
+    {
+      _ball.direct *= -1;
+    } else if(_plat.body.touching.left)
+    {
+      _ball.direct *= -1;
+    }
+    console.log("asdasd");
   }
+
   createEnemy() {
     var enemyType = Phaser.Math.Between(1, 4);
 
@@ -439,6 +452,7 @@ class level1_4 extends Phaser.Scene {
       0,
       _ball.height / 2 - _ball.width / 2
     );
+    _ball.body.setBounce(1,1);
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct

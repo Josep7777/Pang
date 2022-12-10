@@ -180,6 +180,8 @@ class level1_3 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
+    this.physics.add.collider(this.ballpool, this.destructivePlatforms, this.collideBallPlatform);
+    this.physics.add.collider(this.ballpool, this.normalPlatforms, this.collideBallPlatform);
 
     this.physics.add.overlap(
       this.ballpool,
@@ -209,6 +211,17 @@ class level1_3 extends Phaser.Scene {
         );
   }
 
+  collideBallPlatform(_ball, _plat){
+    if(_plat.body.touching.right)
+    {
+      _ball.direct *= -1;
+    } else if(_plat.body.touching.left)
+    {
+      _ball.direct *= -1;
+    }
+    //console.log("asdasd");
+  }
+  
   createEnemy(){
     var enemyType = Phaser.Math.Between(1, 4);
 
@@ -411,6 +424,7 @@ class level1_3 extends Phaser.Scene {
 
     //Modificamos su velocidad
     _ball.body.setCircle(_ball.width/2, 0, _ball.height/2 - _ball.width/2);
+    _ball.body.setBounce(1,1);
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct

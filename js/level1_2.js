@@ -187,7 +187,7 @@ class level1_2 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-    this.physics.add.collider(this.ballpool, this.destructivePlatforms);
+    this.physics.add.collider(this.ballpool, this.destructivePlatforms, this.collideBallPlatform);
     
     this.physics.add.overlap(
       this.ballpool,
@@ -212,6 +212,17 @@ class level1_2 extends Phaser.Scene {
       callbackScope: this,
       repeat: 0,
     });
+  }
+
+  collideBallPlatform(_ball, _plat){
+    if(_plat.body.touching.right)
+    {
+      _ball.direct *= -1;
+    } else if(_plat.body.touching.left)
+    {
+      _ball.direct *= -1;
+    }
+    //console.log("asdasd");
   }
 
   createEnemy() {
