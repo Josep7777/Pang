@@ -104,6 +104,8 @@ class mainMenu extends Phaser.Scene {
     this.load.audio("explosionSound", "explosion.wav");
     this.load.audio("LaserShootSound", "burst fire.mp3");
     this.load.audio("ShootSound", "sfx_shoot.wav");
+    this.load.setPath("assets/sfx/");
+    this.load.audio("airplaneSound", "plane.ogg");
 
     /**************************Fuentes****************************/
     this.load.setPath("assets/fonts/");
@@ -146,7 +148,7 @@ class mainMenu extends Phaser.Scene {
 
   update(time, delta) {
     if (this.cursores.space.isDown) {
-      this.scene.start("levelSelector");
+      this.scene.start("level1_3");
     }
     this.timerText += delta;
     if (this.timerText > 500) {

@@ -18,13 +18,23 @@ class worldCompleted extends Phaser.Scene {
 
     create(){
         gamePrefs.STAGE = 3;
-      this.infoText = "CHOOSE THE CITY TO START.\nUSE JOYSTICK TO CHOOSE.\nPRESS BUTTON TO FINALIZE CHOICE.";
+      this.infoText = "YOU'VE GOT A LONG WAY TO GO.\n\n\nTAKE IT EASY.";
         this.worldSelected = gamePrefs.CURRENT_WORLD;
-        this.nameworld1 = "MT.FUJI";
-        this.numberStagesWorld1 = "STAGE   1-3";
+        this.nameworld1 = "MT.KEIRIN";
+        this.numberStagesWorld1 = "STAGE   4-6";
         this.cursores = this.input.keyboard.createCursorKeys();
         this.add.sprite(config.width/2 + 3, config.height/2-95, "map");
-        this.plane = this.add.sprite(config.width/2 +790, config.height/2-180, "plane");
+        this.world1X = config.width/2 +790;
+        this.wordl1Y = config.height/2-190;
+        this.world2X =config.width/2 +590;
+        this.wordl2Y = config.height/2-190;
+        if(gamePrefs.STAGE == 3){
+          this.actualWorldX = this.world1X;
+          this.actualWorldY = this.wordl1Y;
+        }
+        this.plane = this.add.sprite(this.actualWorldX, this.actualWorldY, "plane").setRotation(29.9);
+        this.planeSound = this.sound.add('airplaneSound', { loop: false });
+        this.planeSound.play();
         this.timer = 0;
         this.countDown = 9;    
         this.timeBoard;
@@ -35,14 +45,11 @@ class worldCompleted extends Phaser.Scene {
     }
     update(time, delta){
       this.updateText();
-      this.plane.x =- 0.2;
-      if (this.cursores.space.isDown) {
-        this.playLevel();
-      }
-    }
-
-    playLevel(){
-      if(gamePrefs.STAGE == 3)
+        this.plane.x -= 0.8;
+      if (this.plane.x <= this.world2X) {
+        this.planeSound.stop();
         this.scene.start("level1_4");
+      }
+    
     }
 }
