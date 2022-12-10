@@ -56,7 +56,7 @@ class mainMenu extends Phaser.Scene {
     });
     this.load.image("powerUp7", "PowerUpSlowTime.png");
     this.load.image("powerUp8", "powerUpDoubleShoot.png");
-    
+    this.load.image("plane", "plane.png");
     this.load.spritesheet("doubleShoot", "doubleShoot.png", {
       frameWidth: 19,
       frameHeight: 9,

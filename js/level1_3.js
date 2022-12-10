@@ -637,6 +637,7 @@ class level1_3 extends Phaser.Scene {
     gamePrefs.SCORE = this.score;
     gamePrefs.STAGE = this.stageNumber;
     gamePrefs.TIMER = this.countDown;
+    gamePrefs.WORLD_1 = 1;
     this.scene.start("winScene");
   }
 

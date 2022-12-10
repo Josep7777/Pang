@@ -23,7 +23,8 @@ var gamePrefs=
     CURRENT_WORLD: 1,
     POWERUP_DESTROY_TIMER: 5000,
     TIMER_LEVELSELECTOR: 10,
-    SPEED_BULLET:-400
+    SPEED_BULLET:-400,
+    WORLD_1: 0
 }
 
 var config =
@@ -32,7 +33,7 @@ var config =
     width: 1920,
     height: 900,
     //scene:[menu,pang],
-    scene:[mainMenu,levelSelector,level1_1,level1_2,level1_3,level1_4,level1_5,level1_6,level1_7,level1_8,winScene],
+    scene:[mainMenu,levelSelector,level1_1,level1_2,level1_3,level1_4,level1_5,level1_6,level1_7,level1_8,winScene,worldCompleted],
     render:
     {
         pixelArt:true
