@@ -254,7 +254,7 @@ class level1_4 extends Phaser.Scene {
     {
       _ball.direct *= -1;
     }
-    console.log("asdasd");
+    //console.log("asdasd");
   }
 
   createEnemy() {
@@ -579,13 +579,14 @@ class level1_4 extends Phaser.Scene {
     this.normalPlatformsV.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
-
+    _platform1.depth = 3;
     var _platform2 = this.add
       .sprite(config.width / 2 + 40, config.height - 335, "normalPlatV")
       .setScale(0.6);
     this.normalPlatformsV.add(_platform2);
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
+    _platform2.depth = 3;
   }
 
   createStairs() {

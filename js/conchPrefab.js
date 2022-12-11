@@ -108,7 +108,7 @@ class conchPrefab extends enemyPrefab {
   }
 
   startMoving() {
-    console.log("aaa");
+    //console.log("aaa");
     this.invencible = false;
     this.isGoingtoDie = false;
   }
