@@ -15,7 +15,7 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
     _scene.physics.add.overlap(
       this,
       _scene.floorU,
-      this.bounce,
+      this.bounceTecho,
       null,
       this
     );
@@ -66,6 +66,14 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
       gamePrefs.BALL_SPEED *
         (gamePrefs.VELOCITY_MAKER + _ball.scale) *
         _ball.direct
+    );
+  }
+
+  bounceTecho(_ball, _wall){
+
+ _ball.body.setVelocityY(
+     //console.log("Mi padre")
+      (gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _ball.scale))
     );
   }
 
