@@ -156,8 +156,8 @@ class level1_7 extends Phaser.Scene {
 
     //Datos del HUD
     //this.hud = new hudPrefab(this, "hud");
-    this.levelName = "MT.FUJI";
-    this.worldNumber = 1;
+    this.levelName = gamePrefs.WORLD3_NAME;
+    this.worldNumber = 3;
     this.stageNumber = 7;
     this.highScore = 100000;
     this.timer = 0;

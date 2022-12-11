@@ -115,7 +115,7 @@ class level1_8 extends Phaser.Scene {
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
     this.normalPlatformsV = this.physics.add.group();
-    this.ladder = this.physics.add.group();
+    this.ladder = this.physics.add.group();pools
     this.enemies = this.add.group();
     this.bullets = this.physics.add.group();
   }
@@ -163,8 +163,8 @@ class level1_8 extends Phaser.Scene {
 
     //Datos del HUD
     //this.hud = new hudPrefab(this, "hud");
-    this.levelName = "MT.FUJI";
-    this.worldNumber = 1;
+    this.levelName = gamePrefs.WORLD3_NAME;
+    this.worldNumber = 3;
     this.stageNumber = 8;
     this.highScore = 100000;
     this.timer = 0;

@@ -62,7 +62,7 @@ class winScene extends Phaser.Scene{
                 this.scene.start("level1_6");
                 break;
                 case 6: 
-                this.scene.start("level1_7");
+                this.scene.start("worldCompleted");
                 break;
                 case 7: 
                 this.scene.start("level1_8");

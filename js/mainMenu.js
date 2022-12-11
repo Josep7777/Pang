@@ -90,7 +90,8 @@ class mainMenu extends Phaser.Scene {
 
     //UI
     this.load.image("lifes", "lifes.png");
-    
+    this.load.image("markYellow","markYellow.png");
+    this.load.image("markOrange","markOrange.png");
 
 
     /************************Sonidos***********************/
@@ -148,7 +149,7 @@ class mainMenu extends Phaser.Scene {
 
   update(time, delta) {
     if (this.cursores.space.isDown) {
-      this.scene.start("level1_3");
+      this.scene.start("levelSelector");
     }
     this.timerText += delta;
     if (this.timerText > 500) {
