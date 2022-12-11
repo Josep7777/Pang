@@ -10,8 +10,8 @@ class levelSelector extends Phaser.Scene {
       this.add.bitmapText(config.width - 1880, config.height - 170, 'publicPixelWhite', this.infoText,30);
       this.timeBoard = this.add.bitmapText(config.width/2 + 350, config.height/2 -325, 'publicPixel', this.countDown,130);
       if(this.worldSelected == 1){
-        this.actualWorldName = this.add.bitmapText(config.width/2 + 450, config.height/2 +260, 'publicPixelYellow', this.nameworld1,30);
-        this.actualWorldStages = this.add.bitmapText(config.width/2 + 400, config.height/2 +400, 'publicPixelYellow', this.numberStagesWorld1,30);
+        this.actualWorldName = this.add.bitmapText(config.width/2 + 450, config.height/2 +260, 'publicPixelYellow', "",30);
+        this.actualWorldStages = this.add.bitmapText(config.width/2 + 400, config.height/2 +400, 'publicPixelYellow', "",30);
       }      
   }
 
@@ -29,6 +29,8 @@ class levelSelector extends Phaser.Scene {
         this.timer = 0;
         this.countDown = 9;    
         this.timeBoard;
+        this.leftIsPress = false;
+        this.rightIsPress = false;
         this.loadText()
 
         //WORLDS POINTS POSITIONS
@@ -55,6 +57,7 @@ class levelSelector extends Phaser.Scene {
         case 2:
           this.actualWorldName.setText(this.nameworld2);
           this.actualWorldStages.setText(this.numberStagesWorld2);
+          break;
         case 3:
           this.actualWorldName.setText(this.nameworld3);
           this.actualWorldStages.setText(this.numberStagesWorld3);
@@ -73,11 +76,19 @@ class levelSelector extends Phaser.Scene {
       }
       this.selectingLevel();
       this.updateText();
-      
-      if(this.cursores.left.isDown && this.worldSelected != 1){
+      if(this.cursores.left.isDown && this.worldSelected != 1 && !this.leftIsPress){
         this.worldSelected--;
-      }else if(this.cursores.right.isDown && this.worldSelected != 3){
+        this.leftIsPress = true;
+
+      }else if(this.cursores.right.isDown && this.worldSelected != 3 && !this.rightIsPress){
         this.worldSelected++;
+        this.rightIsPress = true;
+      }
+      if(this.cursores.left.isUp){
+        this.leftIsPress = false;
+      }
+      if(this.cursores.right.isUp){
+        this.rightIsPress = false;
       }
 
       if (this.cursores.space.isDown) {
@@ -90,7 +101,6 @@ class levelSelector extends Phaser.Scene {
         case 1:
           this.mark.x = this.world1X;
           this.mark.y = this.wordl1Y + 5;
-          console.log("ola");
           break;
         case 2:
           this.mark.x = this.world2X;
