@@ -459,6 +459,8 @@ class level1_1 extends Phaser.Scene {
       }
     }
 
+
+    
     var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
     var _scoreOnScreen = new scoreOnScreenPrefab(this,_ballCol.x,_ballCol.y);
     //Destruimos harpon y pelota
