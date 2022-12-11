@@ -628,7 +628,6 @@ class level1_4 extends Phaser.Scene {
       //TIMER
       if (this.countDown <= 0) {
         this.gameOverflag = true;
-        this.player1GameOver.setVisible(true);
         this.gameOver();
       }
     }
@@ -676,6 +675,7 @@ class level1_4 extends Phaser.Scene {
   }
 
   gameOver() {
+    this._hud.setGameOverText();
     this.player1.destroy();
     this.restartGameOver = true;
   }

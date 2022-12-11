@@ -74,7 +74,7 @@ class worldCompleted extends Phaser.Scene {
             this.plane.y += 0.8;
             if (this.plane.y >= this.wordl3Y) {
               this.planeSound.stop();
-              this.scene.start("level1_6");
+              this.scene.start("level1_7");
             }
             break;
         }

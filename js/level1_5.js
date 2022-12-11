@@ -290,7 +290,6 @@ class level1_5 extends Phaser.Scene {
       } else {
         //gameOver
         this.gameOverflag = true;
-        this.player1GameOver.setVisible(true);
         this.gameOver();
       }
     } else if (this.invencible == true) {
@@ -676,7 +675,7 @@ class level1_5 extends Phaser.Scene {
   }
 
   gameOver() {
-    this.gameOverText.setVisible(true);
+    this._hud.setGameOverText();
     this.player1.destroy();
     this.restartGameOver = true;
   }
