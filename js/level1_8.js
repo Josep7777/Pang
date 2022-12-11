@@ -115,14 +115,14 @@ class level1_8 extends Phaser.Scene {
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
     this.normalPlatformsV = this.physics.add.group();
-    this.ladder = this.physics.add.group();pools
+    this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
     this.bullets = this.physics.add.group();
   }
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("EmeraldTemple", { loop: true });
+    this.backgroundMusic = this.sound.add("EmeraldTemple", { loop: false,volume:0.5 });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
@@ -137,8 +137,8 @@ class level1_8 extends Phaser.Scene {
     gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
     
     //Creamos la pelota, le pasamos la x, la y, y la escala
-    this.createBall(config.width - 1700, config.height - 700, 4, 1);
-
+    this.createBall(config.width/2 -100, config.height - 600, 3, 1);
+    this.createBall(config.width/2  +100, config.height - 600, 3, 1);
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
@@ -417,7 +417,7 @@ class level1_8 extends Phaser.Scene {
           children.y + this.margen,
           children.scaleX - 1,
           1
-        ); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SPOT
+        ); 
         this.createBall(
           children.x + this.margen,
           children.y + this.margen,
@@ -464,12 +464,12 @@ class level1_8 extends Phaser.Scene {
 
   hitBall(_harpoon, _ballCol) {
     this._hud.setScore(10);
-    this.explosionSound = this.sound.add("explosionSound", { loop: false });
+    this.explosionSound = this.sound.add("explosionSound", { loop: false,volume:0.3 });
     this.explosionSound.play();
     //Genera PowerUp
-    var rnd = Phaser.Math.Between(1, 1);
+    var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(8, 8);
+      var tipo = Phaser.Math.Between(1, 8);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -569,13 +569,13 @@ class level1_8 extends Phaser.Scene {
     var _platform1 = this.add
       .sprite(config.width / 2+15, config.height/2+60, "normalBlueVertical")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform1);
+    this.destructivePlatforms.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
     var _platform2 = this.add
     .sprite(config.width / 2-15, config.height/2+60, "normalBlueVertical")
     .setScale(0.6);
-  this.normalPlatformsV.add(_platform2);
+  this.destructivePlatforms.add(_platform2);
   _platform2.body.allowGravity = false;
   _platform2.body.setImmovable(true);
 
@@ -584,13 +584,13 @@ class level1_8 extends Phaser.Scene {
   var _platform3 = this.add
   .sprite(config.width / 2+15, config.height/2-230, "normalBlueVertical")
   .setScale(0.6);
-this.normalPlatformsV.add(_platform3);
+this.destructivePlatforms.add(_platform3);
 _platform3.body.allowGravity = false;
 _platform3.body.setImmovable(true);
 var _platform4 = this.add
 .sprite(config.width / 2-15, config.height/2-230, "normalBlueVertical")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform4);
+this.destructivePlatforms.add(_platform4);
 _platform4.body.allowGravity = false;
 _platform4.body.setImmovable(true);
 

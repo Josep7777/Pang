@@ -112,11 +112,12 @@ class level1_6 extends Phaser.Scene {
     this.normalPlatformsV = this.physics.add.group();
     this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
+    this.bullets = this.physics.add.group();
   }
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("mtKeirin", { loop: true });
+    this.backgroundMusic = this.sound.add("mtKeirin", { loop: false,volume:0.5 });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
@@ -367,6 +368,11 @@ class level1_6 extends Phaser.Scene {
           repeat: 0,
         });
           break;
+
+          case 8:
+            //DisparoDoble
+            this.player1.doubleShoot = true;
+            break;
     }
     _powerUp.destroy();
   }
@@ -449,11 +455,12 @@ class level1_6 extends Phaser.Scene {
 
   hitBall(_harpoon, _ballCol) {
     this._hud.setScore(10);
-
+    this.explosionSound = this.sound.add("explosionSound", { loop: false,volume:0.3 });
+    this.explosionSound.play();
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 7);
+      var tipo = Phaser.Math.Between(1, 8);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -469,7 +476,7 @@ class level1_6 extends Phaser.Scene {
     }
 
     var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
-
+    var _scoreOnScreen = new scoreOnScreenPrefab(this,_ballCol.x,_ballCol.y);
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();

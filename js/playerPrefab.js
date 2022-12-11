@@ -45,8 +45,8 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     //Crea el harpon cuando se presiona espacio
   
 
-    if(this.FixShoot==true){
-      this.LaserShootSound = this.scene.sound.add("ShootSound", { loop: false });
+    if(this.FixShoot==true && this.doubleShoot==false){
+      this.LaserShootSound = this.scene.sound.add("ShootSound", { loop: false,volume:0.5 });
       this.LaserShootSound.play();
       if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot) {
         this.anims.play("shoot", false);
@@ -115,7 +115,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         );
       }
     }else if(this.doubleShoot == true){
-      this.LaserShootSound = this.scene.sound.add("LaserShootSound", { loop: false });
+      this.LaserShootSound = this.scene.sound.add("LaserShootSound", { loop: false,volume:0.3});
       this.LaserShootSound.play();
     //IMPLEMENTARBALAS
     this.anims.play("shoot", true);
@@ -157,6 +157,13 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       null,
       this
     );
+    _sceneParam.physics.add.overlap(
+      _bullet,
+      _sceneParam.normalPlatformsV,
+      this.destroyBullet,
+      null,
+      this
+    );
 
     }else{
 
@@ -164,7 +171,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot && this.doubleShoot==false) {
       this.anims.play("shoot", false);
       this.isShooting = true;
-      this.LaserShootSound = this.scene.sound.add("ShootSound", { loop: false });
+      this.LaserShootSound = this.scene.sound.add("ShootSound", { loop: false,  volume:0.5});
       this.LaserShootSound.play();
       //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
 

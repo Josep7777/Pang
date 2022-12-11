@@ -103,7 +103,7 @@ class mainMenu extends Phaser.Scene {
     this.load.audio("EmeraldTemple", "EmeraldTemple.mp3");
     //SFX
     this.load.audio("explosionSound", "explosion.wav");
-    this.load.audio("LaserShootSound", "burst fire.mp3");
+    this.load.audio("LaserShootSound", "snd_shoot.mp3");
     this.load.audio("ShootSound", "sfx_shoot.wav");
     this.load.setPath("assets/sfx/");
     this.load.audio("airplaneSound", "plane.ogg");

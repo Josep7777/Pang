@@ -39,6 +39,12 @@ class level1_7 extends Phaser.Scene {
       repeat: -1,
     });
     this.anims.create({
+      key: "doubleShoot",
+      frames: this.anims.generateFrameNumbers("doubleShoot", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
       key: "crabDeath",
       frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5 }),
       frameRate: 7,
@@ -108,14 +114,16 @@ class level1_7 extends Phaser.Scene {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
+    this.normalPlatforms = this.physics.add.group();
     this.normalPlatformsV = this.physics.add.group();
     this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
+    this.bullets = this.physics.add.group();
   }
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("EmeraldTemple", { loop: true });
+    this.backgroundMusic = this.sound.add("EmeraldTemple", { loop: false,volume:0.5 });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
@@ -130,8 +138,8 @@ class level1_7 extends Phaser.Scene {
     gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
     
     //Creamos la pelota, le pasamos la x, la y, y la escala
-    this.createBall(config.width - 1700, config.height - 700, 4, 1);
-
+    this.createBall(config.width/2, config.height - 700, 4, 1);
+    this.createBall(config.width/2, config.height - 500, 3, 1);
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
@@ -197,6 +205,7 @@ class level1_7 extends Phaser.Scene {
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
     this.physics.add.collider(this.normalPlatformsV, this.player1);
+    this.physics.add.collider(this.ballpool, this.normalPlatforms, this.collideBallPlatform);
     this.physics.add.collider(this.ballpool, this.normalPlatformsV, this.collideBallPlatform);
     this.physics.add.collider(this.ballpool, this.destructivePlatforms, this.collideBallPlatform);
     this.physics.add.overlap(
@@ -365,6 +374,10 @@ class level1_7 extends Phaser.Scene {
           repeat: 0,
         });
           break;
+        case 8:
+            //DisparoDoble
+            this.player1.doubleShoot = true;
+        break;
     }
     _powerUp.destroy();
   }
@@ -447,11 +460,12 @@ class level1_7 extends Phaser.Scene {
 
   hitBall(_harpoon, _ballCol) {
     this._hud.setScore(10);
-
+    this.explosionSound = this.sound.add("explosionSound", { loop: false,volume:0.3 });
+    this.explosionSound.play();
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 7);
+      var tipo = Phaser.Math.Between(1, 8);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -467,7 +481,7 @@ class level1_7 extends Phaser.Scene {
     }
 
     var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
-
+    var _scoreOnScreen = new scoreOnScreenPrefab(this,_ballCol.x,_ballCol.y);
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
@@ -550,7 +564,7 @@ class level1_7 extends Phaser.Scene {
     var _platform1 = this.add
       .sprite(config.width / 2 + 300, config.height/2, "normalPlatAPetita")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform1);
+    this.normalPlatforms.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
 
@@ -571,34 +585,34 @@ class level1_7 extends Phaser.Scene {
     var _platform4 = this.add
     .sprite(config.width / 2 - 300, config.height/2, "normalPlatAPetita")
     .setScale(0.6);
-  this.normalPlatformsV.add(_platform4);
+  this.normalPlatforms.add(_platform4);
   _platform4.body.allowGravity = false;
   _platform4.body.setImmovable(true);
     
   var _platform5 = this.add
   .sprite(config.width / 2 - 350, config.height/2-70, "normalPlatAPetita")
   .setScale(0.6);
-this.normalPlatformsV.add(_platform5);
+this.normalPlatforms.add(_platform5);
 _platform5.body.allowGravity = false;
 _platform5.body.setImmovable(true);
 
 var _platform6 = this.add
 .sprite(config.width / 2 + 350, config.height/2-70, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform6);
+this.normalPlatforms.add(_platform6);
 _platform6.body.allowGravity = false;
 _platform6.body.setImmovable(true);
 
 var _platform6 = this.add
 .sprite(config.width / 2 + 400, config.height/2-180, "normalPlatV")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform6);
+this.normalPlatforms.add(_platform6);
 _platform6.body.allowGravity = false;
 _platform6.body.setImmovable(true);
 var _platform6 = this.add
 .sprite(config.width / 2 - 400, config.height/2-180, "normalPlatV")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform6);
+this.normalPlatforms.add(_platform6);
 _platform6.body.allowGravity = false;
 _platform6.body.setImmovable(true);
 
@@ -606,7 +620,7 @@ _platform6.body.setImmovable(true);
 var _platform7 = this.add
 .sprite(config.width / 2 + 430, config.height/2-255, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform7);
+this.normalPlatforms.add(_platform7);
 _platform7.body.allowGravity = false;
 _platform7.body.setImmovable(true);
 
@@ -615,35 +629,35 @@ _platform7.body.setImmovable(true);
 var _platform8 = this.add
 .sprite(config.width / 2 - 430, config.height/2-255, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform8);
+this.normalPlatforms.add(_platform8);
 _platform8.body.allowGravity = false;
 _platform8.body.setImmovable(true);
 
 var _platform9 = this.add
 .sprite(config.width / 2 + 460, config.height/2-285, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform9);
+this.normalPlatforms.add(_platform9);
 _platform9.body.allowGravity = false;
 _platform9.body.setImmovable(true);
 
 var _platform10 = this.add
 .sprite(config.width / 2 - 460, config.height/2-285, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform10);
+this.normalPlatforms.add(_platform10);
 _platform10.body.allowGravity = false;
 _platform10.body.setImmovable(true);
 
 var _platform11 = this.add
 .sprite(config.width / 2 - 490, config.height/2-315, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform11);
+this.normalPlatforms.add(_platform11);
 _platform11.body.allowGravity = false;
 _platform11.body.setImmovable(true);
 
 var _platform12 = this.add
 .sprite(config.width / 2 - 490, config.height/2-315, "normalPlatAPetita")
 .setScale(0.6);
-this.normalPlatformsV.add(_platform12);
+this.normalPlatforms.add(_platform12);
 _platform12.body.allowGravity = false;
 _platform12.body.setImmovable(true);
 

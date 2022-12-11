@@ -14,6 +14,12 @@ class level1_5 extends Phaser.Scene {
       repeat: 0,
     });
     this.anims.create({
+      key: "doubleShoot",
+      frames: this.anims.generateFrameNumbers("doubleShoot", { start: 0, end: 1 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
       key: "playerladder",
       frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 9 }),
       frameRate: 10,
@@ -111,11 +117,12 @@ class level1_5 extends Phaser.Scene {
     this.normalPlatformsV = this.physics.add.group();
     this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
+    this.bullets = this.physics.add.group();
   }
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("mtKeirin", { loop: true });
+    this.backgroundMusic = this.sound.add("mtKeirin", { loop: false,volume:0.5});
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
@@ -131,7 +138,7 @@ class level1_5 extends Phaser.Scene {
     
     //Creamos la pelota, le pasamos la x, la y, y la escala
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
-
+    this.createBall(config.width/2, config.height/2, 3, 1);
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
@@ -196,8 +203,8 @@ class level1_5 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-    this.physics.add.collider(this.normalPlatformsV, this.player1);
-    this.physics.add.collider(this.ballpool, this.normalPlatformsV, this.collideBallPlatform);
+    this.physics.add.collider(this.destructivePlatforms, this.player1);
+    this.physics.add.collider(this.ballpool, this.destructivePlatforms, this.collideBallPlatform);
     this.physics.add.overlap(
       this.ballpool,
       this.player1,
@@ -364,6 +371,11 @@ class level1_5 extends Phaser.Scene {
           repeat: 0,
         });
           break;
+
+          case 8:
+            //DisparoDoble
+            this.player1.doubleShoot = true;
+            break;
     }
     _powerUp.destroy();
   }
@@ -446,11 +458,12 @@ class level1_5 extends Phaser.Scene {
 
   hitBall(_harpoon, _ballCol) {
     this._hud.setScore(10);
-
+    this.explosionSound = this.sound.add("explosionSound", { loop: false,volume:0.3});
+    this.explosionSound.play();
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 7);
+      var tipo = Phaser.Math.Between(1, 8);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -466,7 +479,7 @@ class level1_5 extends Phaser.Scene {
     }
 
     var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
-
+    var _scoreOnScreen = new scoreOnScreenPrefab(this,_ballCol.x,_ballCol.y);
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
@@ -549,14 +562,14 @@ class level1_5 extends Phaser.Scene {
     var _platform1 = this.add
       .sprite(config.width / 2 + 300, config.height/2-150, "destructPlatV")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform1);
+    this.destructivePlatforms.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
 
     var _platform2 = this.add
       .sprite(config.width / 2 + 300, config.height/2 - 40, "destructPlatV")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform2);
+    this.destructivePlatforms.add(_platform2);
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
 
@@ -565,7 +578,7 @@ class level1_5 extends Phaser.Scene {
     var _platform3 = this.add
       .sprite(config.width / 2, config.height/2-150, "destructPlatV")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform3);
+    this.destructivePlatforms.add(_platform3);
     _platform3.body.allowGravity = false;
     _platform3.body.setImmovable(true);
 
@@ -574,7 +587,7 @@ class level1_5 extends Phaser.Scene {
     var _platform4 = this.add
       .sprite(config.width /2 - 300, config.height/2-150, "destructPlatV")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform4);
+    this.destructivePlatforms.add(_platform4);
     _platform4.body.allowGravity = false;
     _platform4.body.setImmovable(true);
 
@@ -583,7 +596,7 @@ class level1_5 extends Phaser.Scene {
     var _platform5 = this.add
       .sprite(config.width /2 - 300, config.height/2 - 40, "destructPlatV")
       .setScale(0.6);
-    this.normalPlatformsV.add(_platform5);
+    this.destructivePlatforms.add(_platform5);
     _platform5.body.allowGravity = false;
     _platform5.body.setImmovable(true);
 

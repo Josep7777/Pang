@@ -124,6 +124,7 @@ class levelSelector extends Phaser.Scene {
         case 3:
           this.scene.start("level1_7");
           break;
+        
       }
       
     }
