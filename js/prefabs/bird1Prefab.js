@@ -25,7 +25,7 @@ class bird1Prefab extends enemyPrefab {
   hit() {
     if (!this.invencible) {
       if (this.lives <= 0) {
-        this.isDead=true;
+        this.isDead = true;
         this.anims.play("enemyDeath", false);
         this.isGoingtoDie = true;
         this.body.setVelocityX(0);
@@ -59,12 +59,22 @@ class bird1Prefab extends enemyPrefab {
 
       if (_ballCol.scaleX > 1) {
         //Si no es la pelota mas pequeña genera 2 nuevas mas pequeñas
-        if(this.stopGravityBalls){
-          this.scene.createBall(_ballCol.x-50, _ballCol.y, _ballCol.X - 1, 1);
-          this.scene.createBall(_ballCol.x+50, _ballCol.y, _ballCol.scaleX - 1, -1);
-        }else{
+        if (this.stopGravityBalls) {
+          this.scene.createBall(_ballCol.x - 50, _ballCol.y, _ballCol.X - 1, 1);
+          this.scene.createBall(
+            _ballCol.x + 50,
+            _ballCol.y,
+            _ballCol.scaleX - 1,
+            -1
+          );
+        } else {
           this.scene.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, 1);
-          this.scene.createBall(_ballCol.x, _ballCol.y, _ballCol.scaleX - 1, -1);
+          this.scene.createBall(
+            _ballCol.x,
+            _ballCol.y,
+            _ballCol.scaleX - 1,
+            -1
+          );
         }
       }
 

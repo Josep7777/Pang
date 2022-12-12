@@ -5,7 +5,7 @@ class mainMenu extends Phaser.Scene {
   preload() {
     /***********************Sprites/Imagenes**********************/
     this.load.setPath("assets/img/");
-    
+
     //Jugador
     this.load.spritesheet("player1", "Character.png", {
       frameWidth: 31,
@@ -27,8 +27,8 @@ class mainMenu extends Phaser.Scene {
     this.load.image("ladder", "escalera.png");
 
     //Fondos
-    this.load.image("winImage","winImage1.png");
-    this.load.image("map","map.png");
+    this.load.image("winImage", "winImage1.png");
+    this.load.image("map", "map.png");
     this.load.image("background", "Background.png");
     this.load.image("background2", "background1-2.png");
     this.load.image("background3", "background1-3.png");
@@ -90,9 +90,8 @@ class mainMenu extends Phaser.Scene {
 
     //UI
     this.load.image("lifes", "lifes.png");
-    this.load.image("markYellow","markYellow.png");
-    this.load.image("markOrange","markOrange.png");
-
+    this.load.image("markYellow", "markYellow.png");
+    this.load.image("markOrange", "markOrange.png");
 
     /************************Sonidos***********************/
     this.load.setPath("assets/music/");
@@ -122,7 +121,6 @@ class mainMenu extends Phaser.Scene {
       "publicPixelYellow.xml"
     );
   }
-
 
   create() {
     this.cursores = this.input.keyboard.createCursorKeys();

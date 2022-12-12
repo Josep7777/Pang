@@ -1,25 +1,26 @@
-class level1_8 extends Phaser.Scene {
+class level1_2 extends Phaser.Scene {
   constructor() {
-    super({ key: "level1_8" });
+    super({ key: "level1_2" });
   }
 
-  preload() {
-  }
+  preload() {}
 
   loadAnimations() {
     this.anims.create({
       key: "shoot",
       frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
-      frameRate: 8,
+      frameRate: 10,
       repeat: 0,
     });
     this.anims.create({
-      key: "playerladder",
-      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 9 }),
-      frameRate: 10,
+      key: "doubleShoot",
+      frames: this.anims.generateFrameNumbers("doubleShoot", {
+        start: 0,
+        end: 1,
+      }),
+      frameRate: 5,
       repeat: -1,
     });
-
     this.anims.create({
       key: "move",
       frames: this.anims.generateFrameNumbers("player1", { start: 0, end: 3 }),
@@ -29,12 +30,6 @@ class level1_8 extends Phaser.Scene {
     this.anims.create({
       key: "shield",
       frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "doubleShoot",
-      frames: this.anims.generateFrameNumbers("doubleShoot", { start: 0, end: 1 }),
       frameRate: 5,
       repeat: -1,
     });
@@ -97,11 +92,14 @@ class level1_8 extends Phaser.Scene {
 
     this.anims.create({
       key: "ballDestroy",
-      frames: this.anims.generateFrameNumbers("ballExplosion", { start: 0, end: 2 }),
+      frames: this.anims.generateFrameNumbers("ballExplosion", {
+        start: 0,
+        end: 2,
+      }),
       frameRate: 15,
-      repeat: 0
+      repeat: 0,
     });
-    
+
     this.anims.create({
       key: "dynamite",
       frames: this.anims.generateFrameNumbers("powerUp6", { start: 0, end: 2 }),
@@ -114,35 +112,35 @@ class level1_8 extends Phaser.Scene {
     this.ballpool = this.physics.add.group();
     this.powerUps = this.physics.add.group();
     this.destructivePlatforms = this.physics.add.group();
-    this.normalPlatformsV = this.physics.add.group();
-    this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
+    this.ladder = this.physics.add.group();
     this.bullets = this.physics.add.group();
   }
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("EmeraldTemple", { loop: false,volume:0.5 });
+    this.backgroundMusic = this.sound.add("mtFujiTheme", {
+      loop: false,
+      volume: 0.5,
+    });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width / 2, config.height / 2 - 82, "background8");
+    this.add.sprite(config.width / 2, config.height / 2 - 100, "background2");
     //Cargamos las pools
     this.loadPools();
 
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
-    
 
     gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
-    
     //Creamos la pelota, le pasamos la x, la y, y la escala
-    this.createBall(config.width/2 -100, config.height - 600, 3, 1);
-    this.createBall(config.width/2  +100, config.height - 600, 3, 1);
+    this.createBall(config.width - 1700, config.height - 700, 4, 1);
+
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
-      config.width / 2 - 250,
+      config.width / 2,
       config.height - 250,
       "player1"
     );
@@ -161,22 +159,23 @@ class level1_8 extends Phaser.Scene {
 
     this.countDown2 = 1;
 
+    this.stopGravityBalls = false;
+
     //Datos del HUD
-    //this.hud = new hudPrefab(this, "hud");
-    this.levelName = gamePrefs.WORLD3_NAME;
-    this.worldNumber = 3;
-    this.stageNumber = 8;
+    this.levelName = gamePrefs.WORLD1_NAME;
+    this.worldNumber = 1;
+    this.stageNumber = 2;
     this.highScore = 100000;
     this.timer = 0;
     this.countDown = 99;
     this.timeBoard;
 
+    this.score = 0;
     this.newLifes = 3;
+    this.scoreBoard;
 
     this.gameOverflag = false;
     this.restartGameOver = false;
-
-    this.stopGravityBalls = false;
 
     //HUD de las vidas
     this.live1 = this.add
@@ -190,20 +189,28 @@ class level1_8 extends Phaser.Scene {
       .setScale(4);
 
     //Funcion que crea los textos estaticos
-    this._hud = new hudPrefab(this, this.levelName, this.worldNumber, this.stageNumber,this.highScore,this.score,this.countDown);
-
+    this._hud = new hudPrefab(
+      this,
+      this.levelName,
+      this.worldNumber,
+      this.stageNumber,
+      this.highScore,
+      this.score,
+      this.countDown
+    );
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
-
     //Añadimos colisiones
     this.physics.add.collider(this.floorD, this.player1);
     this.physics.add.collider(this.floorD, this.powerUps);
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
-    this.physics.add.collider(this.normalPlatformsV, this.player1);
-    this.physics.add.collider(this.ballpool, this.normalPlatformsV, this.collideBallPlatform);
-    this.physics.add.collider(this.ballpool, this.destructivePlatforms, this.collideBallPlatform);
+    this.physics.add.collider(
+      this.ballpool,
+      this.destructivePlatforms,
+      this.collideBallPlatform
+    );
 
     this.physics.add.overlap(
       this.ballpool,
@@ -229,24 +236,13 @@ class level1_8 extends Phaser.Scene {
       repeat: 0,
     });
   }
-  
-  collideBallPlatform(_ball, _plat){
-    if(_plat.body.touching.up)
-    {
 
-    } else if(_plat.body.touching.down)
-    {
-
-    } else if(_plat.body.touching.right)
-    {
-      //console.log("dere");
+  collideBallPlatform(_ball, _plat) {
+    if (_plat.body.touching.right) {
       _ball.direct *= -1;
-    } else if(_plat.body.touching.left)
-    {
-      //console.log("izqui");
+    } else if (_plat.body.touching.left) {
       _ball.direct *= -1;
     }
-    //console.log("asdasd");
   }
 
   createEnemy() {
@@ -361,8 +357,8 @@ class level1_8 extends Phaser.Scene {
         //Dinamita
         this.Kaboom();
         break;
-        case 7:
-        gamePrefs.BALL_SPEED/=2;
+      case 7:
+        gamePrefs.BALL_SPEED /= 2;
 
         this.ballpool.children.each(function (ball) {
           ball.body.setVelocityX(
@@ -377,13 +373,44 @@ class level1_8 extends Phaser.Scene {
           callbackScope: this,
           repeat: 0,
         });
-          break;
-          case 8:
-            //DisparoDoble
-            this.player1.doubleShoot = true;
-            break;
+        break;
+
+      case 8:
+        //DisparoDoble
+        this.player1.doubleShoot = true;
+        break;
     }
     _powerUp.destroy();
+  }
+
+  Kaboom() {
+    this.ballpool.getChildren().forEach(function (children) {
+      this.margen = 0;
+      if (children.scaleX > 1) {
+        this.createBall(
+          children.x + this.margen,
+          children.y + this.margen,
+          children.scaleX - 1,
+          1
+        ); //MUY PROBABLEMENTE NO SE HAGA BIEN PORQUE SE CREAN EN EL MISMO SP500OT
+        this.createBall(
+          children.x + this.margen,
+          children.y + this.margen,
+          children.scaleX - 1,
+          -1
+        );
+        this.margen = this.margen + 100;
+        children.destroy();
+
+        this.enemyTimer = this.time.addEvent({
+          delay: 500, //ms
+          callback: this.Kaboom,
+          callbackScope: this,
+          repeat: 0,
+        });
+        //this.Kaboom();
+      } //si no no hace nada
+    }, this);
   }
 
   powerUpTimeFinished() {
@@ -398,43 +425,13 @@ class level1_8 extends Phaser.Scene {
   }
 
   powerUpSlowTimeFinished() {
-    gamePrefs.BALL_SPEED*=2;
-        
-        this.ballpool.children.each(function (ball) {
-          ball.body.setVelocityX(
-            gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
-          );
-          ball.body.setVelocityY(gamePrefs.GRAVITY);
-        }, this);
-  }
+    gamePrefs.BALL_SPEED *= 2;
 
-  Kaboom() {
-    this.ballpool.getChildren().forEach(function (children) {
-      this.margen = 0;
-      if (children.scaleX > 1) {
-        this.createBall(
-          children.x + this.margen,
-          children.y + this.margen,
-          children.scaleX - 1,
-          1
-        ); 
-        this.createBall(
-          children.x + this.margen,
-          children.y + this.margen,
-          children.scaleX - 1,
-          -1
-        );
-        this.margen = this.margen + 100;
-        children.destroy();
-
-      this.enemyTimer = this.time.addEvent({
-      delay: 500, //ms
-      callback: this.Kaboom,
-      callbackScope: this,
-      repeat: 0,
-    });
-        //this.Kaboom();
-      } //si no no hace nada
+    this.ballpool.children.each(function (ball) {
+      ball.body.setVelocityX(
+        gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * ball.direct
+      );
+      ball.body.setVelocityY(gamePrefs.GRAVITY);
     }, this);
   }
 
@@ -455,7 +452,7 @@ class level1_8 extends Phaser.Scene {
       0,
       _ball.height / 2 - _ball.width / 2
     );
-    _ball.body.setBounce(1,1);
+    _ball.body.setBounce(1, 1);
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(
       gamePrefs.BALL_SPEED * gamePrefs.VELOCITY_MAKER * direct
@@ -464,7 +461,10 @@ class level1_8 extends Phaser.Scene {
 
   hitBall(_harpoon, _ballCol) {
     this._hud.setScore(10);
-    this.explosionSound = this.sound.add("explosionSound", { loop: false,volume:0.3 });
+    this.explosionSound = this.sound.add("explosionSound", {
+      loop: false,
+      volume: 0.3,
+    });
     this.explosionSound.play();
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
@@ -484,8 +484,13 @@ class level1_8 extends Phaser.Scene {
       }
     }
 
-    var _explosion = new explosionPrefab(this,_ballCol.x,_ballCol.y,'ballExplosion');
-    var _scoreOnScreen = new scoreOnScreenPrefab(this,_ballCol.x,_ballCol.y);
+    var _explosion = new explosionPrefab(
+      this,
+      _ballCol.x,
+      _ballCol.y,
+      "ballExplosion"
+    );
+    var _scoreOnScreen = new scoreOnScreenPrefab(this, _ballCol.x, _ballCol.y);
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
     _harpoon.destroy();
@@ -501,7 +506,7 @@ class level1_8 extends Phaser.Scene {
     //Creamos power up y añadimos a grupo
     var _powerUp = new powerUpPrefab(this, _posX, _posY, _tipo).setScale(3);
     this.powerUps.add(_powerUp);
-    if(_tipo==6) _powerUp.anims.play("dynamite");
+    if (_tipo == 6) _powerUp.anims.play("dynamite");
     this.powerUpTimer = this.time.addEvent({
       delay: gamePrefs.POWERUP_DESTROY_TIMER, //ms
       callback: this.destroyPowerUp,
@@ -511,28 +516,23 @@ class level1_8 extends Phaser.Scene {
     });
   }
 
-
-  destroyPowerUp(_powerUp){
-    var i=0;
+  destroyPowerUp(_powerUp) {
+    var i = 0;
     this.tintTimer = this.time.addEvent({
       delay: 200,
-      callback: ()=>{ 
-        if(i % 2 == 0)
-        _powerUp.tint = 0xffffff; 
-        else
-        _powerUp.tint = 0x9b9b9b;
+      callback: () => {
+        if (i % 2 == 0) _powerUp.tint = 0xffffff;
+        else _powerUp.tint = 0x9b9b9b;
 
         i++;
-        if(i >= 20)
-        _powerUp.destroy();
+        if (i >= 20) _powerUp.destroy();
       },
       callbackScope: this,
 
-      repeat: 20 
+      repeat: 20,
     });
-    //_powerUp.destroy(); 
+    //_powerUp.destroy();
   }
-
 
   createWalls() {
     //Creamos el suelo
@@ -556,6 +556,7 @@ class level1_8 extends Phaser.Scene {
     this.wall = this.physics.add.sprite(20, config.height - 543, "wall");
     this.wall.body.allowGravity = false;
     this.wall.body.setImmovable(true);
+
     this.wallR = this.physics.add.sprite(
       config.width - 20,
       config.height - 543,
@@ -567,62 +568,20 @@ class level1_8 extends Phaser.Scene {
 
   createPlatforms() {
     var _platform1 = this.add
-      .sprite(config.width / 2+15, config.height/2+60, "normalBlueVertical")
+      .sprite(config.width / 2 - 60, config.height / 2 - 100, "destructPlat")
       .setScale(0.6);
+
     this.destructivePlatforms.add(_platform1);
     _platform1.body.allowGravity = false;
     _platform1.body.setImmovable(true);
+
     var _platform2 = this.add
-    .sprite(config.width / 2-15, config.height/2+60, "normalBlueVertical")
-    .setScale(0.6);
-  this.destructivePlatforms.add(_platform2);
-  _platform2.body.allowGravity = false;
-  _platform2.body.setImmovable(true);
-
-
-
-  var _platform3 = this.add
-  .sprite(config.width / 2+15, config.height/2-230, "normalBlueVertical")
-  .setScale(0.6);
-this.destructivePlatforms.add(_platform3);
-_platform3.body.allowGravity = false;
-_platform3.body.setImmovable(true);
-var _platform4 = this.add
-.sprite(config.width / 2-15, config.height/2-230, "normalBlueVertical")
-.setScale(0.6);
-this.destructivePlatforms.add(_platform4);
-_platform4.body.allowGravity = false;
-_platform4.body.setImmovable(true);
-
-   var _platform5 = this.add
-      .sprite(config.width / 2 - 500, config.height/2-100, "normalBlueHorizontal")
+      .sprite(config.width / 2 + 60, config.height / 2 - 100, "destructPlat")
       .setScale(0.6);
-    this.destructivePlatforms.add(_platform5);
-    _platform5.body.allowGravity = false;
-    _platform5.body.setImmovable(true);
-    var _platform6 = this.add
-    .sprite(config.width / 2 - 500, config.height/2-70, "normalBlueHorizontal")
-    .setScale(0.6);
-  this.destructivePlatforms.add(_platform6);
-  _platform6.body.allowGravity = false;
-  _platform6.body.setImmovable(true);
-
-  var _platform7 = this.add
-  .sprite(config.width / 2 + 500, config.height/2-100, "normalBlueHorizontal")
-  .setScale(0.6);
-this.destructivePlatforms.add(_platform7);
-_platform7.body.allowGravity = false;
-_platform7.body.setImmovable(true);
-var _platform8 = this.add
-.sprite(config.width / 2 + 500, config.height/2-70, "normalBlueHorizontal")
-.setScale(0.6);
-this.destructivePlatforms.add(_platform8);
-_platform8.body.allowGravity = false;
-_platform8.body.setImmovable(true);
-   
-
+    this.destructivePlatforms.add(_platform2);
+    _platform2.body.allowGravity = false;
+    _platform2.body.setImmovable(true);
   }
-
 
   lifesHUD() {
     //Se van eliminando el indicador de vidas conforme se va perdiendo

@@ -6,7 +6,7 @@ class owlPrefab extends enemyPrefab {
     this.scene = _scene;
     this.body.allowGravity = false;
     this.invencible = false;
-    this.isDead=false;
+    this.isDead = false;
     _scene.physics.add.overlap(
       this,
       _scene.player1,
@@ -24,8 +24,8 @@ class owlPrefab extends enemyPrefab {
 
       this.body.setVelocityX(gamePrefs.OWL_SPEED * this.direccion);
 
-      if (this.x > config.width+100 || this.x < 0-100){
-        this.y+=gamePrefs.OWL_CHANGE_Y;
+      if (this.x > config.width + 100 || this.x < 0 - 100) {
+        this.y += gamePrefs.OWL_CHANGE_Y;
         this.direccion *= -1;
         this.body.setVelocityX(gamePrefs.OWL_SPEED * this.direccion);
         this.flipX = !this.flipX;
@@ -62,37 +62,34 @@ class owlPrefab extends enemyPrefab {
     this.isGoingtoDie = false;
   }
 
-  hitPlayer(_enemy, _player){
-    if(!this.isDead){
-    _player.canShoot=false;
-    this.enemyTimer = this.scene.time.addEvent({
-      delay: 3000, //ms
-      callback: _player.canShootAgain,
-      callbackScope: _player,
-      repeat: 0,
-    });
+  hitPlayer(_enemy, _player) {
+    if (!this.isDead) {
+      _player.canShoot = false;
+      this.enemyTimer = this.scene.time.addEvent({
+        delay: 3000, //ms
+        callback: _player.canShootAgain,
+        callbackScope: _player,
+        repeat: 0,
+      });
 
-    var i=0;
-    this.tintTimer = this.scene.time.addEvent({
-      delay: 75,
-      callback: ()=>{ 
-        if(i % 2 == 0)
-          _player.tint = 0xffffff; 
-        else
-        _player.tint = 0xffff00;
+      var i = 0;
+      this.tintTimer = this.scene.time.addEvent({
+        delay: 75,
+        callback: () => {
+          if (i % 2 == 0) _player.tint = 0xffffff;
+          else _player.tint = 0xffff00;
 
-        i++;
-        if(i >= 26)
-        _player.tint = 0xffffff;
-      },
-      callbackScope: this,
+          i++;
+          if (i >= 26) _player.tint = 0xffffff;
+        },
+        callbackScope: this,
 
-      repeat: 26 
-    });
+        repeat: 26,
+      });
 
-    this.lives=0;
-    this.hit();
-    this.isDead=true;
-  }
+      this.lives = 0;
+      this.hit();
+      this.isDead = true;
+    }
   }
 }
