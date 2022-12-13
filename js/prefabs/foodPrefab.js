@@ -1,6 +1,6 @@
 class foodPrefab extends Phaser.GameObjects.Sprite {
   constructor(scene, positionX, positionY, _tipo) {
-    super(scene, positionX, positionY, "food" + _tipo).setScale(2);
+    super(scene, positionX, positionY, "food" + _tipo).setScale(3);
     scene.add.existing(this);
 
     scene.physics.add.overlap(
@@ -22,7 +22,6 @@ class foodPrefab extends Phaser.GameObjects.Sprite {
   }
 
   destroyFood() {
-    console.log(this);
     if (this.scene != null) {
       var i = 0;
       this.tintTimer = this.scene.time.addEvent({

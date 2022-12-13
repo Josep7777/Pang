@@ -115,6 +115,7 @@ class level2_6 extends Phaser.Scene {
     this.ladder = this.physics.add.group();
     this.enemies = this.add.group();
     this.bullets = this.physics.add.group();
+    this.food = this.physics.add.group();
   }
 
   create() {
@@ -207,6 +208,7 @@ class level2_6 extends Phaser.Scene {
     //Añadimos colisiones
     this.physics.add.collider(this.floorD, this.player1);
     this.physics.add.collider(this.floorD, this.powerUps);
+    this.physics.add.collider(this.floorD, this.food);
     this.physics.add.collider(this.floorD, this.enemies);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
@@ -242,6 +244,30 @@ class level2_6 extends Phaser.Scene {
     this.enemyTimer = this.time.addEvent({
       delay: this.randomEnemySpawn, //ms
       callback: this.createEnemy,
+      callbackScope: this,
+      repeat: 0,
+    });
+
+    this.randomFoodSpawn = Phaser.Math.Between(7000, 20000);
+    this.foodTimer = this.time.addEvent({
+      delay: this.randomFoodSpawn, //ms
+      callback: this.createFood,
+      callbackScope: this,
+      repeat: 0,
+    });
+  }
+
+  createFood(){
+    var foodType = Phaser.Math.Between(1, 28);
+    var randomXPos = Phaser.Math.Between(100, config.width - 100);
+    var _food = new foodPrefab(this, randomXPos, 30, foodType);
+    this.food.add(_food);
+    _food.body.setSize(_food.width - 7, _food.height-10, true);
+
+    this.randomFoodSpawn = Phaser.Math.Between(7000, 20000);
+    this.foodTimer = this.time.addEvent({
+      delay: this.randomFoodSpawn, //ms
+      callback: this.createFood,
       callbackScope: this,
       repeat: 0,
     });

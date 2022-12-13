@@ -234,7 +234,7 @@ class level1_1 extends Phaser.Scene {
       repeat: 0,
     });
 
-    this.randomFoodSpawn = Phaser.Math.Between(5000, 10000);
+    this.randomFoodSpawn = Phaser.Math.Between(7000, 20000);
     this.foodTimer = this.time.addEvent({
       delay: this.randomFoodSpawn, //ms
       callback: this.createFood,
@@ -250,7 +250,7 @@ class level1_1 extends Phaser.Scene {
     this.food.add(_food);
     _food.body.setSize(_food.width - 7, _food.height-10, true);
 
-    this.randomFoodSpawn = Phaser.Math.Between(5000, 10000);
+    this.randomFoodSpawn = Phaser.Math.Between(7000, 20000);
     this.foodTimer = this.time.addEvent({
       delay: this.randomFoodSpawn, //ms
       callback: this.createFood,
