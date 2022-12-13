@@ -138,17 +138,18 @@ class mainMenu extends Phaser.Scene {
     this.load.image("ball", "ball1.png");
 
     /************************Sonidos***********************/
-    this.load.setPath("assets/music/");
 
     //Musicas
+    this.load.setPath("assets/music/");
     this.load.audio("mtFujiTheme", "mtFuji.mp3");
     this.load.audio("mtKeirin", "mtKeirin.mp3");
     this.load.audio("EmeraldTemple", "EmeraldTemple.mp3");
+
     //SFX
+    this.load.setPath("assets/sfx/");
     this.load.audio("explosionSound", "explosion.wav");
     this.load.audio("LaserShootSound", "snd_shoot.mp3");
     this.load.audio("ShootSound", "sfx_shoot.wav");
-    this.load.setPath("assets/sfx/");
     this.load.audio("airplaneSound", "plane.ogg");
 
     /**************************Fuentes****************************/
