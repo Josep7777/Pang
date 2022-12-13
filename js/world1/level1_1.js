@@ -323,7 +323,7 @@ class level1_1 extends Phaser.Scene {
         break;
       case 3:
         //Objetos que dan puntuacion
-        this._hud.setScore(500);
+        this.player1.doubleShoot = true;
         break;
       case 4:
         //Parar tiempo
@@ -361,10 +361,6 @@ class level1_1 extends Phaser.Scene {
           callbackScope: this,
           repeat: 0,
         });
-        break;
-      case 8:
-        //DisparoDoble
-        this.player1.doubleShoot = true;
         break;
     }
     _powerUp.destroy();
@@ -456,7 +452,7 @@ class level1_1 extends Phaser.Scene {
     //Genera PowerUp
     var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 8);
+      var tipo = Phaser.Math.Between(1, 7);
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 

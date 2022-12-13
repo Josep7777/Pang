@@ -53,6 +53,7 @@ class mainMenu extends Phaser.Scene {
     this.load.setPath("assets/img/powerUps");
     this.load.image("powerUp1", "PowerUpDoubleWire.png");
     this.load.image("powerUp2", "powerUpEscudo.png");
+    this.load.image("powerUp3", "powerUpDoubleShoot.png");
     this.load.image("powerUp4", "PowerUpStopTime.png");
     this.load.image("powerUp5", "powerUpGanchoFijo.png");
     this.load.spritesheet("powerUp6", "PowerUpDinamita.png", {
@@ -60,7 +61,6 @@ class mainMenu extends Phaser.Scene {
       frameHeight: 16,
     });
     this.load.image("powerUp7", "PowerUpSlowTime.png");
-    this.load.image("powerUp8", "powerUpDoubleShoot.png");
     this.load.spritesheet("doubleShoot", "doubleShoot.png", {
       frameWidth: 19,
       frameHeight: 9,
@@ -112,7 +112,7 @@ class mainMenu extends Phaser.Scene {
     this.load.image("food25", "tomate.png");
     this.load.image("food26", "uva.png");
     this.load.image("food27", "zanahoria.png");
-    this.load.image("powerUp3", "fresa.png");
+    this.load.image("food28", "fresa.png");
 
     //Enemigos
     this.load.setPath("assets/img/enemies");
