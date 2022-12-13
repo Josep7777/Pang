@@ -60,7 +60,7 @@ var config = {
     default: "arcade",
     arcade: {
       gravity: { y: 90 },
-      debug: false,
+      debug: true,
     },
   },
 };
