@@ -46,6 +46,7 @@ var config = {
     level2_6,
     level3_7,
     level3_8,
+    level3_9,
     winScene,
     worldCompleted,
   ],
