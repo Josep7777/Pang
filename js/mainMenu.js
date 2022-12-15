@@ -22,6 +22,7 @@ class mainMenu extends Phaser.Scene {
     this.load.image("destructPlat", "BrokenPlatform.png");
     this.load.image("destructPlatR", "PlataformaRoja2.png");
     this.load.image("normalPlatV", "YellowPlatform.png");
+    this.load.image("normalPlatRojaDestructive", "PlataformaRoja2.png");
     this.load.image("destructPlatV", "PlataformaAzulVertical.png");
     this.load.image("normalPlatAPetita", "PlataformaAmarillaPequena.png");
     this.load.image("destructPlatA", "PlataformaAmarillaRompible.png");
@@ -45,6 +46,8 @@ class mainMenu extends Phaser.Scene {
     this.load.image("background12", "background1-12.png");
 
     this.load.image("background14", "background1-14.png");
+    this.load.image("background15", "background1-15.png");
+    this.load.image("background16", "background1-16.png");
 
     //HUD
     this.load.setPath("assets/img/hud");
