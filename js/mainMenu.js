@@ -48,7 +48,8 @@ class mainMenu extends Phaser.Scene {
     this.load.image("background14", "background1-14.png");
     this.load.image("background15", "background1-15.png");
     this.load.image("background16", "background1-16.png");
-
+    this.load.image("background17", "background1-17.png");
+    this.load.image("background18", "background1-18.png");
     //HUD
     this.load.setPath("assets/img/hud");
     this.load.image("lifes", "lifes.png");
