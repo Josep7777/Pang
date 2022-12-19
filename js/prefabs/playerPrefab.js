@@ -1,6 +1,6 @@
 class playerPrefab extends Phaser.Physics.Arcade.Sprite {
-  constructor(_scene, _posX, _posY, _tag, _direct) {
-    super(_scene, _posX, _posY, _tag).setScale(3);
+  constructor(_scene, _posX, _posY, _tag,_playerNumber, _direct) {
+    super(_scene, _posX, _posY, _tag,_playerNumber).setScale(3);
 
     _scene.add.existing(this);
     _scene.physics.world.enable(this);
@@ -14,18 +14,34 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.isShooting = false;
     this.canShoot = true;
     this.cursores = _scene.input.keyboard.createCursorKeys();
+    this.keyW = _scene.input.keyboard.addKey('W');
+    this.keyA = _scene.input.keyboard.addKey('A');
+    this.keyS = _scene.input.keyboard.addKey('S');
+    this.keyD = _scene.input.keyboard.addKey('D');
     this.scene = _scene;
-
+    this.playerNumber = _playerNumber;
+    
     this.enterOnce = true;
     this.body.setSize(this.width - 11, this.height - 7, true);
     //Cuando le das al espacio, el jugador dispara
-    this.cursores.space.on(
-      "down",
-      function () {
-        this.createBullet(_scene);
-      },
-      this
-    );
+    if(this.playerNumber == 0){
+      this.cursores.space.on(
+        "down",
+        function () {
+          this.createBullet(_scene);
+        },
+        this
+      );
+    }
+    if(this.playerNumber == 1){
+      this.cursores.shift.on(
+        "down",
+        function () {
+          this.createBullet(_scene);
+        },
+        this
+      );
+    }
 
     _scene.physics.add.overlap(
       this.scene.ladder,
@@ -42,7 +58,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
   createBullet(_sceneParam) {
     //Crea el harpon cuando se presiona espacio
-
+    console.log("hazcosas");
     if (this.FixShoot == true && this.doubleShoot == false) {
       this.LaserShootSound = this.scene.sound.add("ShootSound", {
         loop: false,
@@ -57,6 +73,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
         this.once("animationcomplete", () => {
           this.isShooting = false;
+          console.log("hazcosas2");
         });
 
         this.harpoonNumber++;
@@ -127,7 +144,6 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       });
 
       var _bullet = new bulletPrefab(this.scene, this.x, this.y);
-
       _sceneParam.physics.add.overlap(
         _bullet,
         _sceneParam.ballpool,
@@ -326,37 +342,72 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
   }
 
   preUpdate(time, delta) {
-    if (this.cursores.left.isDown) {
-      if (!this.isShooting) {
-        this.setFlipX(false);
-        this.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
-        this.anims.play("move", true);
+    if(this.playerNumber == 0){
+      if (this.keyA.isDown) {
+        if (!this.isShooting) {
+          this.setFlipX(false);
+          this.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
+          this.anims.play("move", true);
+        }
+      } else if (this.keyD.isDown) {
+        if (!this.isShooting) {
+          this.setFlipX(true);
+          this.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
+          this.anims.play("move", true);
+        }
+      } else {
+        this.body.setVelocityX(0);
+        if (!this.isShooting && !this.cursores.up.isDown) {
+          this.anims.stop();
+          this.setFrame(4);
+        }
       }
-    } else if (this.cursores.right.isDown) {
-      if (!this.isShooting) {
-        this.setFlipX(true);
-        this.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
-        this.anims.play("move", true);
+      if (this.escaleraColider) {
+        if (this.keyW.isDown) {
+          this.y -= gamePrefs.CHARACTER_SPEEDLADDER;
+          this.anims.play("playerladder", true);
+        }
+      } else {
+        //ESTAS ENCIMA DE LA ESCALERA O ESTAS CAYENDO
+        this.body.setVelocityY(-gamePrefs.GRAVITYCHARACTER);
       }
-    } else {
-      this.body.setVelocityX(0);
-      if (!this.isShooting && !this.cursores.up.isDown) {
-        this.anims.stop();
-        this.setFrame(4);
-      }
+  
+      this.escaleraColider = false;
+  
     }
-    if (this.escaleraColider) {
-      if (this.cursores.up.isDown) {
-        this.y -= gamePrefs.CHARACTER_SPEEDLADDER;
-        this.anims.play("playerladder", true);
+    else if(this.playerNumber == 1){
+      if (this.cursores.left.isDown) {
+        if (!this.isShooting) {
+          this.setFlipX(false);
+          this.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
+          this.anims.play("move", true);
+        }
+      } else if (this.cursores.right.isDown) {
+        if (!this.isShooting) {
+          this.setFlipX(true);
+          this.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
+          this.anims.play("move", true);
+        }
+      } else {
+        this.body.setVelocityX(0);
+        if (!this.isShooting && !this.cursores.up.isDown) {
+          this.anims.stop();
+          this.setFrame(4);
+        }
       }
-    } else {
-      //ESTAS ENCIMA DE LA ESCALERA O ESTAS CAYENDO
-      this.body.setVelocityY(-gamePrefs.GRAVITYCHARACTER);
+      if (this.escaleraColider) {
+        if (this.cursores.up.isDown) {
+          this.y -= gamePrefs.CHARACTER_SPEEDLADDER;
+          this.anims.play("playerladder", true);
+        }
+      } else {
+        //ESTAS ENCIMA DE LA ESCALERA O ESTAS CAYENDO
+        this.body.setVelocityY(-gamePrefs.GRAVITYCHARACTER);
+      }
+  
+      this.escaleraColider = false;
+  
     }
-
-    this.escaleraColider = false;
-
     super.preUpdate(time, delta);
   }
 }

@@ -138,11 +138,21 @@ class level1_1 extends Phaser.Scene {
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
     //Añadimos al jugador con fisicas
+    this.playerJoined = false;
     this.player1 = new playerPrefab(
       this,
       config.width / 2,
       config.height - 250,
-      "player1"
+      "player1",
+      0
+    );
+
+    this.player2 = new playerPrefab(
+      this,
+      config.width / 2 + 500,
+      config.height - 250,
+      "player1",
+      1
     );
 
     //Variables del jugador
@@ -201,14 +211,19 @@ class level1_1 extends Phaser.Scene {
     this.stopGravityBalls = false;
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
+    this.keyN = this.input.keyboard.addKey('N');
 
     //Añadimos colisiones
-    this.physics.add.collider(this.floorD, this.player1);
+
     this.physics.add.collider(this.floorD, this.powerUps);
     this.physics.add.collider(this.floorD, this.food);
     this.physics.add.collider(this.floorD, this.enemies);
+    this.physics.add.collider(this.floorD, this.player1);
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
+    this.physics.add.collider(this.floorD, this.player2);
+    this.physics.add.collider(this.wall, this.player2);
+    this.physics.add.collider(this.wallR, this.player2);
 
     this.physics.add.overlap(
       this.ballpool,
@@ -220,6 +235,22 @@ class level1_1 extends Phaser.Scene {
 
     this.physics.add.overlap(
       this.player1,
+      this.powerUps,
+      this.pickPowerUp,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.ballpool,
+      this.player2,
+      this.damagePlayer,
+      null,
+      this
+    );
+
+    this.physics.add.overlap(
+      this.player2,
       this.powerUps,
       this.pickPowerUp,
       null,
@@ -241,6 +272,10 @@ class level1_1 extends Phaser.Scene {
       callbackScope: this,
       repeat: 0,
     });
+
+    
+    this.player2.setActive(false);
+    this.player2.setVisible(false);
   }
 
   createFood(){
@@ -339,17 +374,17 @@ class level1_1 extends Phaser.Scene {
         if (this.invencible == false) {
           this.invencible = true;
           this.shield = this.add
-            .sprite(this.player1.x, this.player1.y, "escudo")
+            .sprite(_player.x, _player.y, "escudo")
             .setScale(4);
           this.shield.play("shield", true);
           this.shield.depth = 1;
-          this.player1.depth = 2;
+          _player.depth = 2;
           this.floorD.depth = 3;
         }
         break;
       case 3:
         //Objetos que dan puntuacion
-        this.player1.doubleShoot = true;
+        _player.doubleShoot = true;
         break;
       case 4:
         //Parar tiempo
@@ -365,7 +400,7 @@ class level1_1 extends Phaser.Scene {
         break;
       case 5:
         //PowerWire
-        this.player1.FixShoot = true;
+        _player.FixShoot = true;
         break;
       case 6:
         //Dinamita
@@ -502,9 +537,11 @@ class level1_1 extends Phaser.Scene {
     var _scoreOnScreen = new scoreOnScreenPrefab(this, _ballCol.x, _ballCol.y);
     //Destruimos harpon y pelota
     if (this.player1.harpoonNumber > 0) this.player1.harpoonNumber--;
+    if (this.player2.harpoonNumber > 0) this.player2.harpoonNumber--;
     _harpoon.destroy();
     _ballCol.destroy();
   }
+  
 
   createPowerUp(_posX, _posY, _tipo) {
     //Creamos power up y añadimos a grupo
@@ -583,6 +620,12 @@ class level1_1 extends Phaser.Scene {
   }
 
   update(time, delta) {
+    if (this.keyN.isDown && this.playerJoined == false) {
+      this.playerJoined = true;
+      this.player2.setActive(true);
+      this.player2.setVisible(true);
+      this.player2.set
+    }
     if (this.ballpool.getLength() == 0) {
       //Si es la ultima pelota destruida, ganas
       this.winScene();
