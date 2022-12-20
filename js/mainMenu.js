@@ -17,6 +17,7 @@ class mainMenu extends Phaser.Scene {
     //Platforms
     this.load.setPath("assets/img/platforms");
     this.load.image("floor", "Floor2.png");
+    this.load.image("floorAzul", "sueloazul.png");
     this.load.image("wall", "Wall.png");
     this.load.image("normalPlat", "PlataformaRoja1.png");
     this.load.image("destructPlat", "BrokenPlatform.png");
@@ -50,6 +51,7 @@ class mainMenu extends Phaser.Scene {
     this.load.image("background16", "background1-16.png");
     this.load.image("background17", "background1-17.png");
     this.load.image("background18", "background1-18.png");
+    this.load.image("background19", "background1-19.png");
     //HUD
     this.load.setPath("assets/img/hud");
     this.load.image("lifes", "lifes.png");
