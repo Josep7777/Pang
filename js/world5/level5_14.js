@@ -1,6 +1,6 @@
-class level3_8 extends Phaser.Scene {
+class level5_14 extends Phaser.Scene {
   constructor() {
-    super({ key: "level3_8" });
+    super({ key: "level5_14" });
   }
 
   preload() {}
@@ -136,13 +136,13 @@ class level3_8 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width / 2, config.height / 2 - 82, "background8");
+    this.add.sprite(config.width / 2, config.height / 2 - 82, "background14");
     //Cargamos las pools
     this.loadPools();
 
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
-
+    this.createStairs();
     gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
 
     //Creamos la pelota, le pasamos la x, la y, y la escala
@@ -171,9 +171,9 @@ class level3_8 extends Phaser.Scene {
     this.countDown2 = 1;
 
     //Datos del HUD
-    this.levelName = gamePrefs.WORLD3_NAME;
-    this.worldNumber = 3;
-    this.stageNumber = 8;
+    this.levelName = gamePrefs.WORLD5_NAME;
+    this.worldNumber = 5;
+    this.stageNumber = 14;
     this.highScore = 100000;
     this.timer = 0;
     this.countDown = 99;
@@ -267,6 +267,29 @@ class level3_8 extends Phaser.Scene {
       callbackScope: this,
       repeat: 0,
     });
+  }
+
+  createStairs() {
+    var _ladder1 = this.add
+      .sprite(config.width / 2, config.height - 450, "ladder")
+      .setScale(3, 2);
+    this.ladder.add(_ladder1);
+    _ladder1.body.allowGravity = false;
+    _ladder1.body.setImmovable(true);
+
+    var _ladder2 = this.add
+      .sprite(config.width / 2, config.height - 275, "ladder")
+      .setScale(3);
+    this.ladder.add(_ladder2);
+    _ladder2.body.allowGravity = false;
+    _ladder2.body.setImmovable(true);
+
+    var _ladder3 = this.add
+      .sprite(config.width / 2, config.height - 620, "ladder")
+      .setScale(3, 2);
+    this.ladder.add(_ladder3);
+    _ladder3.body.allowGravity = false;
+    _ladder3.body.setImmovable(true);
   }
 
   createFood(){
@@ -610,86 +633,34 @@ class level3_8 extends Phaser.Scene {
   }
 
   createPlatforms() {
-    var _platform1 = this.add
-      .sprite(
-        config.width / 2 + 15,
-        config.height / 2 + 60,
-        "normalBlueVertical"
-      )
-      .setScale(0.6);
-    this.normalPlatforms.add(_platform1);
-    _platform1.body.allowGravity = false;
-    _platform1.body.setImmovable(true);
-    var _platform2 = this.add
-      .sprite(
-        config.width / 2 - 15,
-        config.height / 2 + 60,
-        "normalBlueVertical"
-      )
-      .setScale(0.6);
-    this.normalPlatforms.add(_platform2);
-    _platform2.body.allowGravity = false;
-    _platform2.body.setImmovable(true);
-
-    var _platform3 = this.add
-      .sprite(
-        config.width / 2 + 15,
-        config.height / 2 - 230,
-        "normalBlueVertical"
-      )
-      .setScale(0.6);
-    this.normalPlatforms.add(_platform3);
-    _platform3.body.allowGravity = false;
-    _platform3.body.setImmovable(true);
-    var _platform4 = this.add
-      .sprite(
-        config.width / 2 - 15,
-        config.height / 2 - 230,
-        "normalBlueVertical"
-      )
-      .setScale(0.6);
-    this.normalPlatforms.add(_platform4);
-    _platform4.body.allowGravity = false;
-    _platform4.body.setImmovable(true);
-
-    var _platform5 = this.add
-      .sprite(
-        config.width / 2 - 500,
-        config.height / 2 - 100,
-        "normalBlueHorizontal"
-      )
-      .setScale(0.6);
-    this.normalPlatforms.add(_platform5);
-    _platform5.body.allowGravity = false;
-    _platform5.body.setImmovable(true);
     var _platform6 = this.add
       .sprite(
-        config.width / 2 - 500,
-        config.height / 2 - 70,
+        config.width / 2,
+        250,
         "normalBlueHorizontal"
       )
-      .setScale(0.6);
+      .setScale(0.7, 0.6);
     this.normalPlatforms.add(_platform6);
     _platform6.body.allowGravity = false;
     _platform6.body.setImmovable(true);
 
     var _platform7 = this.add
       .sprite(
-        config.width / 2 + 500,
-        config.height / 2 - 100,
+        500,
+        config.height - 400,
         "normalBlueHorizontal"
       )
-      .setScale(0.6);
+      .setScale(0.2, 0.6);
     this.normalPlatforms.add(_platform7);
     _platform7.body.allowGravity = false;
     _platform7.body.setImmovable(true);
     var _platform8 = this.add
       .sprite(
-        config.width / 2 + 500,
-        config.height / 2 - 70,
+        config.width - 500,
+        config.height - 400,
         "normalBlueHorizontal"
       )
-      .setScale(0.6);
+      .setScale(0.2, 0.6);
     this.normalPlatforms.add(_platform8);
     _platform8.body.allowGravity = false;
     _platform8.body.setImmovable(true);
