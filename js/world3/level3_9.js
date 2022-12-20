@@ -142,12 +142,15 @@ class level3_9 extends Phaser.Scene {
 
     this.createWalls(); // Funcion para crear suelo, techo y paredes
     this.createPlatforms();
+    this.createStairs();
 
     gamePrefs.BALL_SPEED = gamePrefs.ORIGINAL_BALL_SPEED;
 
     //Creamos la pelota, le pasamos la x, la y, y la escala
-    this.createBall(config.width / 2 - 100, config.height - 600, 3, 1);
-    this.createBall(config.width / 2 + 100, config.height - 600, 3, 1);
+    this.createBall(config.width / 2 - 100, config.height - 700, 4, 1);
+    this.createBall(150, config.height - 750, 2, 1);
+    this.createBall(100, config.height - 750, 2, -1);
+    //this.createBall(config.width / 2 + 100, config.height - 600, 3, 1);
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
@@ -219,6 +222,7 @@ class level3_9 extends Phaser.Scene {
     this.physics.add.collider(this.wall, this.player1);
     this.physics.add.collider(this.wallR, this.player1);
     this.physics.add.collider(this.normalPlatformsV, this.player1);
+    this.physics.add.collider(this.normalPlatforms, this.player1);
     this.physics.add.collider(
       this.ballpool,
       this.normalPlatformsV,
@@ -282,6 +286,29 @@ class level3_9 extends Phaser.Scene {
       callbackScope: this,
       repeat: 0,
     });
+  }
+
+  createStairs() {
+    var _ladder1 = this.add
+      .sprite(270, config.height - 340, "ladder")
+      .setScale(4, 6);
+    this.ladder.add(_ladder1);
+    _ladder1.body.allowGravity = false;
+    _ladder1.body.setImmovable(true);
+
+    var _ladder2 = this.add
+      .sprite(config.width / 2 + 290, config.height - 300, "ladder")
+      .setScale(4, 4.3);
+    this.ladder.add(_ladder2);
+    _ladder2.body.allowGravity = false;
+    _ladder2.body.setImmovable(true);
+
+    var _ladder3 = this.add
+      .sprite(config.width - 552, config.height - 300, "ladder")
+      .setScale(4, 4.3);
+    this.ladder.add(_ladder3);
+    _ladder3.body.allowGravity = false;
+    _ladder3.body.setImmovable(true);
   }
 
   collideBallPlatform(_ball, _plat) {
@@ -617,25 +644,53 @@ class level3_9 extends Phaser.Scene {
     _platform1.body.setImmovable(true);
 
     var _platform2 = this.add
-      .sprite(400, config.height / 2-220, "normalPlatAPetita")
+      .sprite(445, config.height / 2-220, "normalPlatAPetita")
       .setScale(0.6);
     this.normalPlatforms.add(_platform2);
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
 
     var _platform3 = this.add
-      .sprite(140, config.height / 2-220, "destructPlatR")
-      .setScale(0.8, 0.6);
+      .sprite(130, config.height / 2-220, "destructPlatR")
+      .setScale(0.6, 0.6);
     this.destructivePlatforms.add(_platform3);
     _platform3.body.allowGravity = false;
     _platform3.body.setImmovable(true);
 
-    /*var _platform4 = this.add
-      .sprite(config.width / 2 - 500, config.height / 2 - 150, "normalPlat")
-      .setScale(1.5, 0.6);
-    this.normalPlatforms.add(_platform1);
-    _platform1.body.allowGravity = false;
-    _platform1.body.setImmovable(true);*/
+    var _platform4 = this.add
+      .sprite(250, config.height / 2-220, "normalPlat")
+      .setScale(0.6, 0.6);
+    this.normalPlatforms.add(_platform4);
+    _platform4.body.allowGravity = false;
+    _platform4.body.setImmovable(true);
+
+  var _platform5 = this.add
+      .sprite(370, config.height / 2-220, "normalPlat")
+      .setScale(0.6, 0.6);
+    this.normalPlatforms.add(_platform5);
+    _platform5.body.allowGravity = false;
+    _platform5.body.setImmovable(true);
+
+    var _platform6 = this.add
+      .sprite(445, 155, "normalPlatV")
+      .setScale(0.6, 0.6);
+    this.normalPlatforms.add(_platform6);
+    _platform6.body.allowGravity = false;
+    _platform6.body.setImmovable(true);
+
+    var _platform7 = this.add
+      .sprite(130, config.height / 2, "normalPlat")
+      .setScale(0.6, 0.6);
+    this.normalPlatforms.add(_platform7);
+    _platform7.body.allowGravity = false;
+    _platform7.body.setImmovable(true);
+
+    var _platform8 = this.add
+      .sprite(config.width/2+350, config.height-300, "normalPlatV")
+      .setScale(0.6, 1);
+    this.normalPlatforms.add(_platform8);
+    _platform8.body.allowGravity = false;
+    _platform8.body.setImmovable(true);
   }
 
   lifesHUD() {
