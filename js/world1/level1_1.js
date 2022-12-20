@@ -143,16 +143,14 @@ class level1_1 extends Phaser.Scene {
       this,
       config.width / 2,
       config.height - 250,
-      "player1",
-      0
+      "player1"
     );
 
-    this.player2 = new playerPrefab(
+    this.player2 = new playerPrefab2(
       this,
       config.width / 2 + 500,
       config.height - 250,
-      "player1",
-      1
+      "player1"
     );
 
     //Variables del jugador

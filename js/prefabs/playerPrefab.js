@@ -19,12 +19,10 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.keyS = _scene.input.keyboard.addKey('S');
     this.keyD = _scene.input.keyboard.addKey('D');
     this.scene = _scene;
-    this.playerNumber = _playerNumber;
     
     this.enterOnce = true;
     this.body.setSize(this.width - 11, this.height - 7, true);
     //Cuando le das al espacio, el jugador dispara
-    if(this.playerNumber == 0){
       this.cursores.space.on(
         "down",
         function () {
@@ -32,16 +30,8 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         },
         this
       );
-    }
-    if(this.playerNumber == 1){
-      this.cursores.shift.on(
-        "down",
-        function () {
-          this.createBullet(_scene);
-        },
-        this
-      );
-    }
+    
+
 
     _scene.physics.add.overlap(
       this.scene.ladder,
@@ -342,7 +332,6 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
   }
 
   preUpdate(time, delta) {
-    if(this.playerNumber == 0){
       if (this.keyA.isDown) {
         if (!this.isShooting) {
           this.setFlipX(false);
@@ -374,40 +363,8 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
   
       this.escaleraColider = false;
   
-    }
-    else if(this.playerNumber == 1){
-      if (this.cursores.left.isDown) {
-        if (!this.isShooting) {
-          this.setFlipX(false);
-          this.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
-          this.anims.play("move", true);
-        }
-      } else if (this.cursores.right.isDown) {
-        if (!this.isShooting) {
-          this.setFlipX(true);
-          this.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
-          this.anims.play("move", true);
-        }
-      } else {
-        this.body.setVelocityX(0);
-        if (!this.isShooting && !this.cursores.up.isDown) {
-          this.anims.stop();
-          this.setFrame(4);
-        }
-      }
-      if (this.escaleraColider) {
-        if (this.cursores.up.isDown) {
-          this.y -= gamePrefs.CHARACTER_SPEEDLADDER;
-          this.anims.play("playerladder", true);
-        }
-      } else {
-        //ESTAS ENCIMA DE LA ESCALERA O ESTAS CAYENDO
-        this.body.setVelocityY(-gamePrefs.GRAVITYCHARACTER);
-      }
-  
-      this.escaleraColider = false;
-  
-    }
+    
+
     super.preUpdate(time, delta);
   }
 }
