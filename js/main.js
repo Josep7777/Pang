@@ -28,9 +28,13 @@ var gamePrefs = {
   WORLD3_NAME: "ESMERALD\nTEMPLE",
   WORLD4_NAME: "ANKOR WATT",
   WORLD5_NAME: "AUSTRALIA",
+  WORLD6_NAME: "TAJ MAHAL",
   STAGES_WORLD1: "STAGE   1-3",
   STAGES_WORLD2: "STAGE   4-6",
   STAGES_WORLD3: "STAGE   7-9",
+  STAGES_WORLD4: "STAGE   10-13",
+  STAGES_WORLD5: "STAGE   14-16",
+  STAGES_WORLD6: "STAGE   17-19",
 };
 
 var config = {
@@ -49,8 +53,10 @@ var config = {
     level3_7,
     level3_8,
     level3_9,
+    level4_10,
     level4_11,
     level4_12,
+    level5_13,
     level5_14,
     level3_15,
     level3_16,
