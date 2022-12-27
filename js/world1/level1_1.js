@@ -138,7 +138,6 @@ class level1_1 extends Phaser.Scene {
     this.createBall(config.width - 1700, config.height - 700, 4, 1);
 
     //Añadimos al jugador con fisicas
-    this.playerJoined = false;
     this.player1 = new playerPrefab(
       this,
       config.width / 2,
@@ -209,7 +208,7 @@ class level1_1 extends Phaser.Scene {
     this.stopGravityBalls = false;
     //Creamos los cursores para input
     this.cursores = this.input.keyboard.createCursorKeys();
-    this.keyN = this.input.keyboard.addKey('N');
+    
 
     //Añadimos colisiones
 
@@ -272,7 +271,7 @@ class level1_1 extends Phaser.Scene {
     });
 
     
-    this.player2.setActive(false);
+    //this.player2.setActive(false);
     this.player2.setVisible(false);
   }
 
@@ -330,8 +329,8 @@ class level1_1 extends Phaser.Scene {
     });
   }
 
-  damagePlayer(_ball, _player) {
-    if (this.invencible == false && !this.stopGravityBalls) {
+  damagePlayer(_ball, _player) { //Por alguna razon ball y player van alreves
+    if (this.invencible == false && !this.stopGravityBalls && _ball.spawn) {
       this.player1.playerHealth--;
 
       if (this.player1.playerHealth > 0) {
@@ -509,9 +508,9 @@ class level1_1 extends Phaser.Scene {
     });
     this.explosionSound.play();
     //Genera PowerUp
-    var rnd = Phaser.Math.Between(1, 5);
+    var rnd = Phaser.Math.Between(1, 1);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(1, 7);
+      var tipo = Phaser.Math.Between(4, 4); //1, 7
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
@@ -618,12 +617,7 @@ class level1_1 extends Phaser.Scene {
   }
 
   update(time, delta) {
-    if (this.keyN.isDown && this.playerJoined == false) {
-      this.playerJoined = true;
-      this.player2.setActive(true);
-      this.player2.setVisible(true);
-      this.player2.set
-    }
+    
     if (this.ballpool.getLength() == 0) {
       //Si es la ultima pelota destruida, ganas
       this.winScene();

@@ -42,4 +42,9 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
       gamePrefs.GRAVITY * (gamePrefs.VELOCITY_MAKER2 - _ball.scale)
     );
   }
+
+  preUpdate(time, delta) {
+    if(this.x > 0 && this.x < 30) this.x = config.width / 2;
+    super.preUpdate(time, delta);
+}
 }

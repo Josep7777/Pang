@@ -357,7 +357,7 @@ class level5_14 extends Phaser.Scene {
   }
 
   damagePlayer(_ball, _player) {
-    if (this.invencible == false && !this.stopGravityBalls) {
+    if (this.invencible == false && !this.stopGravityBalls && _ball.spawn) {
       this.player1.playerHealth--;
 
       if (this.player1.playerHealth > 0) {

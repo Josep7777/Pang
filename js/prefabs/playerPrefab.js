@@ -19,6 +19,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.keyS = _scene.input.keyboard.addKey('S');
     this.keyD = _scene.input.keyboard.addKey('D');
     this.scene = _scene;
+    this.spawn=true;
     
     this.enterOnce = true;
     this.body.setSize(this.width - 11, this.height - 7, true);
@@ -48,7 +49,6 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
 
   createBullet(_sceneParam) {
     //Crea el harpon cuando se presiona espacio
-    console.log("hazcosas");
     if (this.FixShoot == true && this.doubleShoot == false) {
       this.LaserShootSound = this.scene.sound.add("ShootSound", {
         loop: false,
