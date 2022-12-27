@@ -309,9 +309,7 @@ class level5_14 extends Phaser.Scene {
   }
 
   collideBallPlatform(_ball, _plat) {
-    if (_plat.body.touching.up) {
-    } else if (_plat.body.touching.down) {
-    } else if (_plat.body.touching.right) {
+    if (_plat.body.touching.right) {
       _ball.direct *= -1;
     } else if (_plat.body.touching.left) {
       _ball.direct *= -1;
@@ -514,11 +512,12 @@ class level5_14 extends Phaser.Scene {
     this.ballpool.add(_ball);
 
     //Modificamos su velocidad
-    _ball.body.setCircle(
+    /*_ball.body.setCircle(
       _ball.width / 2,
       0,
       _ball.height / 2 - _ball.width / 2
-    );
+    );*/
+    _ball.body.setSize(_ball.width - 11, _ball.height - 7, true);
     _ball.body.setBounce(1, 1);
     _ball.body.setVelocityY(gamePrefs.GRAVITY);
     _ball.body.setVelocityX(

@@ -537,11 +537,12 @@ class level4_10 extends Phaser.Scene {
       this.ballpool.add(_ball);
   
       //Modificamos su velocidad
-      _ball.body.setCircle(
-        _ball.width / 2,
-        0,
-        _ball.height / 2 - _ball.width / 2
-      );
+    /*_ball.body.setCircle(
+      _ball.width / 2,
+      0,
+      _ball.height / 2 - _ball.width / 2
+    );*/
+    _ball.body.setSize(_ball.width - 11, _ball.height - 7, true);
       _ball.body.setBounce(1, 1);
       _ball.body.setVelocityY(gamePrefs.GRAVITY);
       _ball.body.setVelocityX(

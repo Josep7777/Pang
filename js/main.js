@@ -79,6 +79,10 @@ var config = {
       gravity: { y: 90 },
       debug: false,
     },
+    /*matter: {
+      debug: true,
+      gravity: { y: 0.5 }
+    }*/
   },
 };
 

@@ -539,7 +539,6 @@ class level1_1 extends Phaser.Scene {
     _ballCol.destroy();
   }
   
-
   createPowerUp(_posX, _posY, _tipo) {
     //Creamos power up y añadimos a grupo
     var _powerUp = new powerUpPrefab(this, _posX, _posY, _tipo).setScale(3);
