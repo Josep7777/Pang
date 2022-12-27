@@ -508,9 +508,9 @@ class level1_1 extends Phaser.Scene {
     });
     this.explosionSound.play();
     //Genera PowerUp
-    var rnd = Phaser.Math.Between(1, 1);
+    var rnd = Phaser.Math.Between(1, 5);
     if (rnd == 1) {
-      var tipo = Phaser.Math.Between(4, 4); //1, 7
+      var tipo = Phaser.Math.Between(1, 7); //1, 7
       this.createPowerUp(_ballCol.x, _ballCol.y, tipo);
     }
 
