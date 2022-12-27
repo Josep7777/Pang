@@ -173,7 +173,7 @@ class level5_13 extends Phaser.Scene {
       //Datos del HUD
       this.levelName = gamePrefs.WORLD5_NAME;
       this.worldNumber = 5;
-      this.stageNumber = 14;
+      this.stageNumber = 13;
       this.highScore = 100000;
       this.timer = 0;
       this.countDown = 99;

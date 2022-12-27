@@ -167,7 +167,7 @@ class level3_17 extends Phaser.Scene {
     //this.hud = new hudPrefab(this, "hud");
     this.levelName = gamePrefs.WORLD3_NAME;
     this.worldNumber = 3;
-    this.stageNumber = 8;
+    this.stageNumber = 17;
     this.highScore = 100000;
     this.timer = 0;
     this.countDown = 99;
