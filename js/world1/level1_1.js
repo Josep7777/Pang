@@ -151,7 +151,8 @@ class level1_1 extends Phaser.Scene {
       config.height - 250,
       "player1"
     );
-
+    this.player2.setVisible(false);
+    
     //Variables del jugador
     this.invencible = false;
     this.timer2 = 0;
@@ -272,7 +273,7 @@ class level1_1 extends Phaser.Scene {
 
     
     //this.player2.setActive(false);
-    this.player2.setVisible(false);
+    
   }
 
   createFood(){
@@ -381,7 +382,7 @@ class level1_1 extends Phaser.Scene {
         break;
       case 3:
         //Objetos que dan puntuacion
-        this._player.doubleShoot = true;
+        _player.doubleShoot = true;
         break;
       case 4:
         //Parar tiempo

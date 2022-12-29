@@ -45,7 +45,7 @@ class ballPrefab extends Phaser.Physics.Arcade.Sprite {
 
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
-    if (this.x > 0 && this.x < 60) this.destroy();
-    if (this.x > config.width-60 && this.x < config.width) this.destroy();
+    if (this.x > 0 && this.x < 50) this.destroy();
+    if (this.x > config.width-50 && this.x < config.width) this.destroy();
   }
 }
