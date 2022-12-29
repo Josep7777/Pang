@@ -223,6 +223,18 @@ class level1_1 extends Phaser.Scene {
     this.physics.add.collider(this.wall, this.player2);
     this.physics.add.collider(this.wallR, this.player2);
 
+    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.normalPlatformsV,
+    this.collideBallPlatform
+  );
+  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.destructivePlatforms,
+    this.collideBallPlatform
+  );
+
+
     this.physics.add.overlap(
       this.ballpool,
       this.player1,

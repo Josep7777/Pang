@@ -357,8 +357,10 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
           this.anims.play("playerladder", true);
         }
       } else {
+       // this.body.gravity=0;
         //ESTAS ENCIMA DE LA ESCALERA O ESTAS CAYENDO
         this.body.setVelocityY(-gamePrefs.GRAVITYCHARACTER);
+        this.body.GRAVITYCHARACTER=0;
       }
   
       this.escaleraColider = false;

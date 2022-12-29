@@ -1,6 +1,6 @@
-class level3_15 extends Phaser.Scene {
+class level5_15 extends Phaser.Scene {
   constructor() {
-    super({ key: "level3_15" });
+    super({ key: "level5_15" });
   }
 
   preload() {
@@ -207,6 +207,18 @@ class level3_15 extends Phaser.Scene {
     this.physics.add.collider(this.ballpool, this.normalPlatformsV, this.collideBallPlatform);
     this.physics.add.collider(this.ballpool, this.destructivePlatforms, this.collideBallPlatform);
     this.physics.add.collider(this.ballpool, this.normalPlatforms, this.collideBallPlatform);
+
+    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.normalPlatformsV,
+    this.collideBallPlatform
+  );
+  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.destructivePlatforms,
+    this.collideBallPlatform
+  );
+
 
     this.physics.add.overlap(
       this.ballpool,

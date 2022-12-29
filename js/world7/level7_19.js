@@ -1,6 +1,6 @@
-class level3_17 extends Phaser.Scene {
+class level7_19 extends Phaser.Scene {
   constructor() {
-    super({ key: "level3_17" });
+    super({ key: "level7_19" });
   }
 
   preload() {
@@ -127,7 +127,7 @@ class level3_17 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width / 2, config.height / 2 - 82, "background17");
+    this.add.sprite(config.width / 2, config.height / 2 - 82, "background19");
     //Cargamos las pools
     this.loadPools();
 
@@ -167,7 +167,7 @@ class level3_17 extends Phaser.Scene {
     //this.hud = new hudPrefab(this, "hud");
     this.levelName = gamePrefs.WORLD3_NAME;
     this.worldNumber = 3;
-    this.stageNumber = 17;
+    this.stageNumber = 19;
     this.highScore = 100000;
     this.timer = 0;
     this.countDown = 99;
@@ -216,7 +216,16 @@ class level3_17 extends Phaser.Scene {
       null,
       this
     );
-
+    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.normalPlatformsV,
+    this.collideBallPlatform
+  );
+  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.destructivePlatforms,
+    this.collideBallPlatform
+  );
     this.physics.add.overlap(
       this.player1,
       this.powerUps,
@@ -343,7 +352,7 @@ class level3_17 extends Phaser.Scene {
         break;
       case 3:
         //Objetos que dan puntuacion
-        this._hud.setScore(500);
+        this.player1.doubleShoot = true;
         break;
       case 4:
         //Parar tiempo
@@ -382,10 +391,6 @@ class level3_17 extends Phaser.Scene {
           repeat: 0,
         });
           break;
-          case 8:
-            //DisparoDoble
-            this.player1.doubleShoot = true;
-            break;
     }
     _powerUp.destroy();
   }
@@ -544,7 +549,7 @@ class level3_17 extends Phaser.Scene {
     this.floorD = this.physics.add.sprite(
       config.width - 960,
       config.height - 185,
-      "floor"
+      "floorAzul"
     );
     this.floorD.body.allowGravity = false;
     this.floorD.body.setImmovable(true);
@@ -571,57 +576,10 @@ class level3_17 extends Phaser.Scene {
   }
 
   createPlatforms() {
-    var _platform1 = this.add
-      .sprite(config.width/2-700, config.height/2-200, "normalBlueHorizontal")
-      .setScale(0.6,0.6);
-    this.destructivePlatforms.add(_platform1);
-    _platform1.body.allowGravity = false;
-    _platform1.body.setImmovable(true);
 
-    var _platform2 = this.add
-    .sprite(config.width/2-90, config.height/2, "normalBlueHorizontal")
-    .setScale(2.5,0.6);
-  this.destructivePlatforms.add(_platform2);
-  _platform2.body.allowGravity = false;
-  _platform2.body.setImmovable(true);
-
-  var _platform3 = this.add
-  .sprite(config.width/2+700, config.height/2-250, "normalBlueHorizontal")
-  .setScale(0.6,0.6);
-this.destructivePlatforms.add(_platform3);
-_platform3.body.allowGravity = false;
-_platform3.body.setImmovable(true);
-
-var _platform4 = this.add
-.sprite(config.width/2-550, config.height/2-320, "destructPlatV")
-.setScale(0.6,0.6);
-this.destructivePlatforms.add(_platform4);
-_platform4.body.allowGravity = false;
-_platform4.body.setImmovable(true);
-
-
-var _platform5 = this.add
-.sprite(config.width/2-650, config.height/2-100, "destructPlatV")
-.setScale(0.6,0.6);
-this.destructivePlatforms.add(_platform5);
-_platform5.body.allowGravity = false;
-_platform5.body.setImmovable(true);
   }
   createStairs() {
  
-    var _ladder1 = this.add
-      .sprite(config.width / 2 - 300, config.height - 400, "ladder")
-      .setScale(4,2);
-    this.ladder.add(_ladder1);
-    _ladder1.body.allowGravity = false;
-    _ladder1.body.setImmovable(true);
-
-    var _ladder2 = this.add
-    .sprite(config.width / 2 + 450, config.height - 320, "ladder")
-    .setScale(4,5.5);
-  this.ladder.add(_ladder2);
-  _ladder2.body.allowGravity = false;
-  _ladder2.body.setImmovable(true);
 
 
   }

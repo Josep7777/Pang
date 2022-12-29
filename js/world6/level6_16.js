@@ -1,6 +1,6 @@
-class level3_19 extends Phaser.Scene {
+class level6_16 extends Phaser.Scene {
   constructor() {
-    super({ key: "level3_19" });
+    super({ key: "level6_16" });
   }
 
   preload() {
@@ -127,7 +127,7 @@ class level3_19 extends Phaser.Scene {
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
     this.loadAnimations();
-    this.add.sprite(config.width / 2, config.height / 2 - 82, "background19");
+    this.add.sprite(config.width / 2, config.height / 2 - 82, "background16");
     //Cargamos las pools
     this.loadPools();
 
@@ -144,8 +144,8 @@ class level3_19 extends Phaser.Scene {
     //Añadimos al jugador con fisicas
     this.player1 = new playerPrefab(
       this,
-      config.width / 2 - 250,
-      config.height - 250,
+      config.width / 2-180,
+      config.height-800,
       "player1"
     );
 
@@ -167,7 +167,7 @@ class level3_19 extends Phaser.Scene {
     //this.hud = new hudPrefab(this, "hud");
     this.levelName = gamePrefs.WORLD3_NAME;
     this.worldNumber = 3;
-    this.stageNumber = 19;
+    this.stageNumber = 16;
     this.highScore = 100000;
     this.timer = 0;
     this.countDown = 99;
@@ -216,7 +216,16 @@ class level3_19 extends Phaser.Scene {
       null,
       this
     );
-
+    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.normalPlatformsV,
+    this.collideBallPlatform
+  );
+  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
+    this.enemies,
+    this.destructivePlatforms,
+    this.collideBallPlatform
+  );
     this.physics.add.overlap(
       this.player1,
       this.powerUps,
@@ -540,7 +549,7 @@ class level3_19 extends Phaser.Scene {
     this.floorD = this.physics.add.sprite(
       config.width - 960,
       config.height - 185,
-      "floorAzul"
+      "floor"
     );
     this.floorD.body.allowGravity = false;
     this.floorD.body.setImmovable(true);
@@ -567,12 +576,99 @@ class level3_19 extends Phaser.Scene {
   }
 
   createPlatforms() {
+    var _platform1 = this.add
+      .sprite(config.width/2+50, config.height-750, "normalPlatAPetita")
+      .setScale(0.6,0.6);
+    this.normalPlatforms.add(_platform1);
+    _platform1.body.allowGravity = false;
+    _platform1.body.setImmovable(true);
+
+    var _platform2 = this.add
+      .sprite(config.width/2-50, config.height-750, "normalPlatAPetita")
+      .setScale(0.6,0.6);
+    this.normalPlatforms.add(_platform2);
+    _platform2.body.allowGravity = false;
+    _platform2.body.setImmovable(true);
+
+    var _platform3 = this.add
+    .sprite(config.width/2+150, config.height-750, "normalPlatAPetita")
+    .setScale(0.6,0.6);
+  this.normalPlatforms.add(_platform3);
+  _platform3.body.allowGravity = false;
+  _platform3.body.setImmovable(true);
+
+  var _platform4 = this.add
+    .sprite(config.width/2-150, config.height-750, "normalPlatAPetita")
+    .setScale(0.6,0.6);
+  this.normalPlatforms.add(_platform4);
+  _platform4.body.allowGravity = false;
+  _platform4.body.setImmovable(true);
+  
+  var _platform5 = this.add
+  .sprite(config.width/2+250, config.height-750, "normalPlatAPetita")
+  .setScale(0.6,0.6);
+this.normalPlatforms.add(_platform5);
+_platform5.body.allowGravity = false;
+_platform5.body.setImmovable(true);
+
+var _platform6 = this.add
+  .sprite(config.width/2-250, config.height-750, "normalPlatAPetita")
+  .setScale(0.6,0.6);
+this.normalPlatforms.add(_platform6);
+_platform6.body.allowGravity = false;
+_platform6.body.setImmovable(true);
+    
+var _platform7 = this.add
+.sprite(config.width/2+350, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform7);
+_platform7.body.allowGravity = false;
+_platform7.body.setImmovable(true);
+
+var _platform8 = this.add
+.sprite(config.width/2-350, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform8);
+_platform8.body.allowGravity = false;
+_platform8.body.setImmovable(true);
+
+var _platform9 = this.add
+.sprite(config.width/2+450, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform9);
+_platform9.body.allowGravity = false;
+_platform9.body.setImmovable(true);
+
+var _platform10 = this.add
+.sprite(config.width/2-450, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform10);
+_platform10.body.allowGravity = false;
+_platform10.body.setImmovable(true);
+var _platform11 = this.add
+.sprite(config.width/2+550, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform11);
+_platform11.body.allowGravity = false;
+_platform11.body.setImmovable(true);
+
+var _platform12 = this.add
+.sprite(config.width/2-550, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform12);
+_platform12.body.allowGravity = false;
+_platform12.body.setImmovable(true);
+
+var _platform13 = this.add
+.sprite(config.width/2-650, config.height-750, "normalPlatAPetita")
+.setScale(0.6,0.6);
+this.normalPlatforms.add(_platform13);
+_platform13.body.allowGravity = false;
+_platform13.body.setImmovable(true);
 
   }
   createStairs() {
  
-
-
   }
 
   lifesHUD() {

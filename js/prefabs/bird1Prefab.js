@@ -8,6 +8,10 @@ class bird1Prefab extends enemyPrefab {
     this.body.allowGravity = false;
     _scene.physics.add.overlap(this, _scene.ballpool, this.hitBall, null, this);
     this.invencible = false;
+
+
+    
+
   }
 
   preUpdate(time, delta) {
@@ -20,6 +24,9 @@ class bird1Prefab extends enemyPrefab {
 
       if (this.x > config.width) this.destroy();
     }
+
+
+
   }
 
   hit() {
