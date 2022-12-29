@@ -381,7 +381,7 @@ class level1_1 extends Phaser.Scene {
         break;
       case 3:
         //Objetos que dan puntuacion
-        _player.doubleShoot = true;
+        this._player.doubleShoot = true;
         break;
       case 4:
         //Parar tiempo
