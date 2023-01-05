@@ -393,7 +393,6 @@ class level1_1 extends Phaser.Scene {
         }
         break;
       case 3:
-        //Objetos que dan puntuacion
         _player.doubleShoot = true;
         break;
       case 4:
@@ -697,6 +696,7 @@ class level1_1 extends Phaser.Scene {
   gameOver() {
     this._hud.setGameOverText();
     this.player1.destroy();
+    this.player2.destroy();
     this.restartGameOver = true;
   }
 }

@@ -717,6 +717,7 @@ class level1_2 extends Phaser.Scene {
   gameOver() {
     this._hud.setGameOverText();
     this.player1.destroy();
+    this.player2.destroy();
     this.restartGameOver = true;
   }
 }
