@@ -129,7 +129,7 @@ class level5_14 extends Phaser.Scene {
 
   create() {
     this.sound.stopAll();
-    this.backgroundMusic = this.sound.add("EmeraldTemple", {
+    this.backgroundMusic = this.sound.add("Australia", {
       loop: false,
       volume: 0.5,
     });

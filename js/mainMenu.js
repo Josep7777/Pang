@@ -157,7 +157,10 @@ class mainMenu extends Phaser.Scene {
     this.load.audio("mtFujiTheme", "mtFuji.mp3");
     this.load.audio("mtKeirin", "mtKeirin.mp3");
     this.load.audio("EmeraldTemple", "EmeraldTemple.mp3");
-
+    this.load.audio("Petersburgo", "Petersburgo.mp3");
+    this.load.audio("Atenas", "Atenas.mp3");
+    this.load.audio("Australia", "Australia.mp3");
+    this.load.audio("Egypt", "Egypt.mp3");
     //SFX
     this.load.setPath("assets/sfx/");
     this.load.audio("explosionSound", "explosion.wav");
