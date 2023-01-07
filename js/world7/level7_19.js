@@ -148,6 +148,13 @@ class level7_19 extends Phaser.Scene {
       config.height - 250,
       "player1"
     );
+    this.player2 = new playerPrefab2(
+      this,
+      config.width / 2 + 500,
+      config.height - 250,
+      "player1"
+    );
+    this.player2.setVisible(false);
 
     //Variables del jugador
     this.invencible = false;
