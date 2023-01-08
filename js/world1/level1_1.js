@@ -5,114 +5,7 @@ class level1_1 extends Phaser.Scene {
 
   preload() {}
 
-  loadAnimations() {
-    this.anims.create({
-      key: "shoot",
-      frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
-      frameRate: 10,
-      repeat: 0,
-    });
-    this.anims.create({
-      key: "doubleShoot",
-      frames: this.anims.generateFrameNumbers("doubleShoot", {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "move",
-      frames: this.anims.generateFrameNumbers("player1", { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "damage",
-      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 7 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "shield",
-      frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "crabWalking",
-      frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "crabDeath",
-      frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5 }),
-      frameRate: 7,
-      repeat: 0,
-    });
-    this.anims.create({
-      key: "bird1Fly",
-      frames: this.anims.generateFrameNumbers("bird", { start: 0, end: 5 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "bird1Hit",
-      frames: this.anims.generateFrameNumbers("bird", { start: 6, end: 7 }),
-      frameRate: 5,
-      repeat: 4,
-    });
-
-    this.anims.create({
-      key: "enemyDeath",
-      frames: this.anims.generateFrameNumbers("enemyDeath", {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 5,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "owlFly",
-      frames: this.anims.generateFrameNumbers("owl", { start: 0, end: 5 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "owlHit",
-      frames: this.anims.generateFrameNumbers("owl", { start: 12, end: 13 }),
-      frameRate: 5,
-      repeat: 2,
-    });
-
-    this.anims.create({
-      key: "conchDown",
-      frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "dynamite",
-      frames: this.anims.generateFrameNumbers("powerUp6", { start: 0, end: 2 }),
-      frameRate: 3,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "ballDestroy",
-      frames: this.anims.generateFrameNumbers("ballExplosion", {
-        start: 0,
-        end: 2,
-      }),
-      frameRate: 15,
-      repeat: 0,
-    });
-  }
+ 
 
   loadPools() {
     this.ballpool = this.physics.add.group();
@@ -131,7 +24,7 @@ class level1_1 extends Phaser.Scene {
     });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
-    this.loadAnimations();
+
     this.add.sprite(config.width / 2, config.height / 2 - 82, "background");
 
     //Cargamos las pools
@@ -162,6 +55,7 @@ class level1_1 extends Phaser.Scene {
     //Variables del jugador
     this.invencible = false;
     this.invencible2 = false;
+    this.noAnimation = false;
     this.timer2 = 0;
     this.dañoEscudo = false;
 
@@ -340,6 +234,7 @@ class level1_1 extends Phaser.Scene {
   }
   restartScene(){
     this.invencible2=false;
+    this.player1.damageAnim = false;
     console.log("YANO");
     this.scene.restart();
   }
@@ -356,6 +251,7 @@ class level1_1 extends Phaser.Scene {
         //HACER ANIMACION AÑADIR FUERZA Y CUNADO ACABE REINICIAR LA ESCENA
         this.player1.play("damage", true);
         this.invencible2=true;
+        this.player1.damageAnim = true;
         console.log("eres invencible");
         this.playerTimer = this.time.addEvent({
           delay: 1000, //ms

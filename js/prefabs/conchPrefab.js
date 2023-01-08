@@ -7,9 +7,7 @@ class conchPrefab extends enemyPrefab {
     _scene.physics.add.collider(_scene.wallR, this);
     _scene.physics.add.collider(_scene.wall, this);
     _scene.physics.add.collider(_scene.floorU, this);
-    _scene.physics.add.collider(_scene.destructivePlatforms, this);
-    _scene.physics.add.collider(_scene.normalPlatformsV, this);
-    _scene.physics.add.collider(_scene.normalPlatforms, this);
+
     this.invencible = false;
     this.direccion *= -1;
     this.player1 = _scene.player1;

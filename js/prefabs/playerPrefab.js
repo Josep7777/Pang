@@ -13,6 +13,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
     this.harpoonNumberMax = 1; //Numero maximo de harpones que puede haber en pantalla
     this.isShooting = false;
     this.canShoot = true;
+    this.damageAnim = false;
     this.cursores = _scene.input.keyboard.createCursorKeys();
     this.keyW = _scene.input.keyboard.addKey('W');
     this.keyA = _scene.input.keyboard.addKey('A');
@@ -346,7 +347,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         }
       } else {
         this.body.setVelocityX(0);
-        if (!this.isShooting && !this.cursores.up.isDown) {
+        if (!this.isShooting && !this.cursores.up.isDown && !this.damageAnim) {
           this.anims.stop();
           this.setFrame(4);
         }

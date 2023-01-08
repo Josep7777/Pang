@@ -5,115 +5,8 @@ class level2_4 extends Phaser.Scene {
 
   preload() {}
 
-  loadAnimations() {
-    this.anims.create({
-      key: "shoot",
-      frames: this.anims.generateFrameNumbers("player1", { start: 4, end: 5 }),
-      frameRate: 8,
-      repeat: 0,
-    });
-    this.anims.create({
-      key: "doubleShoot",
-      frames: this.anims.generateFrameNumbers("doubleShoot", {
-        start: 0,
-        end: 1,
-      }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "playerladder",
-      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 9 }),
-      frameRate: 10,
-      repeat: -1,
-    });
 
-    this.anims.create({
-      key: "move",
-      frames: this.anims.generateFrameNumbers("player1", { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "shield",
-      frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "crabWalking",
-      frames: this.anims.generateFrameNumbers("crab", { start: 6, end: 9 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-    this.anims.create({
-      key: "crabDeath",
-      frames: this.anims.generateFrameNumbers("crab", { start: 0, end: 5 }),
-      frameRate: 7,
-      repeat: 0,
-    });
-    this.anims.create({
-      key: "bird1Fly",
-      frames: this.anims.generateFrameNumbers("bird", { start: 0, end: 5 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "bird1Hit",
-      frames: this.anims.generateFrameNumbers("bird", { start: 6, end: 7 }),
-      frameRate: 5,
-      repeat: 4,
-    });
-
-    this.anims.create({
-      key: "enemyDeath",
-      frames: this.anims.generateFrameNumbers("enemyDeath", {
-        start: 0,
-        end: 4,
-      }),
-      frameRate: 5,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "owlFly",
-      frames: this.anims.generateFrameNumbers("owl", { start: 0, end: 5 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "owlHit",
-      frames: this.anims.generateFrameNumbers("owl", { start: 12, end: 13 }),
-      frameRate: 5,
-      repeat: 2,
-    });
-
-    this.anims.create({
-      key: "conchDown",
-      frames: this.anims.generateFrameNumbers("conch", { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1,
-    });
-
-    this.anims.create({
-      key: "ballDestroy",
-      frames: this.anims.generateFrameNumbers("ballExplosion", {
-        start: 0,
-        end: 2,
-      }),
-      frameRate: 15,
-      repeat: 0,
-    });
-
-    this.anims.create({
-      key: "dynamite",
-      frames: this.anims.generateFrameNumbers("powerUp6", { start: 0, end: 2 }),
-      frameRate: 3,
-      repeat: -1,
-    });
-  }
+  
 
   loadPools() {
     this.ballpool = this.physics.add.group();
@@ -134,7 +27,8 @@ class level2_4 extends Phaser.Scene {
     });
     this.backgroundMusic.play();
     //Cargamos las animaciones que tendra el juego
-    this.loadAnimations();
+    
+
     this.add.sprite(config.width / 2, config.height / 2 - 82, "background4");
     //Cargamos las pools
     this.loadPools();
@@ -166,6 +60,7 @@ class level2_4 extends Phaser.Scene {
 
     //Variables del jugador
     this.invencible = false;
+    this.invencible2 = false;
     this.timer2 = 0;
     this.dañoEscudo = false;
     this.resources = 0;
@@ -352,16 +247,38 @@ class level2_4 extends Phaser.Scene {
     });
   }
 
-  damagePlayer(_ball, _player) {
-    if (this.invencible == false && !this.stopGravityBalls && _ball.spawn) {
+  restartScene(){
+    this.invencible2=false;
+    this.player1.damageAnim = false;
+    console.log("YANO");
+    this.scene.restart();
+  }
+
+
+
+  damagePlayer(_ball, _player) { 
+    if (this.invencible == false && !this.stopGravityBalls && _ball.spawn && this.invencible2== false) {
       this.player1.playerHealth--;
 
       if (this.player1.playerHealth > 0) {
         //HUD perder vida
         gamePrefs.PLAYER1HEALTH = this.player1.playerHealth;
-        this.scene.restart();
+        //HACER ANIMACION AÑADIR FUERZA Y CUNADO ACABE REINICIAR LA ESCENA
+        this.player1.play("damage", true);
+        this.invencible2=true;
+        this.player1.damageAnim = true;
+        console.log("eres invencible");
+        this.playerTimer = this.time.addEvent({
+          delay: 1000, //ms
+          callback:  this.restartScene,
+          callbackScope: this,
+          repeat: 0,
+        });
+   
+       // this.scene.restart();
       } else {
         //gameOver
+        this.player1.play("damage", true);
         this.gameOverflag = true;
         this.gameOver();
       }
@@ -645,6 +562,20 @@ class level2_4 extends Phaser.Scene {
     _platform2.body.allowGravity = false;
     _platform2.body.setImmovable(true);
     _platform2.depth = 3;
+    var _platform3 = this.add
+    .sprite(config.width / 2 - 50, config.height - 380, "normalBlueHorizontal")
+    .setScale(0.25,0.6);
+  this.normalPlatformsV.add(_platform3);
+  _platform3.body.allowGravity = false;
+  _platform3.body.setImmovable(true);
+  _platform3.depth = -1;
+  var _platform4 = this.add
+  .sprite(config.width / 2 + 90, config.height - 380, "normalBlueHorizontal")
+  .setScale(0.25,0.6);
+this.normalPlatformsV.add(_platform4);
+_platform4.body.allowGravity = false;
+_platform4.body.setImmovable(true);
+_platform4.depth = -1;
   }
 
   createStairs() {
@@ -654,6 +585,7 @@ class level2_4 extends Phaser.Scene {
     this.ladder.add(_ladder1);
     _ladder1.body.allowGravity = false;
     _ladder1.body.setImmovable(true);
+    _ladder1.depth=0;
 
     var _ladder2 = this.add
       .sprite(config.width / 2 + 90, config.height - 300, "ladder")
@@ -661,6 +593,7 @@ class level2_4 extends Phaser.Scene {
     this.ladder.add(_ladder2);
     _ladder2.body.allowGravity = false;
     _ladder2.body.setImmovable(true);
+    _ladder2.depth=0;
   }
 
   lifesHUD() {
@@ -707,6 +640,20 @@ class level2_4 extends Phaser.Scene {
           this.invencible = false;
           this.countDown2 = 1;
           this.dañoEscudo = false;
+        }
+      }
+    }
+    if (this.invencible2 == true) {
+      this.timer2 += delta;
+
+      if (this.timer2 > 1000) {
+        this.resources2 += 1;
+        this.timer2 -= 1000;
+        this.countDown2 -= 1;
+
+        if (this.countDown2 <= 0) {
+          this.invencible2 = false;
+          this.countDown2 = 1;
         }
       }
     }
