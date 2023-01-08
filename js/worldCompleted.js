@@ -50,6 +50,8 @@ class worldCompleted extends Phaser.Scene {
     this.wordl5Y = config.height / 2 + 110;
     this.world6X = config.width / 2 + 420;
     this.wordl6Y = config.height / 2 - 100;
+    this.world7X = config.width / 2 + 90;
+    this.wordl7Y = config.height / 2 - 310;
     switch (gamePrefs.STAGE) {
       case 3:
         this.actualWorldX = this.world1X;
@@ -96,7 +98,7 @@ class worldCompleted extends Phaser.Scene {
         this.actualWorldY = this.wordl6Y;
         this.plane = this.add
         .sprite(this.actualWorldX, this.actualWorldY, "plane")
-        .setRotation(35.2);
+        .setRotation(30.55);
         this.fly = 6;
         break;
     }
@@ -166,9 +168,20 @@ class worldCompleted extends Phaser.Scene {
           this.plane.y -= 0.9;
           if (this.plane.y <= this.wordl6Y) {
             this.planeSound.stop();
-            this.scene.start("level1_16");
+            this.scene.start("level6_16");
           }
           break;
+          case 6:
+            this.infoText.setText(
+              "SORRY, CAN'T USE THE WIRE\n\n\nCONTINOUSLY. ONE AT TIME."
+            );
+            this.plane.x -= 1.5;
+            this.plane.y -= 0.9;
+            if (this.plane.y <= this.wordl7Y) {
+              this.planeSound.stop();
+              this.scene.start("level7_19");
+            }
+            break;
     }
   }
 }

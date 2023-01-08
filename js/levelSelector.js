@@ -82,6 +82,9 @@ class levelSelector extends Phaser.Scene {
     this.world6X = config.width / 2 + 420;
     this.wordl6Y = config.height / 2 - 100;
 
+    this.world7X = config.width / 2 + 90;
+    this.wordl7Y = config.height / 2 - 310;
+
     this.mark = this.add.sprite(this.world1X, this.wordl1Y, "markYellow");
   }
   updateText() {
@@ -109,6 +112,12 @@ class levelSelector extends Phaser.Scene {
       case 6:
         this.actualWorldName.setText(this.nameworld6);
         this.actualWorldStages.setText(this.numberStagesWorld6);
+      case 6:
+        this.actualWorldName.setText(this.nameworld6);
+        this.actualWorldStages.setText(this.numberStagesWorld6);
+      case 7:
+        this.actualWorldName.setText(this.nameworld7);
+        this.actualWorldStages.setText(this.numberStagesWorld7);
     }
   }
   update(time, delta) {
@@ -132,7 +141,7 @@ class levelSelector extends Phaser.Scene {
       this.leftIsPress = true;
     } else if (
       this.cursores.right.isDown &&
-      this.worldSelected != 6 &&
+      this.worldSelected != 7 &&
       !this.rightIsPress
     ) {
       this.worldSelected++;
@@ -176,6 +185,10 @@ class levelSelector extends Phaser.Scene {
         this.mark.x = this.world6X;
         this.mark.y = this.wordl6Y + 5;
         break;
+      case 7:
+        this.mark.x = this.world7X;
+        this.mark.y = this.wordl7Y + 5;
+        break;
     }
   }
   playLevel() {
@@ -193,10 +206,13 @@ class levelSelector extends Phaser.Scene {
         this.scene.start("level4_10");
         break;
        case 5:
-        this.scene.start("level3_14");
+        this.scene.start("level5_13");
         break;
       case 6:
-        this.scene.start("level3_14");
+        this.scene.start("level6_16");
+        break;
+      case 7:
+        this.scene.start("level7_19");
         break;
     }
   }
