@@ -611,9 +611,9 @@ class level3_9 extends Phaser.Scene {
     _platform4.body.setImmovable(true);
 
   var _platform5 = this.add
-      .sprite(370, config.height / 2-220, "normalPlat")
+      .sprite(370, config.height / 2-220, "destructPlatR")
       .setScale(0.6, 0.6);
-    this.normalPlatforms.add(_platform5);
+    this.destructivePlatforms.add(_platform5);
     _platform5.body.allowGravity = false;
     _platform5.body.setImmovable(true);
 
