@@ -57,7 +57,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       });
       this.LaserShootSound.play();
       if (this.harpoonNumber < this.harpoonNumberMax && this.canShoot) {
-        this.anims.play("shoot", false);
+        if(!this.damageAnim) this.anims.play("shoot", false);
         this.isShooting = true;
 
         //Cuando la animacion de disparo acabe cambia el flag para volver al frame default
@@ -128,7 +128,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       });
       this.LaserShootSound.play();
       //IMPLEMENTARBALAS
-      this.anims.play("shoot", true);
+      if(!this.damageAnim) this.anims.play("shoot", true);
       this.isShooting = true;
       this.once("animationcomplete", () => {
         this.isShooting = false;
@@ -178,7 +178,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         this.canShoot &&
         this.doubleShoot == false
       ) {
-        this.anims.play("shoot", false);
+        if(!this.damageAnim) this.anims.play("shoot", false);
         this.isShooting = true;
         this.LaserShootSound = this.scene.sound.add("ShootSound", {
           loop: false,
@@ -337,13 +337,13 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
         if (!this.isShooting) {
           this.setFlipX(false);
           this.body.setVelocityX(-gamePrefs.CHARACTER_SPEED);
-          this.anims.play("move", true);
+          if(!this.damageAnim) this.anims.play("move", true);
         }
       } else if (this.keyD.isDown) {
         if (!this.isShooting) {
           this.setFlipX(true);
           this.body.setVelocityX(gamePrefs.CHARACTER_SPEED);
-          this.anims.play("move", true);
+          if(!this.damageAnim) this.anims.play("move", true);
         }
       } else {
         this.body.setVelocityX(0);
@@ -355,7 +355,7 @@ class playerPrefab extends Phaser.Physics.Arcade.Sprite {
       if (this.escaleraColider) {
         if (this.keyW.isDown) {
           this.y -= gamePrefs.CHARACTER_SPEEDLADDER;
-          this.anims.play("playerladder", true);
+          if(!this.damageAnim) this.anims.play("playerladder", true);
         }
       } else {
        // this.body.gravity=0;

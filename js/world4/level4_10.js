@@ -241,14 +241,14 @@ class level4_10 extends Phaser.Scene {
       _ladder4.body.setImmovable(true);
 
       var _ladder5 = this.add
-      .sprite(config.width / 2 - 550, config.height - 220, "ladder")
+      .sprite(config.width / 2 - 550, config.height - 230, "ladder")
       .setScale(4,1);
     this.ladder.add(_ladder5);
     _ladder5.body.allowGravity = false;
     _ladder5.body.setImmovable(true);
 
     var _ladder6 = this.add
-      .sprite(config.width / 2 - 400, config.height - 220, "ladder")
+      .sprite(config.width / 2 - 400, config.height - 230, "ladder")
       .setScale(4,1);
     this.ladder.add(_ladder6);
     _ladder6.body.allowGravity = false;
