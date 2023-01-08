@@ -237,11 +237,7 @@ class level6_16 extends Phaser.Scene {
       null,
       this
     );
-    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.normalPlatformsV,
-    this.collideBallPlatform
-  );
+  
   this.physics.add.overlap(
     this.player1,
     this.powerUps,
@@ -256,11 +252,7 @@ class level6_16 extends Phaser.Scene {
     null,
     this
   );
-  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.destructivePlatforms,
-    this.collideBallPlatform
-  );
+
 
 
     this.randomEnemySpawn = Phaser.Math.Between(10000, 30000);

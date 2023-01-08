@@ -5,6 +5,9 @@ class crabPrefab extends enemyPrefab {
     this.isGoingtoDie = false;
     this.scene = _scene;
     _scene.physics.add.collider(_scene.wallR, this);
+    _scene.physics.add.collider(_scene.destructivePlatforms, this);
+    _scene.physics.add.collider(_scene.normalPlatformsV, this);
+    _scene.physics.add.collider(_scene.normalPlatforms, this);
     this.invencible = false;
   }
 

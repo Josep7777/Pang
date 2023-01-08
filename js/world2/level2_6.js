@@ -230,16 +230,7 @@ class level2_6 extends Phaser.Scene {
       this.normalPlatforms,
       this.collideBallPlatform
     );
-    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.normalPlatformsV,
-    this.collideBallPlatform
-  );
-  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.destructivePlatforms,
-    this.collideBallPlatform
-  );
+
     this.physics.add.collider(
       this.ballpool,
       this.destructivePlatforms,

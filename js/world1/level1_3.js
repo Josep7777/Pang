@@ -223,16 +223,7 @@ class level1_3 extends Phaser.Scene {
     this.physics.add.collider(this.floorD, this.food);
     this.physics.add.collider(this.floorD, this.enemies);
 
-    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.normalPlatformsV,
-    this.collideBallPlatform
-  );
-  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.destructivePlatforms,
-    this.collideBallPlatform
-  );
+
 
     this.physics.add.collider(
       this.ballpool,

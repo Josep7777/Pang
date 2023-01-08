@@ -28,6 +28,12 @@ class level1_1 extends Phaser.Scene {
       repeat: -1,
     });
     this.anims.create({
+      key: "damage",
+      frames: this.anims.generateFrameNumbers("player1", { start: 7, end: 7 }),
+      frameRate: 5,
+      repeat: -1,
+    });
+    this.anims.create({
       key: "shield",
       frames: this.anims.generateFrameNumbers("escudo", { start: 0, end: 1 }),
       frameRate: 5,
@@ -155,6 +161,7 @@ class level1_1 extends Phaser.Scene {
     
     //Variables del jugador
     this.invencible = false;
+    this.invencible2 = false;
     this.timer2 = 0;
     this.dañoEscudo = false;
 
@@ -223,16 +230,6 @@ class level1_1 extends Phaser.Scene {
     this.physics.add.collider(this.wall, this.player2);
     this.physics.add.collider(this.wallR, this.player2);
 
-    this.physics.add.collider( //COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.normalPlatformsV,
-    this.collideBallPlatform
-  );
-  this.physics.add.collider(//COLISION CON ENEMIGO, LLAMAR A LA FUNCION QUE HAGA LO QUE TENGA QUE HACER EL ENEMIGO
-    this.enemies,
-    this.destructivePlatforms,
-    this.collideBallPlatform
-  );
 
 
     this.physics.add.overlap(
@@ -341,17 +338,36 @@ class level1_1 extends Phaser.Scene {
       repeat: 0,
     });
   }
+  restartScene(){
+    this.invencible2=false;
+    console.log("YANO");
+    this.scene.restart();
+  }
 
-  damagePlayer(_ball, _player) { //Por alguna razon ball y player van alreves
-    if (this.invencible == false && !this.stopGravityBalls && _ball.spawn) {
+
+
+  damagePlayer(_ball, _player) { 
+    if (this.invencible == false && !this.stopGravityBalls && _ball.spawn && this.invencible2== false) {
       this.player1.playerHealth--;
 
       if (this.player1.playerHealth > 0) {
         //HUD perder vida
         gamePrefs.PLAYER1HEALTH = this.player1.playerHealth;
-        this.scene.restart();
+        //HACER ANIMACION AÑADIR FUERZA Y CUNADO ACABE REINICIAR LA ESCENA
+        this.player1.play("damage", true);
+        this.invencible2=true;
+        console.log("eres invencible");
+        this.playerTimer = this.time.addEvent({
+          delay: 1000, //ms
+          callback:  this.restartScene,
+          callbackScope: this,
+          repeat: 0,
+        });
+   
+       // this.scene.restart();
       } else {
         //gameOver
+        this.player1.play("damage", true);
         this.gameOverflag = true;
         this.gameOver();
       }
@@ -654,7 +670,7 @@ class level1_1 extends Phaser.Scene {
       this.shield.x = this.player1.x;
       this.shield.y = this.player1.y;
     }
-
+  
     if (this.invencible == true && this.dañoEscudo == true) {
       this.timer2 += delta;
 
@@ -667,6 +683,20 @@ class level1_1 extends Phaser.Scene {
           this.invencible = false;
           this.countDown2 = 1;
           this.dañoEscudo = false;
+        }
+      }
+    }
+    if (this.invencible2 == true) {
+      this.timer2 += delta;
+
+      if (this.timer2 > 1000) {
+        this.resources2 += 1;
+        this.timer2 -= 1000;
+        this.countDown2 -= 1;
+
+        if (this.countDown2 <= 0) {
+          this.invencible2 = false;
+          this.countDown2 = 1;
         }
       }
     }
