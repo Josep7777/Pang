@@ -120,6 +120,7 @@ class level5_13 extends Phaser.Scene {
       this.physics.add.collider(this.wallR, this.player1);
       this.physics.add.collider(this.normalPlatformsV, this.player1);
       this.physics.add.collider(this.normalPlatforms, this.player1);
+      this.physics.add.collider(this.destructivePlatforms, this.player1);
       this.physics.add.collider(this.floorD, this.player2);
       this.physics.add.collider(this.wall, this.player2);
       this.physics.add.collider(this.wallR, this.player2);
