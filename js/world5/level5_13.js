@@ -192,8 +192,8 @@ class level5_13 extends Phaser.Scene {
   
     createStairs() {
       var _ladder1 = this.add
-        .sprite(config.width / 2, config.height - 460, "ladder")
-        .setScale(3, 2);
+        .sprite(config.width / 2, config.height - 520, "ladder")
+        .setScale(3, 5);
       this.ladder.add(_ladder1);
       _ladder1.body.allowGravity = false;
       _ladder1.body.setImmovable(true);
@@ -205,6 +205,7 @@ class level5_13 extends Phaser.Scene {
       _ladder2.body.allowGravity = false;
       _ladder2.body.setImmovable(true);
   
+      /*
       var _ladder3 = this.add
         .sprite(config.width / 2 - 630, config.height - 590, "ladder")
         .setScale(3, 2);
@@ -218,6 +219,7 @@ class level5_13 extends Phaser.Scene {
     this.ladder.add(_ladder3);
     _ladder3.body.allowGravity = false;
     _ladder3.body.setImmovable(true);
+    */
     }
   
     createFood(){
@@ -668,7 +670,7 @@ this.destructivePlatforms.add(_platform15);
 _platform15.body.allowGravity = false;
 _platform15.body.setImmovable(true);
 
-
+/*
   //SEGUNDO PISO
   var _platform16 = this.add
   .sprite(
@@ -698,7 +700,7 @@ var _platform18 = this.add
 this.destructivePlatforms.add(_platform18);
 _platform18.body.allowGravity = false;
 _platform18.body.setImmovable(true);
-
+*/
 //TERCER PISO
 var _platform16 = this.add
 .sprite(
@@ -721,7 +723,7 @@ var _platform17 = this.add
 this.normalPlatforms.add(_platform17);
 _platform17.body.allowGravity = false;
 _platform17.body.setImmovable(true);
-
+/*
 //CUARTO PISO
 var _platform17 = this.add
 .sprite(
@@ -751,6 +753,7 @@ var _platform18 = this.add
 this.destructivePlatforms.add(_platform18);
 _platform18.body.allowGravity = false;
 _platform18.body.setImmovable(true);
+*/
     }
   
     lifesHUD() {
